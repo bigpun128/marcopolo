@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circles — landing page options</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#fff8ef;--ink:#1a1410;--tangerine:#ff5e1a;--cobalt:#1e4dff;--magenta:#ff2e8b}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+  h1{font-weight:800;font-size:clamp(34px,6vw,64px);letter-spacing:-.04em;text-align:center;margin-bottom:10px}
+  .sub{font-family:'DM Mono',monospace;font-size:14px;color:rgba(255,248,239,.6);text-align:center;margin-bottom:48px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1000px;width:100%}
+  a.opt{display:block;border-radius:22px;padding:36px 28px;text-decoration:none;color:#fff;
+    transition:transform .18s;border:3px solid transparent}
+  a.opt:hover{transform:translateY(-8px)}
+  .o1{background:var(--tangerine)}
+  .o2{background:var(--cobalt)}
+  .o3{background:var(--magenta)}
+  .opt .v{font-family:'DM Mono',monospace;font-size:13px;opacity:.8}
+  .opt h2{font-weight:800;font-size:30px;letter-spacing:-.02em;margin:8px 0 10px}
+  .opt p{font-size:15px;line-height:1.45;opacity:.92}
+  .opt .go{display:inline-block;margin-top:18px;font-family:'DM Mono',monospace;font-size:13px;
+    background:rgba(0,0,0,.2);padding:7px 14px;border-radius:100px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <h1>Circles landing options</h1>
+  <p class="sub">three directions · same content · pick a favorite or A/B test them</p>
+  <div class="grid">
+    <a class="opt o1" href="/v1">
+      <span class="v">v1 · sunrise</span>
+      <h2>Full color</h2>
+      <p>Tangerine, grape, and lime on cream. Playful photo strip hero, color-blocked sections.</p>
+      <span class="go">view v1 →</span>
+    </a>
+    <a class="opt o2" href="/v2">
+      <span class="v">v2 · cobalt</span>
+      <h2>One bold color</h2>
+      <p>Electric blue + lime. Full-bleed photo hero, duotone treatment, single-color confidence.</p>
+      <span class="go">view v2 →</span>
+    </a>
+    <a class="opt o3" href="/v3">
+      <span class="v">v3 · plum</span>
+      <h2>Editorial bold</h2>
+      <p>Deep plum + hot magenta + gold. Asymmetric split hero with stacked photos.</p>
+      <span class="go">view v3 →</span>
+    </a>
+  </div>
+</body>
+</html>

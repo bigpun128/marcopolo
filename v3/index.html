@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circles — find your people</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2a0e3a;
+    --magenta:#ff2e8b;
+    --peach:#ffb38a;
+    --cream:#fcf3ec;
+    --ink:#1d0a26;
+    --gold:#ffc94d;
+    --display:'Bricolage Grotesque',sans-serif;
+    --mono:'DM Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:var(--display);font-weight:400;
+    line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--plum)}
+  .nav-in{max-width:1240px;margin:0 auto;padding:14px 26px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-family:var(--display);font-weight:800;font-size:25px;color:var(--cream);letter-spacing:-.03em}
+  .logo b{color:var(--magenta)}
+  .nav-cta{font-family:var(--display);font-weight:600;font-size:14px;background:var(--magenta);color:#fff;padding:9px 18px;border-radius:100px;transition:transform .15s}
+  .nav-cta:hover{transform:translate(-2px,-2px)}
+
+  /* split hero */
+  .hero{background:var(--plum);color:var(--cream);padding-top:64px;min-height:100svh;display:flex;align-items:center}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;width:100%}
+  .hero-pill{display:inline-block;font-family:var(--mono);font-size:13px;background:var(--gold);color:var(--ink);padding:7px 15px;border-radius:100px;margin-bottom:26px;opacity:0;animation:rise .8s .2s forwards}
+  .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(50px,8vw,116px);line-height:.84;letter-spacing:-.045em;opacity:0;animation:rise .9s .35s forwards}
+  .hero h1 .hl{color:var(--magenta)}
+  .hero h1 .hl2{color:var(--peach)}
+  .hero p{font-size:clamp(18px,1.6vw,21px);max-width:40ch;margin:30px 0 34px;color:rgba(252,243,236,.82);line-height:1.45;opacity:0;animation:rise 1s .5s forwards}
+  .cta{display:inline-flex;align-items:center;gap:12px;background:var(--magenta);color:#fff;font-weight:600;font-size:19px;padding:18px 30px;border-radius:100px;transition:transform .15s;white-space:nowrap;opacity:0;animation:rise 1s .65s forwards}
+  .cta:hover{transform:translate(-3px,-3px);background:var(--peach);color:var(--ink)}
+  .hero-photo{position:relative;opacity:0;animation:fade 1.1s .5s forwards}
+  .hero-photo .main{aspect-ratio:4/5;border-radius:26px;overflow:hidden;border:4px solid var(--magenta)}
+  .hero-photo .main img{width:100%;height:100%;object-fit:cover}
+  .hero-photo .float{position:absolute;bottom:-22px;left:-22px;width:140px;height:140px;border-radius:18px;overflow:hidden;border:4px solid var(--gold);transform:rotate(-5deg)}
+  .hero-photo .float img{width:100%;height:100%;object-fit:cover}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes fade{to{opacity:1}}
+
+  .ticker{background:var(--magenta);color:#fff;overflow:hidden;padding:15px 0}
+  .ticker-track{display:flex;gap:38px;white-space:nowrap;animation:scroll 22s linear infinite;width:max-content}
+  .ticker-track span{font-family:var(--display);font-weight:800;font-size:27px;letter-spacing:-.02em;display:flex;align-items:center;gap:38px}
+  .ticker-track span::after{content:"♡";color:var(--gold)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .kicker{font-family:var(--mono);font-size:14px;color:var(--magenta);margin-bottom:18px;display:inline-block}
+
+  .problem{padding:120px 0}
+  .problem h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,6.2vw,80px);line-height:.96;letter-spacing:-.04em;max-width:16ch}
+  .problem h2 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%)}
+  .problem .cols{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:44px}
+  .problem .cols p{font-size:20px;line-height:1.5}
+
+  .alone{background:var(--plum);color:var(--cream);padding:130px 0}
+  .alone h2{font-family:var(--display);font-weight:800;font-size:clamp(40px,6.6vw,90px);line-height:.94;letter-spacing:-.04em;max-width:17ch}
+  .alone h2 .hl{color:var(--peach)}
+  .alone .sub{font-size:22px;max-width:46ch;margin-top:28px;color:rgba(252,243,236,.82)}
+  .alone .num{font-family:var(--display);font-weight:800;font-size:clamp(90px,17vw,220px);line-height:.78;color:var(--magenta);margin-top:46px;letter-spacing:-.05em}
+  .alone .num small{display:block;font-size:21px;font-weight:400;color:var(--cream);max-width:32ch;margin-top:16px;letter-spacing:0;line-height:1.4}
+
+  .how{padding:120px 0}
+  .how h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,6.2vw,80px);line-height:.96;letter-spacing:-.04em;margin-bottom:14px}
+  .how .lede{font-size:20px;max-width:42ch;margin-bottom:54px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{border-radius:26px;overflow:hidden;border:3px solid var(--ink);transition:transform .2s}
+  .card:hover{transform:translateY(-8px)}
+  .card-top{height:230px;overflow:hidden;position:relative}
+  .card-top img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .card:hover .card-top img{transform:scale(1.06)}
+  .card-num{position:absolute;top:14px;left:14px;font-family:var(--display);font-weight:800;font-size:28px;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .card:nth-child(1) .card-num{background:var(--magenta);color:#fff}
+  .card:nth-child(2) .card-num{background:var(--gold);color:var(--ink)}
+  .card:nth-child(3) .card-num{background:var(--peach);color:var(--ink)}
+  .card-body{padding:24px 24px 30px;background:#fff}
+  .card-body h3{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.02em;margin-bottom:8px}
+  .card-body p{font-size:16px;color:#6a5a6e}
+
+  .value{background:var(--ink);color:var(--cream);padding:120px 0}
+  .value-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .value .kicker{color:var(--gold)}
+  .value h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,5.4vw,70px);line-height:.96;letter-spacing:-.04em}
+  .value h2 .hl{color:var(--gold)}
+  .value .body{font-size:18px;color:rgba(252,243,236,.68);margin:24px 0 30px;max-width:46ch;line-height:1.55}
+  .value ul{list-style:none;display:flex;flex-direction:column;gap:15px}
+  .value li{display:flex;gap:13px;font-size:17px;align-items:flex-start}
+  .value li .dot{flex-shrink:0;width:25px;height:25px;border-radius:50%;background:var(--magenta);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;margin-top:2px}
+  .pcard{background:var(--magenta);color:#fff;border-radius:26px;padding:44px 38px;text-align:center}
+  .pcard .ptag{font-family:var(--mono);font-size:13px;background:var(--gold);color:var(--ink);padding:5px 13px;border-radius:100px;display:inline-block}
+  .pamt{font-family:var(--display);font-weight:800;font-size:96px;line-height:1;letter-spacing:-.04em;margin:16px 0 4px}
+  .pamt sup{font-size:32px;font-weight:600;vertical-align:top;top:.5em}
+  .pnote{font-size:15px;color:rgba(255,255,255,.82);margin-bottom:24px}
+  .pcard .cta{width:100%;justify-content:center;background:#fff;color:var(--ink);animation:none;opacity:1}
+  .pcard .cta:hover{background:var(--gold)}
+  .pcompare{font-size:14px;color:rgba(255,255,255,.85);border-top:1px solid rgba(255,255,255,.3);margin-top:24px;padding-top:20px;line-height:1.65}
+  .pcompare b{color:#fff;font-weight:600}
+
+  .testi{padding:120px 0}
+  .testi h2{font-family:var(--display);font-weight:800;font-size:clamp(38px,6.2vw,80px);line-height:.96;letter-spacing:-.04em;margin-bottom:50px}
+  .testi h2 .hl{color:var(--magenta)}
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .quote{border-radius:24px;padding:32px 28px;border:3px solid var(--ink)}
+  .quote:nth-child(1){background:var(--peach)}
+  .quote:nth-child(2){background:var(--plum);color:var(--cream)}
+  .quote:nth-child(3){background:var(--gold)}
+  .quote p{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.35;letter-spacing:-.015em;margin-bottom:18px}
+  .quote .who{font-family:var(--mono);font-size:13px}
+  .seen{margin-top:60px;text-align:center}
+  .seen .lbl{font-family:var(--mono);font-size:13px;color:#6a5a6e;margin-bottom:16px}
+  .seen .logos{display:flex;gap:38px;justify-content:center;flex-wrap:wrap;font-family:var(--display);font-weight:600;font-size:21px;opacity:.45}
+
+  .close{background:var(--magenta);color:#fff;padding:140px 0;text-align:center}
+  .close h2{font-family:var(--display);font-weight:800;font-size:clamp(48px,9vw,130px);line-height:.84;letter-spacing:-.05em}
+  .close h2 .hl{color:var(--plum)}
+  .close p{font-size:21px;max-width:38ch;margin:26px auto 38px;color:rgba(255,255,255,.92)}
+  .close .cta{background:#fff;color:var(--ink);animation:none;opacity:1}
+  .close .cta:hover{background:var(--gold)}
+  .close .urgency{display:inline-block;margin-top:30px;font-family:var(--mono);font-size:13px;background:rgba(0,0,0,.18);padding:8px 18px;border-radius:100px}
+
+  footer{background:var(--ink);color:var(--cream);padding:44px 0 50px}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:13px;color:rgba(252,243,236,.6);flex-wrap:wrap}
+  .foot-links a:hover{color:var(--magenta)}
+  .copy{font-family:var(--mono);font-size:12px;color:rgba(252,243,236,.45)}
+
+  @media(max-width:880px){
+    .hero-grid,.problem .cols,.value-grid{grid-template-columns:1fr;gap:40px}
+    .hero-photo{max-width:420px}
+    .cards,.quotes{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<nav><div class="nav-in"><div class="logo">Circles<b>.</b></div><a href="https://circles.marcopolo.me/survey" class="nav-cta">Get matched →</a></div></nav>
+
+<header class="hero"><div class="wrap"><div class="hero-grid">
+  <div>
+    <span class="hero-pill">★ 1,000+ women matched</span>
+    <h1>Find your <span class="hl">people.</span><br><span class="hl2">For real this time.</span></h1>
+    <p>Circles hand-matches you with 5 to 8 women in the exact same season of life. No swiping. No awkward mixers. Just your people.</p>
+    <a href="https://circles.marcopolo.me/survey" class="cta">Find your circle →</a>
+  </div>
+  <div class="hero-photo">
+    <div class="main"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1100&auto=format&fit=crop" alt="Women laughing together"></div>
+    <div class="float"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=400&auto=format&fit=crop" alt="Friends"></div>
+  </div>
+</div></div></header>
+
+<div class="ticker"><div class="ticker-track">
+  <span>no swiping</span><span>no awkward events</span><span>hand-matched by humans</span><span>5 to 8 women</span><span>same life stage</span>
+  <span>no swiping</span><span>no awkward events</span><span>hand-matched by humans</span><span>5 to 8 women</span><span>same life stage</span>
+</div></div>
+
+<section class="problem"><div class="wrap">
+  <span class="kicker reveal">the part nobody warns you about</span>
+  <h2 class="reveal">Making friends as an adult is <u>weirdly, brutally hard.</u></h2>
+  <div class="cols">
+    <p class="reveal">Everyone's busy. Plans fall through. The group chat went quiet sometime around the last move, the new job, the kids. And starting over in a new city can feel impossibly lonely.</p>
+    <p class="reveal">You're not doing it wrong. The things that used to hand us friendships — school, dorms, first jobs — just aren't there anymore. So you have a hundred contacts and nobody to call at 9pm.</p>
+  </div>
+</div></section>
+
+<section class="alone reveal"><div class="wrap">
+  <h2>If you've felt this, you're in <span class="hl">extremely good company.</span></h2>
+  <p class="sub">Most women say it's harder to make real friends now than at any other point in their lives. Wanting your people back isn't needy. It's human.</p>
+  <div class="num">1,000+<small>women have already found their circle. You're not the only one feeling this — and you don't have to figure it out alone.</small></div>
+</div></section>
+
+<section class="how"><div class="wrap">
+  <span class="kicker reveal">how it works</span>
+  <h2 class="reveal">Three steps. We do the matching.</h2>
+  <p class="lede reveal">Real humans match your circle by hand — not an algorithm spitting out strangers.</p>
+  <div class="cards">
+    <div class="card reveal"><div class="card-top"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=900&auto=format&fit=crop" alt=""><span class="card-num">1</span></div><div class="card-body"><h3>Tell us about you</h3><p>A short quiz about your interests and what season of life you're in. A few minutes, done.</p></div></div>
+    <div class="card reveal"><div class="card-top"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=900&auto=format&fit=crop" alt=""><span class="card-num">2</span></div><div class="card-body"><h3>Get hand-matched</h3><p>Once a month, real people match you with 5 to 8 women who actually fit your life stage.</p></div></div>
+    <div class="card reveal"><div class="card-top"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=900&auto=format&fit=crop" alt=""><span class="card-num">3</span></div><div class="card-body"><h3>Connect on your time</h3><p>Real conversation through video messages. No pressure to reply the second it lands.</p></div></div>
+  </div>
+</div></section>
+
+<section class="value reveal"><div class="wrap value-grid">
+  <div>
+    <span class="kicker">why marco polo</span>
+    <h2>Built by the team <span class="hl">2 million women already trust.</span></h2>
+    <p class="body">Circles isn't some startup's first guess at friendship. It's powered by Marco Polo — the video-message app women have used for years to stay close to the people they love. We just turned that on for the friends you haven't met yet.</p>
+    <ul>
+      <li><span class="dot">✓</span> Video messages let you be real, without the pressure to perform.</li>
+      <li><span class="dot">✓</span> Hand-matched by humans, by life stage. Not swiped at random.</li>
+      <li><span class="dot">✓</span> A small group of 5 to 8, so it feels like an actual circle.</li>
+    </ul>
+  </div>
+  <div class="pcard">
+    <span class="ptag">join a circle from</span>
+    <div class="pamt"><sup>$</sup>75</div>
+    <p class="pnote">one-time, for your matched circle</p>
+    <a href="https://circles.marcopolo.me/survey" class="cta">Get matched →</a>
+    <p class="pcompare">A fraction of what friendship clubs, group coaching, or membership communities charge <b>every single month</b> — and matched by real people, not left to chance.</p>
+  </div>
+</div></section>
+
+<section class="testi"><div class="wrap">
+  <span class="kicker reveal">real women, real circles</span>
+  <h2 class="reveal">Women who found <span class="hl">their people.</span></h2>
+  <div class="quotes">
+    <div class="quote reveal"><p>"It's helped me deepen so many connections — I can come to it whenever I'm available, which is more often than I expect."</p><span class="who">— Bethany</span></div>
+    <div class="quote reveal"><p>"Less stressful but more intimate. That's why I've connected with new friends so much more."</p><span class="who">— Laurie</span></div>
+    <div class="quote reveal"><p>"It feels effortless and real. I've gotten closer with friends because we Polo daily. Best part of my day."</p><span class="who">— Lisa</span></div>
+  </div>
+  <div class="seen reveal"><p class="lbl">as mentioned on</p><div class="logos"><span>The Drew Barrymore Show</span><span>Good Hang with Amy Poehler</span><span>Dear Chelsea</span></div></div>
+</div></section>
+
+<section class="close reveal"><div class="wrap">
+  <h2>Your circle is <span class="hl">already forming.</span></h2>
+  <p>Take the two-minute quiz. We'll hand-match you with women who get exactly where you are.</p>
+  <a href="https://circles.marcopolo.me/survey" class="cta">Find your circle →</a>
+  <div><span class="urgency">⚡ new circles forming this month — spots are limited</span></div>
+</div></section>
+
+<footer><div class="wrap foot-row">
+  <div class="logo">Circles<b style="color:var(--magenta)">.</b></div>
+  <div class="foot-links"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Community Guidelines</a></div>
+  <p class="copy">© 2026 Joya Communications · powered by Marco Polo</p>
+</div></footer>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*0.08)+'s';io.observe(el)});
+</script>
+</body>
+</html>
