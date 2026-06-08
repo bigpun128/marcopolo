@@ -1,15 +1,16 @@
 # Circles — Landing Page Options
 
-Three landing-page directions for Marco Polo Circles. All static HTML, no build step.
+Four landing-page directions for Marco Polo Circles. All static HTML, no build step.
 
 ## Structure
 
 ```
 circles-landing/
-├── index.html        → the chooser page (links to all three)
+├── index.html        → the chooser page (links to all four)
 ├── v1/index.html     → "Sunrise"  — full color, photo-strip hero
 ├── v2/index.html     → "Cobalt"   — single dominant blue, full-bleed hero
 ├── v3/index.html     → "Plum"     — editorial bold, split hero
+├── v4/index.html     → "Motion"   — cinematic video hero, animating text (222/Known style)
 └── vercel.json       → clean URLs (/v1 instead of /v1/index.html)
 ```
 
@@ -18,6 +19,16 @@ Once deployed, the pages live at:
 - `yoursite.vercel.app/v1`   → version 1
 - `yoursite.vercel.app/v2`   → version 2
 - `yoursite.vercel.app/v3`   → version 3
+- `yoursite.vercel.app/v4`   → version 4
+
+### v4 needs a video file
+
+`v4/index.html` references `/v4/hero.mp4` — a silent looping background video. Until you drop one in, the page renders the poster image (an Unsplash photo) and looks correct.
+
+To make v4 fully cinematic, drop a `hero.mp4` into `/v4/`:
+- 10–20s silent loop of women connecting / laughing
+- 1080p, well-compressed (target under ~5MB if possible)
+- It will appear automatically on next push — no code change needed
 
 ## Put it on GitHub
 
