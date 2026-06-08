@@ -31,6 +31,14 @@
   .o5 .t2{background:#5b2bd6;border:2px solid #c6f24e}
   .o5 .t3{background:#fff8ef;border:2px solid var(--ink);position:relative}
   @media(max-width:760px){.o5{flex-direction:column;align-items:flex-start}}
+  .o6{background:var(--cream);color:var(--ink);grid-column:1/-1;display:flex;align-items:center;gap:28px;padding:28px 32px}
+  .o6 .tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--lime);padding:5px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;font-weight:500}
+  .o6 .body{flex:1}
+  .o6 h2{color:var(--ink)}
+  .o6 .go{background:var(--ink);color:var(--cream)}
+  .o6 .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;flex-shrink:0;width:180px}
+  .o6 .stack span{aspect-ratio:1/1;border-radius:6px;display:block;background-size:cover;background-position:center;border:2px solid var(--ink)}
+  @media(max-width:760px){.o6{flex-direction:column;align-items:flex-start}.o6 .stack{width:100%;grid-template-columns:repeat(6,1fr)}}
   .opt .v{font-family:'DM Mono',monospace;font-size:13px;opacity:.8}
   .opt h2{font-weight:800;font-size:30px;letter-spacing:-.02em;margin:8px 0 10px}
   .opt p{font-size:15px;line-height:1.45;opacity:.92}
@@ -41,7 +49,7 @@
 </head>
 <body>
   <h1>Circles landing options</h1>
-  <p class="sub">four landing directions · plus the latest email designs</p>
+  <p class="sub">four landing directions · plus the latest email designs &amp; static ads</p>
   <div class="grid">
     <a class="opt o1" href="/v1">
       <span class="v">v1 · sunrise</span>
@@ -78,6 +86,22 @@
         <span class="t1"></span>
         <span class="t2"></span>
         <span class="t3"></span>
+      </div>
+    </a>
+    <a class="opt o6" href="/ads/">
+      <div class="body">
+        <span class="tag">Static ads</span>
+        <h2>Marco Polo — 20 static ads</h2>
+        <p>Four audience themes · five ad variations each. Postpartum, life transitions, skip-the-small-talk, and how-it-works. Click any ad to enlarge or download the PNG.</p>
+        <span class="go">view static ads →</span>
+      </div>
+      <div class="stack" aria-hidden="true">
+        <span style="background-image:url('/ads/img/01-1-1-cried-in-target.png')"></span>
+        <span style="background-image:url('/ads/img/06-2-1-new-city.png')"></span>
+        <span style="background-image:url('/ads/img/11-3-1-skip-the-small-talk.png')"></span>
+        <span style="background-image:url('/ads/img/16-4-1-hand-matched.png')"></span>
+        <span style="background-image:url('/ads/img/05-1-5-your-village.png')"></span>
+        <span style="background-image:url('/ads/img/20-4-5-effortless.png')"></span>
       </div>
     </a>
   </div>

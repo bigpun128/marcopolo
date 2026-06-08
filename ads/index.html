@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circles — Static ads</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#fff8ef;--ink:#1a1410;--tangerine:#ff5e1a;--cobalt:#1e4dff;--magenta:#ff2e8b;--lime:#c6f24e;--violet:#5b2bd6;--amber:#f4a13a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;padding:48px 24px 96px;min-height:100vh}
+  .wrap{max-width:1240px;margin:0 auto}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:40px}
+  .top .lhs{max-width:740px}
+  .tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--lime);color:var(--ink);padding:5px 10px;border-radius:100px;margin-bottom:14px;font-weight:500}
+  h1{font-weight:800;font-size:clamp(34px,5vw,56px);letter-spacing:-.04em;margin-bottom:10px}
+  .sub{font-family:'DM Mono',monospace;font-size:14px;color:rgba(255,248,239,.6);line-height:1.5}
+  .back{font-family:'DM Mono',monospace;font-size:13px;color:rgba(255,248,239,.55);text-decoration:none;border:1px solid rgba(255,248,239,.2);padding:8px 14px;border-radius:100px;transition:all .15s}
+  .back:hover{color:var(--cream);border-color:rgba(255,248,239,.5)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+  .controls button{font-family:'DM Mono',monospace;font-size:12px;background:transparent;color:rgba(255,248,239,.7);border:1px solid rgba(255,248,239,.18);padding:7px 14px;border-radius:100px;cursor:pointer;transition:all .15s}
+  .controls button:hover{color:var(--cream);border-color:rgba(255,248,239,.5)}
+  .controls button.active{background:var(--lime);color:var(--ink);border-color:var(--lime);font-weight:600}
+  .group{margin-bottom:56px}
+  .group h2{font-weight:800;font-size:22px;letter-spacing:-.02em;margin-bottom:4px}
+  .group .desc{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,248,239,.5);margin-bottom:20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+  .card{background:rgba(255,248,239,.04);border:1px solid rgba(255,248,239,.08);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;transition:transform .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);border-color:rgba(198,242,78,.4)}
+  .card .thumb{aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+  .card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .card .name{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,248,239,.7);line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .card .dl{font-family:'DM Mono',monospace;font-size:11px;background:var(--tangerine);color:#fff;text-decoration:none;padding:5px 10px;border-radius:100px;white-space:nowrap;transition:background .15s}
+  .card .dl:hover{background:#ff7a3d}
+  .lightbox{position:fixed;inset:0;background:rgba(10,9,7,.94);display:none;align-items:center;justify-content:center;z-index:1000;padding:32px;cursor:zoom-out}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lightbox .close{position:absolute;top:20px;right:24px;background:transparent;color:var(--cream);border:1px solid rgba(255,248,239,.3);font-family:'DM Mono',monospace;font-size:12px;padding:8px 14px;border-radius:100px;cursor:pointer}
+  @media(max-width:560px){body{padding:32px 16px 64px}.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="lhs">
+      <span class="tag">Static ads</span>
+      <h1>Marco Polo · static ads</h1>
+      <p class="sub">20 social ads across 4 audience themes · 5 variations each · click an image to enlarge, hover to download</p>
+    </div>
+    <a class="back" href="/">← all options</a>
+  </div>
+
+  <div class="controls" id="filters">
+    <button data-g="all" class="active">All (20)</button>
+    <button data-g="1">1 · New moms (5)</button>
+    <button data-g="2">2 · Life transitions (5)</button>
+    <button data-g="3">3 · Skip small talk (5)</button>
+    <button data-g="4">4 · How it works (5)</button>
+    <button id="dlAll">↓ Download all (zip-less)</button>
+  </div>
+
+  <section class="group" data-g="1">
+    <h2>1 · New moms &amp; postpartum</h2>
+    <p class="desc">target_loneliest_moments · postpartum, new motherhood, the village</p>
+    <div class="grid" id="g1"></div>
+  </section>
+  <section class="group" data-g="2">
+    <h2>2 · Life transitions</h2>
+    <p class="desc">new city · empty nest · reinvention · away from home · new chapter</p>
+    <div class="grid" id="g2"></div>
+  </section>
+  <section class="group" data-g="3">
+    <h2>3 · Skip the small talk</h2>
+    <p class="desc">depth over surface · drop the performance · meet on your terms</p>
+    <div class="grid" id="g3"></div>
+  </section>
+  <section class="group" data-g="4">
+    <h2>4 · How it works</h2>
+    <p class="desc">hand-matched · the numbers · effortless · matched by humans</p>
+    <div class="grid" id="g4"></div>
+  </section>
+</div>
+
+<div class="lightbox" id="lb"><button class="close">close ✕</button><img alt=""></div>
+
+<script>
+const ADS = [
+  {n:'01-1-1-cried-in-target',           g:1, label:'cried in target'},
+  {n:'02-1-2-three-weeks-postpartum',    g:1, label:'three weeks postpartum'},
+  {n:'03-1-3-the-part-nobody-talks-about',g:1,label:'the part nobody talks about'},
+  {n:'04-1-4-postpartum-support',        g:1, label:'postpartum support'},
+  {n:'05-1-5-your-village',              g:1, label:'your village'},
+  {n:'06-2-1-new-city',                  g:2, label:'new city'},
+  {n:'07-2-2-empty-nester',              g:2, label:'empty nester'},
+  {n:'08-2-3-40-reinvention',            g:2, label:'40 reinvention'},
+  {n:'09-2-4-away-from-home',            g:2, label:'away from home'},
+  {n:'10-2-5-newly-single-new-chapter',  g:2, label:'newly single, new chapter'},
+  {n:'11-3-1-skip-the-small-talk',       g:3, label:'skip the small talk'},
+  {n:'12-3-2-surface-level',             g:3, label:'surface level'},
+  {n:'13-3-3-the-performance',           g:3, label:'the performance'},
+  {n:'14-3-4-on-your-terms',             g:3, label:'on your terms'},
+  {n:'15-3-5-people-who-get-you',        g:3, label:'people who get you'},
+  {n:'16-4-1-hand-matched',              g:4, label:'hand matched'},
+  {n:'17-4-2-how-it-works',              g:4, label:'how it works'},
+  {n:'18-4-3-matched-by-humans',         g:4, label:'matched by humans'},
+  {n:'19-4-4-the-numbers',               g:4, label:'the numbers'},
+  {n:'20-4-5-effortless',                g:4, label:'effortless'},
+];
+
+const lb = document.getElementById('lb');
+const lbImg = lb.querySelector('img');
+function openLB(src){ lbImg.src = src; lb.classList.add('show'); }
+lb.addEventListener('click', () => { lb.classList.remove('show'); lbImg.src = ''; });
+
+for (const ad of ADS) {
+  const src = 'img/' + ad.n + '.png';
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML =
+    '<div class="thumb"><img loading="lazy" src="' + src + '" alt="' + ad.label + '"></div>'
+    + '<div class="meta">'
+    + '<span class="name" title="' + ad.label + '">' + ad.label + '</span>'
+    + '<a class="dl" href="' + src + '" download="' + ad.n + '.png">↓ png</a>'
+    + '</div>';
+  card.querySelector('.thumb').addEventListener('click', () => openLB(src));
+  document.getElementById('g' + ad.g).appendChild(card);
+}
+
+const filters = document.getElementById('filters');
+filters.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-g]');
+  if (!btn) return;
+  filters.querySelectorAll('button[data-g]').forEach(b => b.classList.toggle('active', b === btn));
+  const g = btn.dataset.g;
+  document.querySelectorAll('section.group').forEach(s => {
+    s.style.display = (g === 'all' || s.dataset.g === g) ? '' : 'none';
+  });
+});
+
+document.getElementById('dlAll').addEventListener('click', async () => {
+  for (let i = 0; i < ADS.length; i++) {
+    const ad = ADS[i];
+    const a = document.createElement('a');
+    a.href = 'img/' + ad.n + '.png';
+    a.download = ad.n + '.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    await new Promise(r => setTimeout(r, 120));
+  }
+});
+</script>
+</body>
+</html>
