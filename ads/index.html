@@ -114,7 +114,7 @@ function openLB(src){ lbImg.src = src; lb.classList.add('show'); }
 lb.addEventListener('click', () => { lb.classList.remove('show'); lbImg.src = ''; });
 
 for (const ad of ADS) {
-  const src = 'img/' + ad.n + '.png';
+  const src = '/ads/img/' + ad.n + '.png';
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML =
@@ -142,7 +142,7 @@ document.getElementById('dlAll').addEventListener('click', async () => {
   for (let i = 0; i < ADS.length; i++) {
     const ad = ADS[i];
     const a = document.createElement('a');
-    a.href = 'img/' + ad.n + '.png';
+    a.href = '/ads/img/' + ad.n + '.png';
     a.download = ad.n + '.png';
     document.body.appendChild(a);
     a.click();
