@@ -6,7 +6,7 @@
 <title>Circles — landing page options</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--cream:#fff8ef;--ink:#1a1410;--tangerine:#ff5e1a;--cobalt:#1e4dff;--magenta:#ff2e8b;--charcoal:#0a0907;--amber:#f4a13a}
+  :root{--cream:#fff8ef;--ink:#1a1410;--tangerine:#ff5e1a;--cobalt:#1e4dff;--magenta:#ff2e8b;--charcoal:#0a0907;--amber:#f4a13a;--violet:#5b2bd6;--lime:#c6f24e}
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
@@ -22,6 +22,15 @@
   .o4{background:var(--charcoal);border:3px solid rgba(244,161,58,.35)}
   .o4 .v{color:var(--amber)}
   .o4 h2{color:var(--amber)}
+  .o5{background:var(--violet);grid-column:1/-1;display:flex;align-items:center;gap:28px;padding:28px 32px}
+  .o5 .tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--lime);color:var(--ink);padding:5px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;font-weight:500}
+  .o5 .body{flex:1}
+  .o5 .thumbs{display:flex;gap:8px;flex-shrink:0}
+  .o5 .thumbs span{width:56px;height:80px;border-radius:8px;display:block}
+  .o5 .t1{background:#fff8ef;border:2px solid var(--ink)}
+  .o5 .t2{background:#5b2bd6;border:2px solid #c6f24e}
+  .o5 .t3{background:#fff8ef;border:2px solid var(--ink);position:relative}
+  @media(max-width:760px){.o5{flex-direction:column;align-items:flex-start}}
   .opt .v{font-family:'DM Mono',monospace;font-size:13px;opacity:.8}
   .opt h2{font-weight:800;font-size:30px;letter-spacing:-.02em;margin:8px 0 10px}
   .opt p{font-size:15px;line-height:1.45;opacity:.92}
@@ -32,7 +41,7 @@
 </head>
 <body>
   <h1>Circles landing options</h1>
-  <p class="sub">four directions · same content · pick a favorite or A/B test them</p>
+  <p class="sub">four landing directions · plus the latest email designs</p>
   <div class="grid">
     <a class="opt o1" href="/v1">
       <span class="v">v1 · sunrise</span>
@@ -57,6 +66,19 @@
       <h2>Cinematic video</h2>
       <p>Full-screen looping video with animating text — 222 / Known style. Dark, moody, amber accents.</p>
       <span class="go">view v4 →</span>
+    </a>
+    <a class="opt o5" href="/emails/">
+      <div class="body">
+        <span class="tag">Email designs</span>
+        <h2>Circles email — 3 design options</h2>
+        <p>Latest standalone HTML — three directions for transactional &amp; campaign emails (Cream &amp; Pop, Color Block, Framed Sticker). Each design can be exported as standalone HTML.</p>
+        <span class="go">view email designs →</span>
+      </div>
+      <div class="thumbs" aria-hidden="true">
+        <span class="t1"></span>
+        <span class="t2"></span>
+        <span class="t3"></span>
+      </div>
     </a>
   </div>
 </body>
