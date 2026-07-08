@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fort Myers Home &amp; Garden Show · Email flows</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0f1a12;--cream:#f6f1e7;--lime:#c8ff4d;--line:rgba(246,241,231,.14)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',system-ui,sans-serif;padding:48px 24px 96px}
+  .head{max-width:1080px;margin:0 auto 12px}
+  h1{font-weight:800;font-size:clamp(30px,5vw,52px);letter-spacing:-.03em;line-height:1;margin-bottom:12px}
+  .sub{font-size:16px;color:rgba(246,241,231,.66);max-width:66ch;line-height:1.55}
+  .toolbar{max-width:1080px;margin:26px auto 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:22px}
+  .toolbar .lbl{font-family:'DM Mono',monospace;font-size:12px;color:rgba(246,241,231,.5);margin-right:4px}
+  .tg{font-family:'DM Mono',monospace;font-size:13px;background:rgba(246,241,231,.08);color:var(--cream);border:1px solid var(--line);padding:9px 16px;border-radius:100px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .tg.on{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  .flow{max-width:1080px;margin:56px auto 0}
+  .flow-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .flow-h h2{font-weight:800;font-size:26px;letter-spacing:-.02em}
+  .flow-h .cnt{font-family:'DM Mono',monospace;font-size:12px;color:var(--lime)}
+  .flow-desc{font-family:'DM Mono',monospace;font-size:13px;color:rgba(246,241,231,.55);margin-bottom:26px;line-height:1.6;max-width:80ch}
+  .email{margin-bottom:44px;border-top:1px solid var(--line);padding-top:26px}
+  .meta{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin-bottom:16px}
+  .meta .n{font-family:'DM Mono',monospace;font-size:12px;background:var(--lime);color:var(--ink);padding:4px 11px;border-radius:100px;font-weight:500}
+  .meta .subj{font-weight:600;font-size:18px;letter-spacing:-.01em}
+  .meta .prev{font-family:'DM Mono',monospace;font-size:12.5px;color:rgba(246,241,231,.5);width:100%}
+  .frames{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .frames.solo{grid-template-columns:1fr;max-width:600px}
+  .fr{display:none}
+  .fr.show{display:block}
+  .fr-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:10px}
+  .fr-name{font-family:'DM Mono',monospace;font-size:12px;color:rgba(246,241,231,.6)}
+  .fr-name b{color:var(--cream);font-weight:500}
+  .copy{font-family:'DM Mono',monospace;font-size:11.5px;background:rgba(246,241,231,.08);color:var(--cream);border:1px solid var(--line);padding:6px 12px;border-radius:100px;cursor:pointer}
+  .copy:hover{background:rgba(246,241,231,.16)}
+  .copy.done{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+  iframe{width:100%;border:0;border-radius:8px;background:#fff;display:block;box-shadow:0 6px 30px rgba(0,0,0,.28)}
+  @media(max-width:900px){.frames{grid-template-columns:1fr}}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--lime);color:var(--ink);font-family:'DM Mono',monospace;font-size:13px;padding:11px 22px;border-radius:100px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>Home &amp; Garden Show email flows</h1>
+  <p class="sub">Two automated email journeys for the 30th Annual Fort Myers Home &amp; Garden Show: an onboarding flow that runs after someone registers, and a re-engagement flow that runs before the show to win back past guests. Each email is shown in two design directions that match the landing-page looks. Toggle a direction, or view both side by side, and copy any email's HTML.</p>
+</div>
+<div class="toolbar">
+  <span class="lbl">show:</span>
+  <button class="tg" data-view="botanical">Botanical only</button>
+  <button class="tg" data-view="retrofair">Retro Fair only</button>
+  <button class="tg on" data-view="both">Both side by side</button>
+</div>
+
+<div id="root"></div>
+<div class="toast" id="toast">Copied HTML</div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ *  THEME TOKENS
+ * ------------------------------------------------------------------ */
+const THEMES = {
+  botanical: {
+    key:'botanical', label:'Botanical',
+    fontLink:'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap',
+    pageBg:'#eae3d4', emailBg:'#fbf8f1', ink:'#14231b', sub:'#5a6b60',
+    head:"'Fraunces', Georgia, serif", body:"'DM Sans', Arial, sans-serif", label:"'DM Sans', Arial, sans-serif",
+    brandBar:'#173d2e', brandColor:'#fbf8f1', accent:'#d4703a', accent2:'#e9b949', soft:'#c7d9c4',
+    factBg:'#f2ece0', cardBg:'#ffffff', cardBorder:'#e3dccd', divider:'#e3dccd',
+    btnBg:'#d4703a', btnColor:'#ffffff', btnRadius:'100px', btnBorder:'none', btnShadow:'',
+    h1:'40px', h1lh:'1.02',
+    brand:'<span style="font-family:\'Fraunces\',Georgia,serif;font-weight:900;font-size:22px;color:#fbf8f1;letter-spacing:-.01em">Fort Myers Home <span style="color:#e9b949">&amp;</span> Garden</span><div style="font-family:\'DM Sans\',Arial,sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#c7d9c4;margin-top:4px">Show · 30th Annual</div>'
+  },
+  retrofair: {
+    key:'retrofair', label:'Retro Fair',
+    fontLink:'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Alfa+Slab+One&display=swap',
+    pageBg:'#f3e6c9', emailBg:'#fdf3df', ink:'#2a1c12', sub:'#6a5a4c',
+    head:"'Alfa Slab One', Georgia, serif", body:"'Bricolage Grotesque', Arial, sans-serif", label:"'DM Mono', monospace",
+    brandBar:'#e8442c', brandColor:'#fdf3df', accent:'#e8442c', accent2:'#f4b73f', soft:'#3aa6c9',
+    factBg:'#fbe9c6', cardBg:'#ffffff', cardBorder:'#2a1c12', divider:'#e6d3ab',
+    btnBg:'#e8442c', btnColor:'#fdf3df', btnRadius:'100px', btnBorder:'3px solid #2a1c12', btnShadow:'box-shadow:4px 4px 0 #2a1c12;',
+    h1:'38px', h1lh:'1.0',
+    brand:'<span style="font-family:\'Alfa Slab One\',Georgia,serif;font-size:20px;color:#fdf3df;letter-spacing:.01em">HOMEGROWN · FT. MYERS</span><div style="font-family:\'DM Mono\',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#fdf3df;opacity:.85;margin-top:5px">Home &amp; Garden Show · Jan 3–4, 2026</div>'
+  }
+};
+
+/* ------------------------------------------------------------------ *
+ *  BLOCK HELPERS  (return <tr>…</tr> rows for a 600px table)
+ * ------------------------------------------------------------------ */
+const CTA = 'https://expomanagementinc.com/fort-myers-home-garden-show-january-2026/';
+const gcal = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Fort+Myers+Home+%26+Garden+Show&dates=20260103T150000Z/20260104T220000Z&location=Caloosa+Sound+Convention+Center,+1375+Monroe+St,+Fort+Myers,+FL+33901&details=Free+admission.+Show+this+email+at+the+door+for+your+free+tote.';
+
+function row(t, inner, pad){ return '<tr><td style="padding:'+pad+'">'+inner+'</td></tr>'; }
+
+function header(t){
+  return '<tr><td style="background:'+t.brandBar+';padding:24px 32px">'+t.brand+'</td></tr>'+
+    '<tr><td style="height:5px;background:'+t.accent2+';font-size:0;line-height:0">&nbsp;</td></tr>';
+}
+function h1(t, text){
+  return row(t,'<h1 style="margin:0;font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'900')+';font-size:'+t.h1+';line-height:'+t.h1lh+';color:'+t.ink+';letter-spacing:-.02em">'+text+'</h1>','34px 32px 0');
+}
+function p(t, text, opts){
+  opts=opts||{};
+  const c = opts.muted ? t.sub : t.ink;
+  const sz = opts.small ? '14px' : '16px';
+  return row(t,'<p style="margin:0;font-family:'+t.body+';font-size:'+sz+';line-height:1.6;color:'+c+'">'+text+'</p>','16px 32px 0');
+}
+function button(t, label, href){
+  href = href||CTA;
+  return row(t,'<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:'+t.btnBg+';border-radius:'+t.btnRadius+';border:'+t.btnBorder+';'+t.btnShadow+'"><a href="'+href+'" style="display:inline-block;padding:15px 30px;font-family:'+t.body+';font-weight:700;font-size:16px;color:'+t.btnColor+';text-decoration:none">'+label+'</a></td></tr></table>','26px 32px 4px');
+}
+function factsBox(t, rows){
+  let inner='';
+  rows.forEach(function(r,i){
+    inner += '<tr><td style="padding:'+(i?'10px':'0')+' 0 0;font-family:'+t.label+';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:'+t.sub+';width:34%;vertical-align:top">'+r[0]+'</td>'+
+      '<td style="padding:'+(i?'10px':'0')+' 0 0;font-family:'+t.body+';font-weight:700;font-size:15px;color:'+t.ink+'">'+r[1]+'</td></tr>';
+  });
+  const box='<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:'+t.factBg+';border:1px solid '+t.cardBorder+';border-radius:14px"><tr><td style="padding:22px 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+inner+'</table></td></tr></table>';
+  return row(t, box, '22px 32px 0');
+}
+function calendarLinks(t){
+  const mk=function(label,href){return '<a href="'+href+'" style="font-family:'+t.body+';font-weight:700;font-size:14px;color:'+t.accent+';text-decoration:none;border-bottom:2px solid '+t.accent2+';padding-bottom:2px">'+label+'</a>';};
+  const inner='<div style="font-family:'+t.label+';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:'+t.sub+';margin-bottom:12px">Add to your calendar</div>'+
+    mk('Google','#google').replace('#google',gcal)+' &nbsp;·&nbsp; '+mk('Apple','#apple')+' &nbsp;·&nbsp; '+mk('Outlook','#outlook');
+  return row(t, inner, '24px 32px 0');
+}
+function vendorList(t, items){
+  let inner='';
+  items.forEach(function(v,i){
+    inner += '<tr><td style="padding:'+(i?'12px':'0')+' 0 12px;border-bottom:1px solid '+t.divider+'">'+
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'+
+      '<td style="font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'600')+';font-size:18px;color:'+t.ink+'">'+v.name+'</td>'+
+      '<td align="right" style="font-family:'+t.label+';font-size:11px;font-weight:500;color:'+t.ink+';background:'+t.accent2+';padding:4px 11px;border-radius:100px;white-space:nowrap">'+v.count+'</td>'+
+      '</tr></table>'+
+      (v.note?'<div style="font-family:'+t.body+';font-size:14px;color:'+t.sub+';margin-top:5px">'+v.note+'</div>':'')+
+      '</td></tr>';
+  });
+  return row(t,'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+inner+'</table>','20px 32px 0');
+}
+function projectCards(t, items){
+  let inner='';
+  items.forEach(function(c){
+    inner += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;background:'+t.cardBg+';border:1px solid '+t.cardBorder+';border-radius:16px;overflow:hidden">'+
+      '<tr><td style="font-size:0;line-height:0"><img src="'+c.img+'" width="536" alt="" style="display:block;width:100%;height:180px;object-fit:cover"></td></tr>'+
+      '<tr><td style="padding:18px 22px 22px">'+
+      '<div style="font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'600')+';font-size:20px;color:'+t.ink+';line-height:1.1">'+c.title+'</div>'+
+      '<div style="font-family:'+t.body+';font-size:14.5px;line-height:1.55;color:'+t.sub+';margin:8px 0 12px">'+c.text+'</div>'+
+      '<a href="'+CTA+'" style="font-family:'+t.body+';font-weight:700;font-size:14px;color:'+t.accent+';text-decoration:none">Find a pro at the show →</a>'+
+      '</td></tr></table>';
+  });
+  return row(t, inner, '18px 32px 0');
+}
+function numberList(t, items){
+  let inner='';
+  items.forEach(function(it,i){
+    inner += '<tr><td width="42" valign="top" style="padding:'+(i?'16px':'0')+' 0 0"><div style="width:32px;height:32px;border-radius:50%;background:'+t.brandBar+';color:'+t.accent2+';font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'900')+';font-size:15px;text-align:center;line-height:32px">'+(i+1)+'</div></td>'+
+      '<td valign="top" style="padding:'+(i?'16px':'0')+' 0 0"><div style="font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'600')+';font-size:17px;color:'+t.ink+'">'+it.name+'</div><div style="font-family:'+t.body+';font-size:14px;color:'+t.sub+';margin-top:3px">'+it.note+'</div></td></tr>';
+  });
+  return row(t,'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+inner+'</table>','20px 32px 0');
+}
+function checkList(t, items){
+  let inner='';
+  items.forEach(function(it,i){
+    inner += '<tr><td width="34" valign="top" style="padding:'+(i?'12px':'0')+' 0 0"><div style="width:24px;height:24px;border-radius:6px;background:'+t.accent+';color:#fff;font-family:'+t.body+';font-weight:700;font-size:13px;text-align:center;line-height:24px">✓</div></td>'+
+      '<td valign="top" style="padding:'+(i?'12px':'0')+' 0 0;font-family:'+t.body+';font-size:15.5px;line-height:1.5;color:'+t.ink+'"><b>'+it.b+'</b> '+it.t+'</td></tr>';
+  });
+  return row(t,'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+inner+'</table>','20px 32px 0');
+}
+function mapGrid(t){
+  const cell=function(bg,fg,label,sub,cs){
+    return '<td '+(cs?'colspan="'+cs+'" ':'')+'style="background:'+bg+';border-radius:10px;padding:16px 10px;text-align:center">'+
+      '<div style="font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'600')+';font-size:13px;color:'+fg+';line-height:1.1">'+label+'</div>'+
+      (sub?'<div style="font-family:'+t.body+';font-size:11px;color:'+fg+';opacity:.75;margin-top:3px">'+sub+'</div>':'')+'</td>';
+  };
+  const gap='<td width="8" style="font-size:0">&nbsp;</td>';
+  const grid='<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:'+t.factBg+';border:1px solid '+t.cardBorder+';border-radius:14px"><tr><td style="padding:16px">'+
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+
+      '<tr>'+cell(t.soft,t.ink,'Vendor Hall A','Kitchen, Bath &amp; Interiors')+gap+cell(t.soft,t.ink,'Vendor Hall B','Improvement &amp; Outdoor')+'</tr>'+
+      '<tr><td colspan="3" style="height:8px;font-size:0">&nbsp;</td></tr>'+
+      '<tr>'+cell(t.brandBar,'#fbf8f1','Garden Stage','Live demos')+gap+cell(t.accent2,t.ink,'Food Court','Trucks &amp; café')+'</tr>'+
+      '<tr><td colspan="3" style="height:8px;font-size:0">&nbsp;</td></tr>'+
+      '<tr>'+cell(t.accent,'#fff','Main Entrance · Registration &amp; free tote pickup','',3)+'</tr>'+
+    '</table>'+
+    '</td></tr></table>';
+  return row(t, grid, '20px 32px 0');
+}
+function divider(t){ return '<tr><td style="padding:26px 32px 0"><div style="height:1px;background:'+t.divider+'"></div></td></tr>'; }
+function footer(t){
+  return '<tr><td style="padding:30px 32px 36px">'+
+    '<div style="height:1px;background:'+t.divider+';margin-bottom:22px"></div>'+
+    '<div style="font-family:'+t.label+';font-size:12px;line-height:1.7;color:'+t.sub+'">'+
+    '<b style="color:'+t.ink+'">Caloosa Sound Convention Center</b><br>1375 Monroe St, Fort Myers, FL 33901<br>'+
+    'Jan 3–4, 2026 · 10am to 5pm · Free admission</div>'+
+    '<div style="font-family:'+t.label+';font-size:11.5px;color:'+t.sub+';margin-top:16px">Presented by Expo Management Inc. · <a href="mailto:info@expomanagementinc.com" style="color:'+t.accent+';text-decoration:none">info@expomanagementinc.com</a><br>'+
+    '<a href="#" style="color:'+t.sub+';text-decoration:underline">Unsubscribe</a> · <a href="#" style="color:'+t.sub+';text-decoration:underline">Update preferences</a></div>'+
+    '</td></tr>';
+}
+
+/* wrap the middle rows into a full standalone email doc */
+function wrap(t, bodyRows){
+  return '<!DOCTYPE html>\n<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+    '<link href="'+t.fontLink+'" rel="stylesheet">'+
+    '<style>body{margin:0}a{color:inherit}img{border:0;outline:none}</style></head>'+
+    '<body style="margin:0;background:'+t.pageBg+';font-family:'+t.body+'">'+
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:'+t.pageBg+'"><tr><td align="center" style="padding:28px 12px">'+
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:'+t.emailBg+';border-radius:16px;overflow:hidden">'+
+    header(t)+bodyRows+footer(t)+
+    '</table>'+
+    '<div style="font-family:'+t.label+';font-size:11px;color:'+t.sub+';opacity:.7;margin-top:16px">Fort Myers Home &amp; Garden Show · Expo Management Inc.</div>'+
+    '</td></tr></table></body></html>';
+}
+
+/* ------------------------------------------------------------------ *
+ *  EMAIL CONTENT  (theme-agnostic; build(t) returns the middle rows)
+ * ------------------------------------------------------------------ */
+const FACTS=[['Dates','Sat &amp; Sun, Jan 3–4, 2026'],['Time','10am to 5pm both days'],['Venue','Caloosa Sound Convention Center'],['Address','1375 Monroe St, Fort Myers, FL'],['Admission','Free · one pass covers both days']];
+const VENDORS=[
+  {name:'Landscaping &amp; Outdoor',count:'40+ booths',note:'Hardscapes, water features, native plants and lawn care.'},
+  {name:'Kitchen &amp; Bath',count:'35+ booths',note:'Remodels, cabinetry, countertops and fixtures.'},
+  {name:'Interior Design &amp; Décor',count:'30+ booths',note:'Furniture, window treatments and styling ideas.'},
+  {name:'Home Improvement',count:'25+ booths',note:'Roofing, windows, flooring, solar and smart home.'},
+  {name:'Live Demos &amp; Garden Stage',count:'All day',note:'Planting workshops, DIY tips and expert Q&amp;A.'},
+  {name:"Kids' Grow Zone",count:'Family',note:'Hands-on planting and a take-home starter pot.'}
+];
+
+const FLOWS=[
+ {
+  key:'onboarding', title:'Onboarding flow', when:'Sends automatically after someone registers.',
+  emails:[
+   {n:'Email 1 · at registration', subject:'You\'re registered for the Fort Myers Home & Garden Show', preview:'Your free weekend pass is confirmed. Add it to your calendar.',
+    build:t=>h1(t,'You\'re registered.')+
+      p(t,'Thanks for signing up for the 30th Annual Fort Myers Home &amp; Garden Show. Your free weekend pass is confirmed. Just show this email at the door to pick up your free tote.')+
+      factsBox(t,FACTS)+
+      calendarLinks(t)+
+      p(t,'That\'s all you need for now. We\'ll send a few tips before the show to help you plan your visit.',{muted:true,small:true})
+   },
+   {n:'Email 2 · a few days later', subject:'175+ experts under one roof: here\'s who you\'ll meet', preview:'Plan your visit around the vendors that matter to your project.',
+    build:t=>h1(t,'Plan your visit.')+
+      p(t,'With more than 175 exhibitors, a little planning goes a long way. Here\'s how the floor breaks down so you can head straight for what you need.')+
+      vendorList(t,VENDORS)+
+      p(t,'A good move: start at the Garden Stage for the day\'s demo schedule, then work the halls.',{muted:true})+
+      button(t,'See the full exhibitor list')
+   },
+   {n:'Email 3 · project inspiration', subject:'5 winter projects SW Florida homeowners love right now', preview:'January is prime time for these. Find the right pro at the show.',
+    build:t=>h1(t,'Winter project inspiration.')+
+      p(t,'Dry season is the best time of year to tackle a home project in Southwest Florida. Here\'s what people are planning right now, and every one has experts at the show who can help.')+
+      projectCards(t,[
+        {img:'https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=1000&auto=format&fit=crop',title:'Refresh your outdoor living space',text:'Pavers, pergolas, and outdoor kitchens go in fast while the weather is dry. Perfect timing before season entertaining.'},
+        {img:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=1000&auto=format&fit=crop',title:'Plant a Florida-friendly garden',text:'Cooler months are ideal for establishing native, low-water plants that thrive through the SW Florida summer.'},
+        {img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop',title:'Give the kitchen a refresh',text:'From new countertops to a full remodel, meet cabinetry and design pros and get real quotes in one afternoon.'},
+        {img:'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1000&auto=format&fit=crop',title:'Upgrade to impact windows &amp; doors',text:'The calm season is the smart time to install storm protection and cut your energy bills at the same time.'}
+      ])+
+      button(t,'Browse exhibitors by project')
+   },
+   {n:'Email 4 · day before the show', subject:'See you this weekend! Parking, map & what to know', preview:'Doors open at 10am. Here\'s everything for a smooth visit.',
+    build:t=>h1(t,'See you this weekend.')+
+      p(t,'The show is almost here. Here\'s your game plan so you can walk right in and make the most of it.')+
+      factsBox(t,FACTS.slice(0,3))+
+      p(t,'<b>Where to park</b>',{})+
+      numberList(t,[
+        {name:'Luminary Hotel Garage',note:'Covered and adjacent to the center. The closest, easiest option.'},
+        {name:'City of Palms Garage',note:'Directly across the street, with plenty of spaces.'},
+        {name:'Metered street parking',note:'Throughout the downtown River District for shorter visits.'},
+        {name:'Rideshare drop-off',note:'Uber and Lyft drop right at the Monroe St. entrance.'}
+      ])+
+      p(t,'<b>The floor at a glance</b>',{})+
+      mapGrid(t)+
+      p(t,'What to bring: this email for your free tote, comfortable shoes, and your project questions.',{muted:true})+
+      button(t,'View event details')
+   }
+  ]
+ },
+ {
+  key:'reengagement', title:'Re-engagement flow', when:'Sends to past guests who have not registered yet. The moment someone registers, they exit this flow and the goal is met.',
+  emails:[
+   {n:'Email 1 · one month out', subject:'The Fort Myers Home & Garden Show returns in one month', preview:'175+ experts, one weekend, still free. Here\'s a first look.',
+    build:t=>h1(t,'It\'s almost that time again.')+
+      p(t,'The show you visited last year is back for its 30th year, Jan 3–4 at the Caloosa Sound Convention Center. Here\'s a first look at who\'s exhibiting this time around.')+
+      vendorList(t,VENDORS.slice(0,4))+
+      p(t,'Admission is free, same as always. We\'ll open registration reminders soon so you can skip the door line.',{muted:true})+
+      button(t,'See who\'s coming this year')
+   },
+   {n:'Email 2 · two weeks out', subject:'2 weeks out: lock in your free pass (and a free tote)', preview:'Registration takes a minute and skips the door line.',
+    build:t=>h1(t,'Two weeks to go.')+
+      p(t,'Doors open in two weeks. Registering now is free, takes about a minute, and comes with a few perks the walk-up crowd doesn\'t get.')+
+      checkList(t,[
+        {b:'Free admission',t:'for you and a guest, both days.'},
+        {b:'A free canvas tote',t:'waiting at the door, while supplies last.'},
+        {b:'Skip the line',t:'just show your phone at the entrance.'},
+        {b:'The demo schedule',t:'sent to you before the show.'}
+      ])+
+      button(t,'Register free in one minute')+
+      p(t,'Already registered? You\'re all set, ignore this one and we\'ll see you there.',{muted:true,small:true})
+   },
+   {n:'Email 3 · last week', subject:'Last call + what\'s new for our 30th year', preview:'Bigger floor, new Garden Stage, more food. Register before you go.',
+    build:t=>h1(t,'Last week to register.')+
+      p(t,'This is our 30th year, and it\'s the biggest show yet. A few things that are new since the last time you came:')+
+      checkList(t,[
+        {b:'A bigger show floor',t:'with 175+ exhibitors across two full halls.'},
+        {b:'A new Garden Stage',t:'with hourly live demos and expert Q&amp;A.'},
+        {b:'An expanded Food Court',t:'with rotating local food trucks and a café.'},
+        {b:'A new Kids\' Grow Zone',t:'so the whole family has something to do.'},
+        {b:'A free tote for every registrant',t:'new this year, only if you sign up online.'}
+      ])+
+      button(t,'Register free before the show')
+   }
+  ]
+ }
+];
+
+/* ------------------------------------------------------------------ *
+ *  RENDER
+ * ------------------------------------------------------------------ */
+const docCache={};
+function buildDoc(themeKey, email){
+  const id=themeKey+'|'+email.subject;
+  if(!docCache[id]) docCache[id]=wrap(THEMES[themeKey], email.build(THEMES[themeKey]));
+  return docCache[id];
+}
+function frame(themeKey, email){
+  const html=buildDoc(themeKey,email);
+  const wrap2=document.createElement('div');
+  wrap2.className='fr fr-'+themeKey;
+  wrap2.innerHTML='<div class="fr-head"><span class="fr-name">design: <b>'+THEMES[themeKey].label+'</b></span>'+
+    '<button class="copy">copy HTML</button></div>';
+  const ifr=document.createElement('iframe');
+  ifr.setAttribute('scrolling','no');
+  ifr.srcdoc=html;
+  ifr.addEventListener('load',function(){
+    const resize=()=>{try{ifr.style.height=(ifr.contentDocument.body.scrollHeight+4)+'px';}catch(e){}};
+    resize(); setTimeout(resize,400); setTimeout(resize,1200);
+    try{ifr.contentDocument.querySelectorAll('img').forEach(im=>im.addEventListener('load',resize));}catch(e){}
+  });
+  wrap2.appendChild(ifr);
+  wrap2.querySelector('.copy').addEventListener('click',function(){
+    navigator.clipboard.writeText(html).then(()=>{
+      this.classList.add('done');this.textContent='copied ✓';
+      showToast(); setTimeout(()=>{this.classList.remove('done');this.textContent='copy HTML';},1600);
+    });
+  });
+  return wrap2;
+}
+function render(){
+  const root=document.getElementById('root'); root.innerHTML='';
+  FLOWS.forEach(flow=>{
+    const total=flow.emails.length;
+    const sec=document.createElement('div'); sec.className='flow';
+    sec.innerHTML='<div class="flow-h"><h2>'+flow.title+'</h2><span class="cnt">'+total+' emails</span></div>'+
+      '<div class="flow-desc">'+flow.when+'</div>';
+    flow.emails.forEach(em=>{
+      const wrap3=document.createElement('div'); wrap3.className='email';
+      wrap3.innerHTML='<div class="meta"><span class="n">'+em.n+'</span><span class="subj">'+em.subject+'</span><span class="prev">Preview text: '+em.preview+'</span></div>';
+      const frames=document.createElement('div'); frames.className='frames';
+      frames.appendChild(frame('botanical',em));
+      frames.appendChild(frame('retrofair',em));
+      wrap3.appendChild(frames); sec.appendChild(wrap3);
+    });
+    root.appendChild(sec);
+  });
+  applyView();
+}
+let VIEW='both';
+function applyView(){
+  document.querySelectorAll('.frames').forEach(f=>f.classList.toggle('solo',VIEW!=='both'));
+  document.querySelectorAll('.fr').forEach(fr=>{
+    const show = VIEW==='both' || fr.classList.contains('fr-'+VIEW);
+    fr.classList.toggle('show',show);
+  });
+}
+document.querySelectorAll('.tg').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tg').forEach(x=>x.classList.remove('on'));
+  this.classList.add('on'); VIEW=this.dataset.view; applyView();
+}));
+let toastT;
+function showToast(){const el=document.getElementById('toast');el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1400);}
+render();
+</script>
+</body>
+</html>

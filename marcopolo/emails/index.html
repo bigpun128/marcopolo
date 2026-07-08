@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circles — Email Designs (3 options)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#efe7da;font-family:'Bricolage Grotesque',system-ui,sans-serif;color:#1a1410}
+  .page{max-width:1400px;margin:0 auto;padding:48px 32px 96px}
+  h2.section{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:56px 0 6px}
+  h2.section:first-of-type{margin-top:8px}
+  p.section-sub{font-family:'DM Mono',ui-monospace,monospace;font-size:13px;color:#5a504a;margin:0 0 28px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(600px,1fr));gap:36px 28px}
+  .card{background:transparent}
+  .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:12px}
+  .card-label{font-family:'DM Mono',ui-monospace,monospace;font-size:12px;color:#5a504a}
+  .copy-btn{font-family:'DM Mono',ui-monospace,monospace;font-size:12px;font-weight:500;background:#1a1410;color:#fff8ef;border:none;padding:8px 14px;border-radius:100px;cursor:pointer;letter-spacing:-.01em}
+  .copy-btn:hover{background:#2a221c}
+  .copy-btn.copied{background:#c6f24e;color:#1a1410}
+  .email-frame{width:600px;background:#fff8ef;box-shadow:0 2px 20px rgba(0,0,0,.08);border-radius:6px;overflow:hidden}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1410;color:#fff8ef;font-family:'DM Mono',ui-monospace,monospace;font-size:13px;padding:12px 22px;border-radius:100px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:1000}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div id="root" class="page"></div>
+<div id="toast" class="toast">Copied!</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script>
+  window.__resources = {
+    laugh: "photos/laugh.jpg",
+    out: "photos/out.jpg",
+    picnic: "photos/picnic.jpg",
+    real: "photos/real.jpg",
+    phone: "photos/phone.jpg",
+    coffee: "photos/coffee.jpg",
+  };
+</script>
+
+<!-- === EMAILS data === -->
+<script>
+window.CIRCLES = {
+  cta: "https://circles.marcopolo.me/survey",
+  proof: "1,000+ women matched",
+  press: ["The Drew Barrymore Show", "Good Hang with Amy Poehler", "Dear Chelsea"],
+  photos: {
+    laugh:  window.__resources.laugh,
+    out:    window.__resources.out,
+    picnic: window.__resources.picnic,
+    real:   window.__resources.real,
+    phone:  window.__resources.phone,
+    coffee: window.__resources.coffee,
+  },
+};
+
+window.EMAILS = [
+  { n:1, kind:"welcome", lead:"grape",
+    subject:"You're not the only one who feels this",
+    preheader:"Wanting your people back isn't needy — it's human.",
+    tag:"★ a note for you",
+    headline:[["You're not the ", null], ["only one.", "pop"]],
+    body:"Hi [first name] — somewhere between the moves, the jobs, and everything else, making real friends as an adult got quietly hard. The group chat went quiet. Plans kept falling through. Most women say it's harder to make real friends now than ever — wanting your people back isn't needy, it's human.",
+    kicker:"That's why Circles exists.",
+    cta:"See how it works →",
+    photo:"real", photoSticker:"real ones ♡" },
+  { n:2, kind:"why", lead:"sky",
+    subject:"Hand-matched by humans, not an algorithm",
+    preheader:"Built by the team behind Marco Polo. One-time $75.",
+    tag:"★ why Circles",
+    headline:[["Real people. ", null], ["Real matches.", "pop"]],
+    body:"Circles is built by the team at Marco Polo — the video app 2M+ women already trust. Real people hand-match your circle of 5–8 women by life stage. You connect through video, on your own time — no scheduled calls.",
+    bullets:[
+      "Hand-matched by humans, by life stage — not swiped at random.",
+      "A small group of 5–8, so it feels like a circle, not a crowd.",
+      "One-time $75 — a fraction of what memberships charge every month.",
+    ],
+    cta:"Get matched →",
+    photo:"laugh", photoSticker:"your circle ◎",
+    showPress:true },
+  { n:3, kind:"how", lead:"lime",
+    subject:"Here's exactly how Circles works",
+    preheader:"Three steps. We do the matching.",
+    tag:"★ how it works",
+    headline:[["Three steps. ", null], ["We do the matching.", "pop"]],
+    body:"Real humans match your circle by hand — not an algorithm spitting out strangers.",
+    steps:[
+      { num:1, title:"Tell us about you", text:"A short quiz about your interests and what season of life you're in.", photo:"phone", color:"tangerine" },
+      { num:2, title:"Get hand-matched", text:"Once a month, real people match you with 5–8 women who fit.", photo:"laugh", color:"lime" },
+      { num:3, title:"Connect on your time", text:"Real conversation through Marco Polo video, whenever works.", photo:"real", color:"sky" },
+    ],
+    cta:"Get matched →" },
+  { n:4, kind:"proof", lead:"pink",
+    subject:"“It feels effortless and real”",
+    preheader:"Women who found their people.",
+    tag:"★ real women, real circles",
+    headline:[["Women who found ", null], ["their people.", "pop"]],
+    quotes:[
+      { text:"It's more intimate than a text but less formal than a phone call. It's helped me deepen so many connections — I can come to it whenever I'm available, which is more often than I expect.", who:"Bethany", color:"pink" },
+      { text:"Less stressful but more intimate. That's why I've connected with new friends so much more.", who:"Laurie", color:"butter" },
+      { text:"It feels effortless and real. I've gotten closer with friends because we Polo daily — best part of my day.", who:"Lisa", color:"sky" },
+    ],
+    placeholder:"[ Cohort testimonial slot — add a real “I was matched with strangers and made friends” story before launch ]",
+    footerLine:"1,000+ women have already found their circle.",
+    cta:"Find your circle →" },
+  { n:5, kind:"urgency", lead:"tangerine",
+    subject:"Last call for the [cohort date] circle — $10 off inside",
+    preheader:"Spots are filling. Code CIRCLES10, good through tonight.",
+    tag:"⚡ [X spots] left",
+    urgencyBanner:"spots filling fast — [X spots] left",
+    headline:[["Your circle closes ", null], ["[cohort date].", "pop"]],
+    body:"The next Circle starts [cohort date] and spots are filling — we keep groups to 5–8 so they stay close. Today's the last day to join.",
+    offer:{ line:"Here's $10 off to make it easy:", code:"CIRCLES10", note:"good through tonight or until the circle fills" },
+    cta:"Join your circle →",
+    photo:"out", photoSticker:"last call ⚡" },
+  { n:6, kind:"missed", lead:"sky",
+    subject:"The next circle is already forming",
+    preheader:"No rush. When you're ready, your circle will be too.",
+    tag:"★ good news",
+    headline:[["The next one starts ", null], ["[next cohort date].", "pop"]],
+    body:"This circle filled up — but the next one starts [next cohort date], and we'd still love to match you. No rush. When you're ready, your circle will be too.",
+    cta:"Join the next circle →",
+    photo:"picnic", photoSticker:"next szn ☀" },
+];
+</script>
+
+<!-- === Shared atoms — Foot() returns null so no footer renders === -->
+<script type="text/babel">
+const C = {
+  cream: "#fff8ef", ink: "#1a1410", tangerine: "#ff5e1a", grape: "#5b2bd6",
+  lime: "#c6f24e", sky: "#3aa0ff", pink: "#ff8fb1", butter: "#ffd23f",
+};
+const ON = { grape: C.cream, sky: C.cream, tangerine: C.cream, ink: C.cream,
+  lime: C.ink, pink: C.ink, butter: C.ink };
+const POP = { grape: C.lime, sky: C.butter, tangerine: C.butter, lime: C.grape,
+  pink: C.grape, butter: C.tangerine, ink: C.lime };
+
+const DISP = "'Bricolage Grotesque',system-ui,sans-serif";
+const MONO = "'DM Mono','SF Mono',ui-monospace,monospace";
+const W = 600;
+
+function HL(parts, popColor, baseColor, style) {
+  return React.createElement("h1", { style: Object.assign({
+    fontFamily: DISP, fontWeight: 800, letterSpacing: "-.035em",
+    lineHeight: .95, margin: 0, color: baseColor }, style) },
+    parts.map((p, i) => p[1] === "pop"
+      ? React.createElement("span", { key: i, style: { color: popColor } }, p[0])
+      : React.createElement(React.Fragment, { key: i }, p[0])));
+}
+
+function Btn({ label, bg = C.ink, fg = C.cream, full, style }) {
+  return React.createElement("a", {
+    href: window.CIRCLES.cta,
+    style: Object.assign({
+      display: full ? "flex" : "inline-flex", justifyContent: "center",
+      alignItems: "center", gap: 10, background: bg, color: fg,
+      fontFamily: DISP, fontWeight: 600, fontSize: 19, letterSpacing: "-.01em",
+      padding: "17px 30px", borderRadius: 100, textDecoration: "none",
+      width: full ? "100%" : "auto", boxSizing: "border-box",
+    }, style) }, label);
+}
+
+function Tag({ children, bg, fg, rotate, border, style }) {
+  return React.createElement("span", { style: Object.assign({
+    display: "inline-block", fontFamily: MONO, fontWeight: 500, fontSize: 13,
+    letterSpacing: "-.01em", padding: "7px 14px", borderRadius: 100, whiteSpace: "nowrap",
+    background: bg || "transparent", color: fg || C.ink,
+    border: border || "none",
+    transform: rotate ? `rotate(${rotate}deg)` : "none",
+  }, style) }, children);
+}
+
+function Logo({ color = C.ink, dot = C.tangerine, size = 23 }) {
+  return React.createElement("div", { style: {
+    fontFamily: DISP, fontWeight: 800, fontSize: size, letterSpacing: "-.03em", color } },
+    "Circles", React.createElement("span", { style: { color: dot } }, "."));
+}
+
+function Photo({ src, h = 250, radius = 20, sticker, border, frameBg }) {
+  return React.createElement("div", { style: {
+    position: "relative", borderRadius: radius, overflow: "hidden",
+    background: frameBg || C.tangerine, border: border || "none", height: h } },
+    React.createElement("img", { src, alt: "", style: {
+      width: "100%", height: "100%", objectFit: "cover", display: "block" } }),
+    sticker && React.createElement("span", { style: {
+      position: "absolute", left: 14, bottom: 14, fontFamily: MONO, fontSize: 12,
+      fontWeight: 500, background: C.cream, color: C.ink, padding: "6px 12px",
+      borderRadius: 100 } }, sticker));
+}
+
+function Press({ color = C.ink, dim = .55 }) {
+  return React.createElement("div", { style: { textAlign: "center" } },
+    React.createElement("div", { style: {
+      fontFamily: MONO, fontSize: 12, color, opacity: dim, marginBottom: 12 } }, "as mentioned on"),
+    React.createElement("div", { style: {
+      display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px 22px" } },
+      window.CIRCLES.press.map((p, i) => React.createElement("span", { key: i, style: {
+        fontFamily: DISP, fontWeight: 600, fontSize: 15, color, opacity: .65 } }, p))));
+}
+
+// Footer removed per request — returns null so all three designs skip the footer.
+function Foot() { return null; }
+
+Object.assign(window, { C, ON, POP, DISP, MONO, W, HL, Btn, Tag, Logo, Photo, Press, Foot });
+</script>
+
+<!-- === renderA === -->
+<script type="text/babel">
+function renderA(e) {
+  const lead = C[e.lead];
+  const PAD = 40;
+  const wrap = (kids) => React.createElement("div", { style: {
+    width: W, background: C.cream, fontFamily: DISP, color: C.ink } },
+    React.createElement("div", { style: {
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: "22px 40px", borderBottom: "1.5px solid #e7ddcc" } },
+      React.createElement(Logo, {}),
+      React.createElement("span", { style: { fontFamily: MONO, fontSize: 12, color: "#8a7d6c" } }, "by Marco Polo")),
+    React.createElement("div", { style: { padding: `36px ${PAD}px 8px` } }, kids),
+    React.createElement("div", { style: { padding: "28px 40px 40px" } },
+      React.createElement(Press, {})),
+    React.createElement(Foot, {}));
+
+  const head = (
+    React.createElement(React.Fragment, null,
+      React.createElement("div", { style: { marginBottom: 18 } },
+        React.createElement(Tag, { bg: lead, fg: ON[e.lead] }, e.tag)),
+      HL(e.headline, lead, C.ink, { fontSize: 50 }))
+  );
+
+  if (e.kind === "welcome" || e.kind === "missed") {
+    return wrap(React.createElement(React.Fragment, null,
+      head,
+      React.createElement("p", { style: bodyStyle }, e.body),
+      e.kicker && React.createElement("p", { style: {
+        fontFamily: DISP, fontWeight: 700, fontSize: 22, margin: "0 0 24px", color: lead } }, e.kicker),
+      React.createElement("div", { style: { margin: "8px 0 28px" } },
+        React.createElement(Photo, { src: window.CIRCLES.photos[e.photo], h: 280, sticker: e.photoSticker, frameBg: lead })),
+      React.createElement(Btn, { label: e.cta })));
+  }
+
+  if (e.kind === "why") {
+    return wrap(React.createElement(React.Fragment, null,
+      head,
+      React.createElement("p", { style: bodyStyle }, e.body),
+      React.createElement("div", { style: { margin: "6px 0 26px", display: "flex", flexDirection: "column", gap: 14 } },
+        e.bullets.map((b, i) => React.createElement("div", { key: i, style: { display: "flex", gap: 12, alignItems: "flex-start" } },
+          React.createElement("span", { style: {
+            flex: "0 0 auto", width: 26, height: 26, borderRadius: "50%", background: C.lime,
+            color: C.ink, fontWeight: 800, fontSize: 14, display: "flex", alignItems: "center",
+            justifyContent: "center", marginTop: 2 } }, "✓"),
+          React.createElement("span", { style: { fontSize: 17, lineHeight: 1.45 } }, b)))),
+      React.createElement("div", { style: { margin: "0 0 26px" } },
+        React.createElement(Photo, { src: window.CIRCLES.photos[e.photo], h: 240, sticker: e.photoSticker, frameBg: lead })),
+      React.createElement(Btn, { label: e.cta })));
+  }
+
+  if (e.kind === "how") {
+    return wrap(React.createElement(React.Fragment, null,
+      head,
+      React.createElement("p", { style: bodyStyle }, e.body),
+      React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16, margin: "8px 0 28px" } },
+        e.steps.map((s, i) => React.createElement("div", { key: i, style: {
+          display: "flex", gap: 16, alignItems: "center", background: "#fff",
+          border: "2px solid " + C.ink, borderRadius: 20, padding: 14 } },
+          React.createElement("div", { style: { position: "relative", flex: "0 0 96px" } },
+            React.createElement("img", { src: window.CIRCLES.photos[s.photo], alt: "", style: {
+              width: 96, height: 96, objectFit: "cover", borderRadius: 14, display: "block" } }),
+            React.createElement("span", { style: {
+              position: "absolute", top: -10, left: -10, width: 38, height: 38, borderRadius: "50%",
+              background: C[s.color], color: ON[s.color], border: "2px solid " + C.ink,
+              fontFamily: DISP, fontWeight: 800, fontSize: 18, display: "flex",
+              alignItems: "center", justifyContent: "center" } }, s.num)),
+          React.createElement("div", null,
+            React.createElement("div", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 20, marginBottom: 4 } }, s.title),
+            React.createElement("div", { style: { fontSize: 15, color: "#5a504a", lineHeight: 1.4 } }, s.text))))),
+      React.createElement(Btn, { label: e.cta })));
+  }
+
+  if (e.kind === "proof") {
+    return wrap(React.createElement(React.Fragment, null,
+      head,
+      React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 14, margin: "24px 0 18px" } },
+        e.quotes.map((q, i) => React.createElement("div", { key: i, style: {
+          background: C[q.color], color: ON[q.color], borderRadius: 20, padding: "24px 26px" } },
+          React.createElement("p", { style: { fontFamily: DISP, fontWeight: 600, fontSize: 19, lineHeight: 1.32, margin: "0 0 14px" } }, "“" + q.text + "”"),
+          React.createElement("span", { style: { fontFamily: MONO, fontSize: 13 } }, "— " + q.who))),
+        React.createElement("div", { style: {
+          border: "2px dashed " + C.ink, borderRadius: 20, padding: "24px 26px",
+          fontFamily: MONO, fontSize: 14, color: "#8a7d6c", lineHeight: 1.5 } }, e.placeholder)),
+      React.createElement("p", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 20, textAlign: "center", margin: "10px 0 22px" } }, e.footerLine),
+      React.createElement(Btn, { label: e.cta, full: true })));
+  }
+
+  if (e.kind === "urgency") {
+    return wrap(React.createElement(React.Fragment, null,
+      React.createElement("div", { style: {
+        background: C.ink, color: C.butter, fontFamily: MONO, fontSize: 13, fontWeight: 500,
+        textAlign: "center", padding: "10px 14px", borderRadius: 100, marginBottom: 20 } }, "⚡ " + e.urgencyBanner),
+      HL(e.headline, lead, C.ink, { fontSize: 50 }),
+      React.createElement("p", { style: bodyStyle }, e.body),
+      React.createElement("div", { style: {
+        background: C.butter, border: "2px solid " + C.ink, borderRadius: 20,
+        padding: "22px 24px", textAlign: "center", margin: "6px 0 26px" } },
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 14, marginBottom: 10 } }, e.offer.line),
+        React.createElement("div", { style: {
+          fontFamily: DISP, fontWeight: 800, fontSize: 34, letterSpacing: "2px",
+          border: "2px dashed " + C.ink, borderRadius: 12, padding: "10px 18px", display: "inline-block" } }, e.offer.code),
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 12, color: "#5a504a", marginTop: 10 } }, e.offer.note)),
+      React.createElement(Btn, { label: e.cta, bg: C.tangerine, full: true })));
+  }
+  return wrap(head);
+}
+const bodyStyle = { fontSize: 18, lineHeight: 1.5, color: "#473e36", margin: "16px 0 22px", maxWidth: "46ch" };
+window.renderA = renderA;
+</script>
+
+<!-- === renderB === -->
+<script type="text/babel">
+function renderB(e) {
+  const lead = C[e.lead], on = ON[e.lead], pop = POP[e.lead];
+
+  const band = (extra) => React.createElement("div", { style: {
+    background: lead, color: on, padding: "26px 40px 40px" } },
+    React.createElement("div", { style: {
+      display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 26 } },
+      React.createElement(Logo, { color: on, dot: pop }),
+      React.createElement(Tag, { bg: "rgba(0,0,0,.16)", fg: on }, e.tag)),
+    HL(e.headline, pop, on, { fontSize: 52 }),
+    extra);
+
+  const wrap = (kids) => React.createElement("div", { style: {
+    width: W, background: C.cream, fontFamily: DISP, color: C.ink } },
+    kids, React.createElement(Foot, {}));
+
+  const bodyP = (txt, mt) => React.createElement("p", { style: {
+    fontSize: 18, lineHeight: 1.5, color: "#473e36", margin: (mt || 24) + "px 0 24px", maxWidth: "46ch" } }, txt);
+
+  if (e.kind === "welcome" || e.kind === "missed") {
+    return wrap(React.createElement(React.Fragment, null,
+      band(),
+      React.createElement("div", { style: { padding: "0 0 0" } },
+        React.createElement(Photo, { src: window.CIRCLES.photos[e.photo], h: 260, radius: 0, sticker: e.photoSticker, frameBg: lead })),
+      React.createElement("div", { style: { padding: "30px 40px 40px" } },
+        bodyP(e.body, 0),
+        e.kicker && React.createElement("p", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 22, color: lead, margin: "0 0 24px" } }, e.kicker),
+        React.createElement(Btn, { label: e.cta, bg: C.ink, full: true }))));
+  }
+
+  if (e.kind === "why") {
+    return wrap(React.createElement(React.Fragment, null,
+      band(),
+      React.createElement("div", { style: { padding: "30px 40px 30px" } },
+        bodyP(e.body, 0),
+        React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 } },
+          e.bullets.map((b, i) => React.createElement("div", { key: i, style: {
+            display: "flex", gap: 12, alignItems: "flex-start", background: "#fff",
+            border: "2px solid " + C.ink, borderRadius: 16, padding: "14px 16px" } },
+            React.createElement("span", { style: { flex: "0 0 auto", width: 24, height: 24, borderRadius: "50%",
+              background: lead, color: on, fontWeight: 800, fontSize: 13, display: "flex",
+              alignItems: "center", justifyContent: "center", marginTop: 1 } }, "✓"),
+            React.createElement("span", { style: { fontSize: 16, lineHeight: 1.4 } }, b)))),
+        React.createElement(Btn, { label: e.cta, bg: C.ink, full: true })),
+      React.createElement("div", { style: { background: C.ink, padding: "28px 40px" } },
+        React.createElement(Press, { color: C.cream, dim: .5 }))));
+  }
+
+  if (e.kind === "how") {
+    return wrap(React.createElement(React.Fragment, null,
+      band(React.createElement("p", { style: { fontSize: 17, lineHeight: 1.45, margin: "16px 0 0", opacity: .9, maxWidth: "44ch" } }, e.body)),
+      React.createElement("div", { style: { padding: "8px 0 0" } },
+        e.steps.map((s, i) => React.createElement("div", { key: i, style: {
+          background: C[s.color], color: ON[s.color], display: "flex", alignItems: "center", gap: 18,
+          padding: "22px 40px" } },
+          React.createElement("span", { style: {
+            flex: "0 0 auto", width: 52, height: 52, borderRadius: "50%", background: C.cream,
+            color: C.ink, border: "2px solid " + C.ink, fontFamily: DISP, fontWeight: 800, fontSize: 24,
+            display: "flex", alignItems: "center", justifyContent: "center" } }, s.num),
+          React.createElement("div", null,
+            React.createElement("div", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 21 } }, s.title),
+            React.createElement("div", { style: { fontSize: 15, lineHeight: 1.4, opacity: .85 } }, s.text))))),
+      React.createElement("div", { style: { padding: "30px 40px 40px" } },
+        React.createElement(Btn, { label: e.cta, bg: C.ink, full: true }))));
+  }
+
+  if (e.kind === "proof") {
+    return wrap(React.createElement(React.Fragment, null,
+      band(),
+      React.createElement("div", { style: { padding: "0" } },
+        e.quotes.map((q, i) => React.createElement("div", { key: i, style: {
+          background: C[q.color], color: ON[q.color], padding: "28px 40px" } },
+          React.createElement("p", { style: { fontFamily: DISP, fontWeight: 600, fontSize: 20, lineHeight: 1.32, margin: "0 0 14px" } }, "“" + q.text + "”"),
+          React.createElement("span", { style: { fontFamily: MONO, fontSize: 13 } }, "— " + q.who))),
+        React.createElement("div", { style: {
+          background: C.cream, border: "2px dashed " + C.ink, margin: "0 40px",
+          borderRadius: 18, padding: "22px 24px", fontFamily: MONO, fontSize: 14,
+          color: "#8a7d6c", lineHeight: 1.5 } }, e.placeholder)),
+      React.createElement("div", { style: { padding: "26px 40px 40px", textAlign: "center" } },
+        React.createElement("p", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 21, margin: "0 0 22px" } }, e.footerLine),
+        React.createElement(Btn, { label: e.cta, bg: C.ink, full: true }))));
+  }
+
+  if (e.kind === "urgency") {
+    return wrap(React.createElement(React.Fragment, null,
+      React.createElement("div", { style: { background: C.ink, color: C.butter, textAlign: "center",
+        fontFamily: MONO, fontSize: 13, fontWeight: 500, padding: "11px 14px" } }, "⚡ " + e.urgencyBanner),
+      band(),
+      React.createElement("div", { style: { padding: "30px 40px 0" } }, bodyP(e.body, 0)),
+      React.createElement("div", { style: { background: C.ink, color: C.cream, margin: "0 40px",
+        borderRadius: 22, padding: "26px 24px", textAlign: "center" } },
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 14, marginBottom: 12, opacity: .85 } }, e.offer.line),
+        React.createElement("div", { style: { fontFamily: DISP, fontWeight: 800, fontSize: 36, letterSpacing: "2px",
+          color: C.butter, border: "2px dashed " + C.butter, borderRadius: 12, padding: "10px 20px", display: "inline-block" } }, e.offer.code),
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 12, opacity: .6, marginTop: 10 } }, e.offer.note)),
+      React.createElement("div", { style: { padding: "26px 40px 40px" } },
+        React.createElement(Btn, { label: e.cta, bg: C.tangerine, full: true }))));
+  }
+  return wrap(band());
+}
+window.renderB = renderB;
+</script>
+
+<!-- === renderC === -->
+<script type="text/babel">
+function renderC(e) {
+  const lead = C[e.lead];
+  const hl = (size) => React.createElement("h1", { style: {
+    fontFamily: DISP, fontWeight: 800, fontSize: size, lineHeight: 1.0,
+    letterSpacing: "-.035em", margin: 0, color: C.ink } },
+    e.headline.map((p, i) => p[1] === "pop"
+      ? React.createElement("span", { key: i, style: {
+          background: "linear-gradient(180deg,transparent 58%," + lead + " 58%)",
+          paddingBottom: 2, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" } }, p[0])
+      : React.createElement(React.Fragment, { key: i }, p[0])));
+
+  const rule = React.createElement("div", { style: { height: 2, background: C.ink, opacity: .12, margin: "26px 0" } });
+  const sec = (kids) => React.createElement("div", { style: { padding: "0 36px" } }, kids);
+
+  const wrap = (kids) => React.createElement("div", { style: { width: W, background: "#f1e7d6", fontFamily: DISP, padding: 16, boxSizing: "border-box" } },
+    React.createElement("div", { style: {
+      background: C.cream, border: "3px solid " + C.ink, borderRadius: 28, overflow: "hidden", color: C.ink } },
+      React.createElement("div", { style: {
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "20px 36px", borderBottom: "2px solid " + C.ink } },
+        React.createElement(Logo, {}),
+        React.createElement(Tag, { rotate: -3, bg: lead, fg: ON[e.lead], border: "2px solid " + C.ink }, e.tag)),
+      React.createElement("div", { style: { padding: "30px 0 34px" } }, kids),
+      React.createElement("div", { style: { borderTop: "2px solid " + C.ink, padding: "22px 36px" } },
+        React.createElement(Press, {}))));
+
+  const body = (txt) => React.createElement("p", { style: { fontSize: 18, lineHeight: 1.5, color: "#473e36", margin: "16px 0 0", maxWidth: "46ch" } }, txt);
+
+  if (e.kind === "welcome" || e.kind === "missed") {
+    return wrap(React.createElement(React.Fragment, null,
+      sec(React.createElement(React.Fragment, null, hl(46), body(e.body),
+        e.kicker && React.createElement("p", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 21, margin: "18px 0 0", color: C.ink } }, e.kicker))),
+      React.createElement("div", { style: { padding: "26px 36px 0" } },
+        React.createElement(Photo, { src: window.CIRCLES.photos[e.photo], h: 260, radius: 18, border: "3px solid " + C.ink, sticker: e.photoSticker, frameBg: lead })),
+      sec(React.createElement("div", { style: { marginTop: 26 } }, React.createElement(Btn, { label: e.cta, full: true })))));
+  }
+
+  if (e.kind === "why") {
+    return wrap(React.createElement(React.Fragment, null,
+      sec(React.createElement(React.Fragment, null, hl(46), body(e.body))),
+      sec(React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12, marginTop: 22 } },
+        e.bullets.map((b, i) => React.createElement("div", { key: i, style: {
+          display: "flex", gap: 12, alignItems: "flex-start" } },
+          React.createElement("span", { style: { flex: "0 0 auto", width: 26, height: 26, borderRadius: "50%",
+            background: lead, color: ON[e.lead], border: "2px solid " + C.ink, fontWeight: 800, fontSize: 13,
+            display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1 } }, "✓"),
+          React.createElement("span", { style: { fontSize: 16, lineHeight: 1.45 } }, b))))),
+      sec(React.createElement("div", { style: { marginTop: 24 } }, React.createElement(Btn, { label: e.cta, full: true }))),
+      rule,
+      sec(React.createElement(Press, {}))));
+  }
+
+  if (e.kind === "how") {
+    return wrap(React.createElement(React.Fragment, null,
+      sec(React.createElement(React.Fragment, null, hl(44), body(e.body))),
+      sec(React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 14, marginTop: 24 } },
+        e.steps.map((s, i) => React.createElement("div", { key: i, style: {
+          display: "flex", gap: 16, alignItems: "center", border: "2.5px solid " + C.ink,
+          borderRadius: 18, padding: 14, background: "#fff" } },
+          React.createElement("span", { style: {
+            flex: "0 0 auto", width: 50, height: 50, borderRadius: "50%", background: C[s.color],
+            color: ON[s.color], border: "2.5px solid " + C.ink, fontFamily: DISP, fontWeight: 800,
+            fontSize: 24, display: "flex", alignItems: "center", justifyContent: "center" } }, s.num),
+          React.createElement("div", null,
+            React.createElement("div", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 20 } }, s.title),
+            React.createElement("div", { style: { fontSize: 15, color: "#5a504a", lineHeight: 1.4 } }, s.text)),
+          React.createElement("img", { src: window.CIRCLES.photos[s.photo], alt: "", style: {
+            marginLeft: "auto", width: 64, height: 64, borderRadius: 12, objectFit: "cover",
+            border: "2px solid " + C.ink } }))))),
+      sec(React.createElement("div", { style: { marginTop: 26 } }, React.createElement(Btn, { label: e.cta, full: true })))));
+  }
+
+  if (e.kind === "proof") {
+    return wrap(React.createElement(React.Fragment, null,
+      sec(hl(44)),
+      sec(React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 14, marginTop: 24 } },
+        e.quotes.map((q, i) => React.createElement("div", { key: i, style: {
+          background: C[q.color], color: ON[q.color], border: "2.5px solid " + C.ink,
+          borderRadius: 18, padding: "22px 24px", transform: "rotate(" + (i % 2 ? 1 : -1) + "deg)" } },
+          React.createElement("p", { style: { fontFamily: DISP, fontWeight: 600, fontSize: 18, lineHeight: 1.32, margin: "0 0 12px" } }, "“" + q.text + "”"),
+          React.createElement("span", { style: { fontFamily: MONO, fontSize: 13 } }, "— " + q.who))),
+        React.createElement("div", { style: {
+          border: "2.5px dashed " + C.ink, borderRadius: 18, padding: "22px 24px",
+          fontFamily: MONO, fontSize: 14, color: "#8a7d6c", lineHeight: 1.5 } }, e.placeholder))),
+      sec(React.createElement("div", { style: { marginTop: 24, textAlign: "center" } },
+        React.createElement("p", { style: { fontFamily: DISP, fontWeight: 700, fontSize: 20, margin: "0 0 20px" } }, e.footerLine),
+        React.createElement(Btn, { label: e.cta, full: true })))));
+  }
+
+  if (e.kind === "urgency") {
+    return wrap(React.createElement(React.Fragment, null,
+      sec(React.createElement("div", { style: { marginBottom: 18 } },
+        React.createElement(Tag, { rotate: -2, bg: C.ink, fg: C.butter, border: "2px solid " + C.ink }, "⚡ " + e.urgencyBanner))),
+      sec(React.createElement(React.Fragment, null, hl(46), body(e.body))),
+      sec(React.createElement("div", { style: {
+        marginTop: 24, background: C.butter, border: "2.5px solid " + C.ink, borderRadius: 18,
+        padding: "22px 24px", textAlign: "center", transform: "rotate(-1deg)" } },
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 14, marginBottom: 10 } }, e.offer.line),
+        React.createElement("div", { style: { fontFamily: DISP, fontWeight: 800, fontSize: 34, letterSpacing: "2px",
+          border: "2px dashed " + C.ink, borderRadius: 12, padding: "8px 18px", display: "inline-block", background: C.cream } }, e.offer.code),
+        React.createElement("div", { style: { fontFamily: MONO, fontSize: 12, color: "#5a504a", marginTop: 10 } }, e.offer.note))),
+      sec(React.createElement("div", { style: { marginTop: 24 } }, React.createElement(Btn, { label: e.cta, bg: C.tangerine, full: true })))));
+  }
+  return wrap(sec(hl(46)));
+}
+window.renderC = renderC;
+</script>
+
+<!-- === App === -->
+<script type="text/babel">
+const RENDER = { A: window.renderA, B: window.renderB, C: window.renderC };
+const OPTIONS = [
+  { id: "A", title: "Option A · Cream & Pop", subtitle: "Airy cream base, ink type, accent color pops" },
+  { id: "B", title: "Option B · Color Block", subtitle: "Full-color header band per email, reversed headline" },
+  { id: "C", title: "Option C · Framed Sticker", subtitle: "Ink-bordered zine card, highlight marks, rotated stickers" },
+];
+
+function emailName(e) {
+  return { welcome:"Welcome", why:"Why us", how:"How it works", proof:"Proof", urgency:"Urgency + offer", missed:"Missed it" }[e.kind] || e.kind;
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove("show"), 1600);
+}
+
+function EmailCard({ opt, email }) {
+  const ref = React.useRef(null);
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = async () => {
+    const el = ref.current;
+    if (!el) return;
+    // The email content is the first (and only) child of the frame.
+    const inner = el.querySelector("[data-email-root]") || el.firstElementChild;
+    if (!inner) return;
+    // Build a self-contained email HTML doc so it can be pasted into an ESP or file.
+    const doc =
+`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${email.subject.replace(/</g,"&lt;")}</title>
+<meta name="description" content="${email.preheader.replace(/"/g,"&quot;")}">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#efe7da;">
+<span style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${email.preheader.replace(/</g,"&lt;")}</span>
+${inner.outerHTML}
+</body>
+</html>`;
+    try {
+      await navigator.clipboard.writeText(doc);
+      setCopied(true);
+      showToast("Copied " + opt.id + " · " + email.n + " " + emailName(email));
+      setTimeout(() => setCopied(false), 1400);
+    } catch (err) {
+      showToast("Copy failed — check console");
+      console.error(err);
+    }
+  };
+
+  React.useLayoutEffect(() => {
+    if (!ref.current) return;
+    // tag the inner React-rendered root for a reliable copy target
+    const first = ref.current.firstElementChild;
+    if (first && !first.hasAttribute("data-email-root")) first.setAttribute("data-email-root", "");
+  });
+
+  return (
+    <div className="card">
+      <div className="card-head">
+        <span className="card-label">{opt.id} · {email.n}. {emailName(email)} — <em style={{fontStyle:"normal",opacity:.7}}>{email.subject}</em></span>
+        <button className={"copy-btn" + (copied ? " copied" : "")} onClick={handleCopy}>{copied ? "✓ Copied" : "Copy HTML"}</button>
+      </div>
+      <div className="email-frame" ref={ref}>
+        {RENDER[opt.id](email)}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <>
+      {OPTIONS.map(o => (
+        <div key={o.id}>
+          <h2 className="section">{o.title}</h2>
+          <p className="section-sub">{o.subtitle}</p>
+          <div className="grid">
+            {window.EMAILS.map(e => <EmailCard key={e.n} opt={o} email={e} />)}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

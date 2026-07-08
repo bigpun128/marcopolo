@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Circles — find your match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#2a0e3a;
+  --magenta:#ff2e8b;
+  --peach:#ffb38a;
+  --cream:#fcf3ec;
+  --ink:#1d0a26;
+  --gold:#ffc94d;
+  --line:rgba(29,10,38,.14);
+  --muted:rgba(29,10,38,.6);
+  --display:'Bricolage Grotesque',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--display);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit}
+
+.progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(29,10,38,.08);z-index:100}
+.progress-bar{height:100%;background:var(--ink);width:0;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+
+.top-nav{position:fixed;top:14px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 26px;z-index:100}
+.logo{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink);letter-spacing:-.03em}
+.logo b{color:var(--magenta)}
+.back{font-family:var(--mono);font-size:13px;color:var(--muted);cursor:pointer;background:none;border:none;padding:6px 10px;border-radius:100px}
+.back:hover{color:var(--ink);background:rgba(29,10,38,.05)}
+
+.screen{min-height:100svh;display:none;padding:96px 26px 60px;flex-direction:column;align-items:center;justify-content:center}
+.screen.active{display:flex}
+.screen-in{max-width:640px;width:100%;text-align:center}
+.step{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px}
+.q{font-family:var(--display);font-weight:800;font-size:clamp(38px,6vw,68px);line-height:.98;letter-spacing:-.035em;margin-bottom:18px;color:var(--ink)}
+.q u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%);padding:0 .05em}
+.sub{font-size:18px;color:var(--muted);max-width:44ch;margin:0 auto 40px;line-height:1.5}
+
+.opts{display:flex;flex-direction:column;gap:12px;margin-bottom:26px}
+.opt{background:#fff;border:2px solid var(--line);color:var(--ink);padding:20px 26px;border-radius:100px;font-family:var(--display);font-weight:600;font-size:18px;cursor:pointer;transition:all .18s cubic-bezier(.2,.7,.2,1);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.opt:hover{border-color:var(--ink);transform:translate(-2px,-2px)}
+.opt.selected{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+.opt .check{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:transparent}
+.opt.selected .check{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
+.cta{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--cream);font-family:var(--display);font-weight:600;font-size:19px;padding:18px 34px;border-radius:100px;border:none;cursor:pointer;transition:all .15s;white-space:nowrap}
+.cta:hover{transform:translate(-3px,-3px);background:var(--magenta);color:#fff}
+.cta:disabled{opacity:.3;cursor:not-allowed;transform:none;background:var(--ink);color:var(--cream)}
+.cta-primary{background:var(--magenta);color:#fff}
+.cta-primary:hover{background:var(--ink);color:var(--cream)}
+
+.input{width:100%;background:#fff;border:2px solid var(--line);color:var(--ink);padding:20px 26px;border-radius:100px;font-family:var(--display);font-size:19px;margin-bottom:18px;outline:none;transition:border-color .15s;text-align:center}
+.input:focus{border-color:var(--ink)}
+.input::placeholder{color:rgba(29,10,38,.3)}
+
+.stat-num{font-family:var(--display);font-weight:800;font-size:clamp(96px,17vw,200px);line-height:.9;color:var(--ink);letter-spacing:-.05em;margin-bottom:14px;position:relative;display:inline-block}
+.stat-num::after{content:"";position:absolute;left:-4px;right:-4px;bottom:.09em;height:.28em;background:var(--gold);z-index:-1;border-radius:4px}
+.stat-lbl{font-size:20px;color:var(--ink);max-width:38ch;margin:0 auto 40px;line-height:1.4}
+.stat-lbl b{font-weight:600}
+
+.loading{display:flex;justify-content:center;gap:10px;margin-bottom:26px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;align-items:center}
+.loading .dots{display:flex;gap:6px}
+.loading .dots span{width:8px;height:8px;border-radius:50%;background:var(--ink);animation:bounce 1.2s infinite}
+.loading .dots span:nth-child(2){animation-delay:.15s}
+.loading .dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-6px);opacity:1}}
+
+/* Match screen */
+.match-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--gold);padding:9px 18px;border-radius:100px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:28px;font-weight:500}
+.match-badge .live{width:7px;height:7px;border-radius:50%;background:var(--ink);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+
+.match-h{font-family:var(--display);font-weight:800;font-size:clamp(48px,8vw,96px);line-height:.94;letter-spacing:-.045em;margin-bottom:14px}
+.match-h u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%);padding:0 .05em}
+.match-sub{font-size:20px;color:var(--muted);max-width:38ch;margin:0 auto 44px;line-height:1.45}
+.match-sub b{color:var(--ink);font-weight:600}
+
+.match-card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:32px 30px;text-align:left;margin:0 auto 30px;max-width:520px}
+.match-card h3{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:20px;font-weight:500}
+.match-card ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+.match-card li{display:flex;gap:14px;font-size:17px;line-height:1.45;align-items:flex-start;color:var(--ink)}
+.match-card li .dot{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;margin-top:1px}
+
+.match-cta-row{display:flex;flex-direction:column;align-items:center;gap:14px}
+.result-note{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.05em}
+
+@keyframes fade-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.screen.active > .screen-in{animation:fade-in .5s cubic-bezier(.2,.7,.2,1)}
+
+@media(max-width:500px){
+  .opt{font-size:16px;padding:18px 22px}
+  .q{font-size:34px}
+  .match-h{font-size:52px}
+  .match-card{padding:26px 22px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-bar" id="pbar"></div></div>
+<div class="top-nav">
+  <div class="logo">Circles<b>.</b></div>
+  <button class="back" id="backBtn" style="visibility:hidden">← back</button>
+</div>
+
+<!-- 1. Age -->
+<section class="screen active" data-screen="age">
+  <div class="screen-in">
+    <div class="step">step 1 of 6</div>
+    <h1 class="q">What's your <u>age?</u></h1>
+    <p class="sub">We match by season of life, so this matters.</p>
+    <div class="opts" data-q="age">
+      <button class="opt" data-v="under-25"><span>Under 25</span></button>
+      <button class="opt" data-v="25-34"><span>25–34</span></button>
+      <button class="opt" data-v="35-44"><span>35–44</span></button>
+      <button class="opt" data-v="45-54"><span>45–54</span></button>
+      <button class="opt" data-v="55+"><span>55+</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Woman -->
+<section class="screen" data-screen="woman">
+  <div class="screen-in">
+    <div class="step">step 2 of 6</div>
+    <h1 class="q">Do you identify as a <u>woman?</u></h1>
+    <p class="sub">Circles is currently built for women. We're working to open more circles soon.</p>
+    <div class="opts" data-q="woman">
+      <button class="opt" data-v="yes"><span>Yes</span></button>
+      <button class="opt" data-v="no"><span>No</span></button>
+      <button class="opt" data-v="pns"><span>Prefer not to say</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Gate -->
+<section class="screen" data-screen="gate">
+  <div class="screen-in">
+    <div class="step">a note from us</div>
+    <h1 class="q">We're not <u>quite ready</u> for you yet.</h1>
+    <p class="sub">Circles is currently hand-matched for women only. Drop your email and we'll reach out the moment we open more circles.</p>
+    <input type="email" class="input" id="gateEmail" placeholder="you@example.com">
+    <button class="cta cta-primary" id="gateSubmit" disabled>Keep me posted →</button>
+  </div>
+</section>
+
+<!-- 3. Looking for -->
+<section class="screen" data-screen="looking">
+  <div class="screen-in">
+    <div class="step">step 3 of 6</div>
+    <h1 class="q">What are you <u>looking for?</u></h1>
+    <p class="sub">Select all that apply.</p>
+    <div class="opts" data-q="looking" data-multi="1">
+      <button class="opt" data-v="moms"><span>Moms who get where I am</span><span class="check">✓</span></button>
+      <button class="opt" data-v="chapter"><span>Friends for a new chapter of life</span><span class="check">✓</span></button>
+      <button class="opt" data-v="depth"><span>Real conversation, not small talk</span><span class="check">✓</span></button>
+      <button class="opt" data-v="stage"><span>Women in the same life stage</span><span class="check">✓</span></button>
+      <button class="opt" data-v="local"><span>Local friends I can meet in person</span><span class="check">✓</span></button>
+      <button class="opt" data-v="real"><span>A group I can be my real self with</span><span class="check">✓</span></button>
+    </div>
+    <button class="cta" id="lookingNext" disabled>Continue →</button>
+  </div>
+</section>
+
+<!-- Stat 1 -->
+<section class="screen" data-screen="stat1">
+  <div class="screen-in">
+    <div class="loading"><span>matching in progress</span><span class="dots"><span></span><span></span><span></span></span></div>
+    <div class="stat-num" id="stat1Num">0</div>
+    <p class="stat-lbl">women are searching for <b id="stat1Lbl">the same things you are</b> this month.</p>
+    <button class="cta" id="stat1Next">Keep going →</button>
+  </div>
+</section>
+
+<!-- 4. Local -->
+<section class="screen" data-screen="local2">
+  <div class="screen-in">
+    <div class="step">step 4 of 6</div>
+    <h1 class="q">Do you want <u>local</u> women in your circle?</h1>
+    <p class="sub">We match across time zones by default, but can prioritize your area.</p>
+    <div class="opts" data-q="local2">
+      <button class="opt" data-v="very"><span>Very important</span></button>
+      <button class="opt" data-v="nice"><span>Nice to have</span></button>
+      <button class="opt" data-v="no"><span>Doesn't matter</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Stat 2 -->
+<section class="screen" data-screen="stat2">
+  <div class="screen-in">
+    <div class="stat-num">82%</div>
+    <p class="stat-lbl">of women in a Circle <b>meet up in person</b> within their first three months.</p>
+    <button class="cta" id="stat2Next">Almost done →</button>
+  </div>
+</section>
+
+<!-- 5. Timing -->
+<section class="screen" data-screen="timing">
+  <div class="screen-in">
+    <div class="step">step 5 of 6</div>
+    <h1 class="q">Our next cohort starts <u>Monday, July 13.</u></h1>
+    <p class="sub">Are you in? We hand-match new circles every two weeks.</p>
+    <div class="opts" data-q="timing">
+      <button class="opt" data-v="now"><span>Yes, count me in for July 13</span></button>
+      <button class="opt" data-v="future"><span>Match me for the next cohort after that</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Contact -->
+<section class="screen" data-screen="email">
+  <div class="screen-in">
+    <div class="step">step 6 of 6</div>
+    <h1 class="q">How do we <u>contact you?</u></h1>
+    <p class="sub">We'll work with you to hand-curate your circle and make sure it's an amazing experience.</p>
+    <input type="text" class="input" id="userName" placeholder="Your name" autocomplete="given-name">
+    <input type="email" class="input" id="userEmail" placeholder="you@example.com" autocomplete="email">
+    <button class="cta cta-primary" id="emailNext" disabled>Match me →</button>
+    <p class="result-note" style="margin-top:18px">$75 one-time · Love your Circle or we'll rematch you for free</p>
+  </div>
+</section>
+
+<script>
+const flow=['age','woman','looking','stat1','local2','stat2','timing','email'];
+const state={};
+let idx=0;
+
+function show(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`[data-screen="${name}"]`).classList.add('active');
+  window.scrollTo(0,0);
+  updateProgress(name);
+  const back=document.getElementById('backBtn');
+  back.style.visibility=(name==='age'||name==='gate')?'hidden':'visible';
+}
+
+function updateProgress(name){
+  const stepMap={age:1,woman:2,looking:3,stat1:3.5,local2:4,stat2:4.5,timing:5,email:6,gate:0};
+  const step=stepMap[name]||0;
+  const pct=Math.min(100,(step/6)*100);
+  document.getElementById('pbar').style.width=pct+'%';
+}
+
+function next(){
+  idx++;
+  if(idx>=flow.length)return;
+  show(flow[idx]);
+}
+
+document.querySelectorAll('.opts').forEach(container=>{
+  const multi=container.dataset.multi==='1';
+  const key=container.dataset.q;
+  container.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(multi){
+        btn.classList.toggle('selected');
+        const sel=[...container.querySelectorAll('.opt.selected')].map(b=>b.dataset.v);
+        state[key]=sel;
+        document.getElementById('lookingNext').disabled=sel.length===0;
+      } else {
+        container.querySelectorAll('.opt').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+        state[key]=btn.dataset.v;
+        if(key==='woman' && btn.dataset.v!=='yes'){
+          setTimeout(()=>show('gate'),380);
+        } else {
+          setTimeout(next,380);
+        }
+      }
+    });
+  });
+});
+
+document.getElementById('lookingNext').addEventListener('click',()=>{
+  const labels={
+    moms:'moms who get it',
+    chapter:'friends for a new chapter',
+    depth:'real conversation',
+    stage:'women in the same life stage',
+    local:'local friends',
+    real:'a group they can be real with'
+  };
+  const first=state.looking&&state.looking[0]||'stage';
+  document.getElementById('stat1Lbl').textContent=labels[first]||'the same things you are';
+  const target=847+Math.floor(Math.random()*600);
+  animateNumber('stat1Num',target);
+  next();
+});
+
+document.getElementById('stat1Next').addEventListener('click',next);
+document.getElementById('stat2Next').addEventListener('click',next);
+function goBack(){
+  if(idx>0){idx--;show(flow[idx]);}
+}
+document.getElementById('backBtn').addEventListener('click',goBack);
+
+const userName=document.getElementById('userName');
+const userEmail=document.getElementById('userEmail');
+const emailNext=document.getElementById('emailNext');
+function validateContact(){
+  const nameOk=userName.value.trim().length>=1;
+  const emailOk=/^\S+@\S+\.\S+$/.test(userEmail.value.trim());
+  emailNext.disabled=!(nameOk&&emailOk);
+}
+userName.addEventListener('input',validateContact);
+userEmail.addEventListener('input',validateContact);
+[userName,userEmail].forEach(el=>el.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && !emailNext.disabled)emailNext.click();
+}));
+emailNext.addEventListener('click',()=>{
+  state.name=userName.value.trim();
+  state.email=userEmail.value.trim();
+  emailNext.disabled=true;
+  emailNext.textContent='Redirecting…';
+  const params=new URLSearchParams({name:state.name,email:state.email});
+  window.location.href='../circles-checkout/?'+params.toString();
+});
+
+const gateEmail=document.getElementById('gateEmail');
+const gateSubmit=document.getElementById('gateSubmit');
+gateEmail.addEventListener('input',()=>{
+  gateSubmit.disabled=!/^\S+@\S+\.\S+$/.test(gateEmail.value.trim());
+});
+gateSubmit.addEventListener('click',()=>{
+  if(!/^\S+@\S+\.\S+$/.test(gateEmail.value.trim()))return;
+  gateSubmit.textContent="Thanks — we'll be in touch ✓";
+  gateSubmit.disabled=true;
+});
+
+function animateNumber(elId,target){
+  const el=document.getElementById(elId);
+  const dur=1400;
+  const start=performance.now();
+  function tick(t){
+    const p=Math.min(1,(t-start)/dur);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(target*eased).toLocaleString();
+    if(p<1)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+updateProgress('age');
+</script>
+</body>
+</html>

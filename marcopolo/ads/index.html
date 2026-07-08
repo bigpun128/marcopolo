@@ -48,7 +48,7 @@
       <h1>Marco Polo · static ads</h1>
       <p class="sub">20 social ads across 4 audience themes · 5 variations each · click an image to enlarge, hover to download</p>
     </div>
-    <a class="back" href="/">← all options</a>
+    <a class="back" href="../">← all options</a>
   </div>
 
   <div class="controls" id="filters">
@@ -114,7 +114,7 @@ function openLB(src){ lbImg.src = src; lb.classList.add('show'); }
 lb.addEventListener('click', () => { lb.classList.remove('show'); lbImg.src = ''; });
 
 for (const ad of ADS) {
-  const src = '/ads/img/' + ad.n + '.png';
+  const src = 'img/' + ad.n + '.png';
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML =
@@ -142,7 +142,7 @@ document.getElementById('dlAll').addEventListener('click', async () => {
   for (let i = 0; i < ADS.length; i++) {
     const ad = ADS[i];
     const a = document.createElement('a');
-    a.href = '/ads/img/' + ad.n + '.png';
+    a.href = 'img/' + ad.n + '.png';
     a.download = ad.n + '.png';
     document.body.appendChild(a);
     a.click();

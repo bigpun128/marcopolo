@@ -3,107 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Circles — landing page options</title>
+<title>Exhbt — project directory</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--cream:#fff8ef;--ink:#1a1410;--tangerine:#ff5e1a;--cobalt:#1e4dff;--magenta:#ff2e8b;--charcoal:#0a0907;--amber:#f4a13a;--violet:#5b2bd6;--lime:#c6f24e}
+  :root{--ink:#0c0d0b;--panel:#15140f;--cream:#f6f1e7;--lime:#c8ff4d;--line:rgba(246,241,231,.12)}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',sans-serif;
-    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
-  h1{font-weight:800;font-size:clamp(34px,6vw,64px);letter-spacing:-.04em;text-align:center;margin-bottom:10px}
-  .sub{font-family:'DM Mono',monospace;font-size:14px;color:rgba(255,248,239,.6);text-align:center;margin-bottom:48px}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:880px;width:100%}
-  a.opt{display:block;border-radius:22px;padding:36px 28px;text-decoration:none;color:#fff;
-    transition:transform .18s;border:3px solid transparent}
-  a.opt:hover{transform:translateY(-8px)}
-  .o1{background:var(--tangerine)}
-  .o2{background:var(--cobalt)}
-  .o3{background:var(--magenta)}
-  .o4{background:var(--charcoal);border:3px solid rgba(244,161,58,.35)}
-  .o4 .v{color:var(--amber)}
-  .o4 h2{color:var(--amber)}
-  .o5{background:var(--violet);grid-column:1/-1;display:flex;align-items:center;gap:28px;padding:28px 32px}
-  .o5 .tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--lime);color:var(--ink);padding:5px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;font-weight:500}
-  .o5 .body{flex:1}
-  .o5 .thumbs{display:flex;gap:8px;flex-shrink:0}
-  .o5 .thumbs span{width:56px;height:80px;border-radius:8px;display:block}
-  .o5 .t1{background:#fff8ef;border:2px solid var(--ink)}
-  .o5 .t2{background:#5b2bd6;border:2px solid #c6f24e}
-  .o5 .t3{background:#fff8ef;border:2px solid var(--ink);position:relative}
-  @media(max-width:760px){.o5{flex-direction:column;align-items:flex-start}}
-  .o6{background:var(--cream);color:var(--ink);grid-column:1/-1;display:flex;align-items:center;gap:28px;padding:28px 32px}
-  .o6 .tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--lime);padding:5px 10px;border-radius:100px;display:inline-block;margin-bottom:8px;font-weight:500}
-  .o6 .body{flex:1}
-  .o6 h2{color:var(--ink)}
-  .o6 .go{background:var(--ink);color:var(--cream)}
-  .o6 .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;flex-shrink:0;width:180px}
-  .o6 .stack span{aspect-ratio:1/1;border-radius:6px;display:block;background-size:cover;background-position:center;border:2px solid var(--ink)}
-  @media(max-width:760px){.o6{flex-direction:column;align-items:flex-start}.o6 .stack{width:100%;grid-template-columns:repeat(6,1fr)}}
-  .opt .v{font-family:'DM Mono',monospace;font-size:13px;opacity:.8}
-  .opt h2{font-weight:800;font-size:30px;letter-spacing:-.02em;margin:8px 0 10px}
-  .opt p{font-size:15px;line-height:1.45;opacity:.92}
-  .opt .go{display:inline-block;margin-top:18px;font-family:'DM Mono',monospace;font-size:13px;
-    background:rgba(0,0,0,.2);padding:7px 14px;border-radius:100px}
-  @media(max-width:760px){.grid{grid-template-columns:1fr;max-width:480px}}
+  body{background:var(--ink);color:var(--cream);font-family:'Bricolage Grotesque',system-ui,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;padding:6vh 22px 40px}
+  .wrap{width:100%;max-width:860px;margin:0 auto;flex:1;display:flex;flex-direction:column;justify-content:center}
+  .brand{font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:var(--lime);margin-bottom:20px}
+  h1{font-weight:800;font-size:clamp(34px,7vw,64px);letter-spacing:-.03em;line-height:1;margin-bottom:14px}
+  .sub{font-size:15px;color:rgba(246,241,231,.6);max-width:52ch;line-height:1.55;margin-bottom:40px}
+  .list{display:flex;flex-direction:column;gap:14px}
+  a.client{display:flex;align-items:center;gap:20px;background:var(--panel);border:1px solid var(--line);border-radius:20px;
+    padding:24px 26px;text-decoration:none;color:var(--cream);transition:transform .16s,border-color .16s,background .16s}
+  a.client:hover{transform:translateY(-4px);border-color:rgba(246,241,231,.4);background:#191811}
+  .logo{flex-shrink:0;width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:24px;letter-spacing:-.02em}
+  .l-expo{background:#173d2e;color:#e9b949}
+  .l-mp{background:#5b2bd6;color:#c6f24e}
+  .c-body{flex:1;min-width:0}
+  .c-body h2{font-weight:800;font-size:21px;letter-spacing:-.02em;margin-bottom:3px}
+  .c-body p{font-size:14px;color:rgba(246,241,231,.62);line-height:1.45}
+  .c-meta{font-family:'DM Mono',monospace;font-size:11px;color:rgba(246,241,231,.4);margin-top:8px}
+  .arrow{flex-shrink:0;font-family:'DM Mono',monospace;font-size:13px;color:rgba(246,241,231,.5);
+    background:rgba(246,241,231,.07);padding:8px 14px;border-radius:100px}
+  a.client:hover .arrow{background:var(--lime);color:var(--ink)}
+  footer{max-width:860px;margin:48px auto 0;width:100%;font-family:'DM Mono',monospace;font-size:11px;
+    color:rgba(246,241,231,.35);border-top:1px solid var(--line);padding-top:18px}
+  @media(max-width:560px){a.client{padding:18px 18px;gap:14px}.logo{width:52px;height:52px;font-size:20px}.arrow{display:none}}
 </style>
 </head>
 <body>
-  <h1>Circles landing options</h1>
-  <p class="sub">four landing directions · plus the latest email designs &amp; static ads</p>
-  <div class="grid">
-    <a class="opt o1" href="/v1">
-      <span class="v">v1 · sunrise</span>
-      <h2>Full color</h2>
-      <p>Tangerine, grape, and lime on cream. Playful photo strip hero, color-blocked sections.</p>
-      <span class="go">view v1 →</span>
-    </a>
-    <a class="opt o2" href="/v2">
-      <span class="v">v2 · cobalt</span>
-      <h2>One bold color</h2>
-      <p>Electric blue + lime. Full-bleed photo hero, duotone treatment, single-color confidence.</p>
-      <span class="go">view v2 →</span>
-    </a>
-    <a class="opt o3" href="/v3">
-      <span class="v">v3 · plum</span>
-      <h2>Editorial bold</h2>
-      <p>Deep plum + hot magenta + gold. Asymmetric split hero with stacked photos.</p>
-      <span class="go">view v3 →</span>
-    </a>
-    <a class="opt o4" href="/v4">
-      <span class="v">v4 · motion</span>
-      <h2>Cinematic video</h2>
-      <p>Full-screen looping video with animating text — 222 / Known style. Dark, moody, amber accents.</p>
-      <span class="go">view v4 →</span>
-    </a>
-    <a class="opt o5" href="/emails/">
-      <div class="body">
-        <span class="tag">Email designs</span>
-        <h2>Circles email — 3 design options</h2>
-        <p>Latest standalone HTML — three directions for transactional &amp; campaign emails (Cream &amp; Pop, Color Block, Framed Sticker). Each design can be exported as standalone HTML.</p>
-        <span class="go">view email designs →</span>
-      </div>
-      <div class="thumbs" aria-hidden="true">
-        <span class="t1"></span>
-        <span class="t2"></span>
-        <span class="t3"></span>
-      </div>
-    </a>
-    <a class="opt o6" href="/ads/">
-      <div class="body">
-        <span class="tag">Static ads</span>
-        <h2>Marco Polo — 20 static ads</h2>
-        <p>Four audience themes · five ad variations each. Postpartum, life transitions, skip-the-small-talk, and how-it-works. Click any ad to enlarge or download the PNG.</p>
-        <span class="go">view static ads →</span>
-      </div>
-      <div class="stack" aria-hidden="true">
-        <span style="background-image:url('/ads/img/01-1-1-cried-in-target.png')"></span>
-        <span style="background-image:url('/ads/img/06-2-1-new-city.png')"></span>
-        <span style="background-image:url('/ads/img/11-3-1-skip-the-small-talk.png')"></span>
-        <span style="background-image:url('/ads/img/16-4-1-hand-matched.png')"></span>
-        <span style="background-image:url('/ads/img/05-1-5-your-village.png')"></span>
-        <span style="background-image:url('/ads/img/20-4-5-effortless.png')"></span>
-      </div>
-    </a>
+  <div class="wrap">
+    <div class="brand">Exhbt Studio</div>
+    <h1>Project directory</h1>
+    <p class="sub">Client work, organized by account. Each project lives under its own path.</p>
+    <div class="list">
+      <a class="client" href="/expomanagementinc/">
+        <div class="logo l-expo">E</div>
+        <div class="c-body">
+          <h2>Expo Management Inc.</h2>
+          <p>Home &amp; Garden Show landing pages plus onboarding and re-engagement email flows.</p>
+          <div class="c-meta">landing templates · email flows</div>
+        </div>
+        <span class="arrow">open →</span>
+      </a>
+      <a class="client" href="/marcopolo/">
+        <div class="logo l-mp">M</div>
+        <div class="c-body">
+          <h2>Marco Polo</h2>
+          <p>Circles landing directions, quiz and checkout flows, email designs, and static ad sets.</p>
+          <div class="c-meta">landing · quiz · emails · ads</div>
+        </div>
+        <span class="arrow">open →</span>
+      </a>
+    </div>
   </div>
+  <footer>© 2026 Exhbt Studio · project directory</footer>
 </body>
 </html>

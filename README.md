@@ -1,65 +1,47 @@
-# Circles — Landing Page Options
+# Exhbt Studio — client projects
 
-Four landing-page directions for Marco Polo Circles. All static HTML, no build step.
+Static HTML client work, no build step. One folder per client, served at its own path.
 
 ## Structure
 
 ```
-circles-landing/
-├── index.html        → the chooser page (links to all four)
-├── v1/index.html     → "Sunrise"  — full color, photo-strip hero
-├── v2/index.html     → "Cobalt"   — single dominant blue, full-bleed hero
-├── v3/index.html     → "Plum"     — editorial bold, split hero
-├── v4/index.html     → "Motion"   — cinematic video hero, animating text (222/Known style)
-└── vercel.json       → clean URLs (/v1 instead of /v1/index.html)
+/
+├── index.html                → Exhbt studio directory (links to each client)
+├── vercel.json               → clean URLs, no trailing slash
+│
+├── expomanagementinc/        → Expo Management Inc.
+│   ├── index.html            → project hub (two landing directions + email flows)
+│   ├── template-1-botanical/ → Home & Garden Show landing (editorial / serif)
+│   ├── template-2-retrofair/ → Home & Garden Show landing (retro fair / playful)
+│   └── emails/               → onboarding + re-engagement email flows (both designs)
+│
+└── marcopolo/                → Marco Polo (Circles)
+    ├── index.html            → Circles landing chooser
+    ├── v1..v4, v3a..v3d      → landing directions
+    ├── circles-quiz/         → quiz flow
+    ├── circles-checkout/     → checkout flow
+    ├── emails/               → Circles email designs
+    └── ads/                  → static ad sets
 ```
 
-Once deployed, the pages live at:
-- `yoursite.vercel.app/`     → chooser
-- `yoursite.vercel.app/v1`   → version 1
-- `yoursite.vercel.app/v2`   → version 2
-- `yoursite.vercel.app/v3`   → version 3
-- `yoursite.vercel.app/v4`   → version 4
+Deployed paths:
+- `/`                          → studio directory
+- `/expomanagementinc/`        → Expo Management hub
+- `/expomanagementinc/template-1-botanical` → landing template 1
+- `/expomanagementinc/emails/` → email flows preview
+- `/marcopolo/`                → Circles chooser
 
-### v4 needs a video file
+## Adding a new client
 
-`v4/index.html` references `/v4/hero.mp4` — a silent looping background video. Until you drop one in, the page renders the poster image (an Unsplash photo) and looks correct.
+1. Create a top-level folder named for the client (e.g. `newclient/`).
+2. Put the work inside it. Use **relative** links between files in the folder so it stays portable.
+3. Add a card to the top-level `index.html` directory.
 
-To make v4 fully cinematic, drop a `hero.mp4` into `/v4/`:
-- 10–20s silent loop of women connecting / laughing
-- 1080p, well-compressed (target under ~5MB if possible)
-- It will appear automatically on next push — no code change needed
+## Deploy
 
-## Put it on GitHub
-
-From inside this folder:
-
-```bash
-git init
-git add .
-git commit -m "Circles landing page options v1-v3"
-```
-
-Then create an empty repo on github.com (no README/gitignore), and:
-
-```bash
-git remote add origin https://github.com/YOUR-USERNAME/circles-landing.git
-git branch -M main
-git push -u origin main
-```
-
-(Or, with the GitHub CLI: `gh repo create circles-landing --public --source=. --push`)
-
-## Deploy on Vercel
-
-1. Go to vercel.com → **Add New → Project → Import** your `circles-landing` repo.
-2. Framework preset: **Other**. Build command: none. Output dir: leave default.
-3. Click **Deploy**. Done — you get a `*.vercel.app` URL in ~20 seconds.
-
-Every `git push` after that auto-deploys. To edit a page, change the file, commit, push.
+Connected to Vercel via GitHub. Every push to `main` auto-deploys. Framework preset: Other, no build command.
 
 ## Notes
 
-- Images are currently Unsplash links — swap in real Circles/Marco Polo photography before production. Drop image files into the folder and reference them with relative paths (e.g. `/img/hero.jpg`).
-- The CTA buttons point to `https://circles.marcopolo.me/survey`. Change per page if you want to track each variant's quiz starts separately (add a `?utm_content=v1` etc.).
-- To A/B test for real, point ad traffic at `/v1`, `/v2`, `/v3` with matching UTMs and compare in your analytics.
+- Images are Unsplash placeholders in most templates — swap in real photography before production, using relative paths inside each client folder.
+- Registration forms and email calendar links are front-end demos, ready to wire to a form endpoint / ESP.
