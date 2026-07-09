@@ -1,7 +1,8 @@
 /* ------------------------------------------------------------------ *
- * Exhbt feedback overlay — Figma-style pin comments, no backend.
- * Comments live in localStorage per page. Share/Import passes threads
- * between people via an encoded link or JSON file so you can converse.
+ * Exhbt feedback overlay — Figma-style pin comments.
+ * Storage: shared via /api/comments (Vercel KV) when a store is
+ * connected; otherwise local-only (localStorage per page) with
+ * share-link / JSON export so notes can still be passed around.
  * Drop in with: <script src="../feedback.js" defer></script>
  * ------------------------------------------------------------------ */
 (function () {
@@ -15,16 +16,22 @@
   var mode = false;         // comment placing mode
   var openId = null;        // currently open thread
 
+  /* remote */
+  var API = null, remoteOn = false, pushT = 0, pushing = false, statusDot = null;
+
   /* ---------- storage ---------- */
   function load() {
     try { var r = JSON.parse(localStorage.getItem(KEY)); if (r) state = r; } catch (e) {}
     try { var n = localStorage.getItem("exhbt-fb-name"); if (n && !state.me) state.me = n; } catch (e) {}
+    if (!state.threads) state.threads = [];
   }
-  function save() {
+  function saveLocal() {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
     if (state.me) { try { localStorage.setItem("exhbt-fb-name", state.me); } catch (e) {} }
   }
+  function save() { saveLocal(); pushSoon(); }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function visible() { return state.threads.filter(function (t) { return !t.deleted; }); }
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -64,7 +71,8 @@
   function injectCss() {
     var css = "" +
     ".fb-ui,.fb-ui *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}" +
-    ".fb-bar{position:fixed;right:18px;bottom:18px;z-index:" + Z.ui + ";display:flex;align-items:center;gap:6px;background:#141317;color:#fff;border-radius:100px;padding:6px;box-shadow:0 10px 34px rgba(0,0,0,.4)}" +
+    ".fb-bar{position:fixed;right:18px;bottom:18px;z-index:" + Z.ui + ";display:flex;align-items:center;gap:4px;background:#141317;color:#fff;border-radius:100px;padding:6px 6px 6px 4px;box-shadow:0 10px 34px rgba(0,0,0,.4)}" +
+    ".fb-bar .fb-dot{width:8px;height:8px;border-radius:50%;background:#7a7580;margin:0 4px 0 8px;flex:0 0 8px}" +
     ".fb-bar button{border:0;background:transparent;color:#e9e7ee;font-size:13px;font-weight:600;padding:9px 13px;border-radius:100px;cursor:pointer;display:flex;align-items:center;gap:7px;line-height:1}" +
     ".fb-bar button:hover{background:rgba(255,255,255,.1)}" +
     ".fb-bar .fb-primary{background:#6d4bd6;color:#fff}" +
@@ -127,14 +135,16 @@
   /* ---------- pins ---------- */
   var pinEls = {};
   function renderPins() {
-    Object.keys(pinEls).forEach(function (id) { if (!state.threads.some(function (t) { return t.id === id; })) { pinEls[id].remove(); delete pinEls[id]; } });
-    state.threads.forEach(function (t, i) {
+    var vis = visible(), ids = {};
+    vis.forEach(function (t) { ids[t.id] = 1; });
+    Object.keys(pinEls).forEach(function (id) { if (!ids[id]) { pinEls[id].remove(); delete pinEls[id]; } });
+    vis.forEach(function (t, i) {
       var el = pinEls[t.id];
       if (!el) {
         el = document.createElement("button");
         el.className = "fb-pin fb-ui";
         el.innerHTML = "<i></i>";
-        el.addEventListener("click", function (e) { e.stopPropagation(); openThread(t.id); });
+        el.addEventListener("click", (function (id) { return function (e) { e.stopPropagation(); openThread(id); }; })(t.id));
         document.body.appendChild(el);
         pinEls[t.id] = el;
       }
@@ -156,7 +166,6 @@
     if (!popEl || !openId) return;
     var t = threadById(openId); if (!t) return;
     var p = anchorPoint(t.anchor);
-    var sw = document.documentElement.scrollWidth;
     var left = Math.min(p.x + 18, Math.max(8, (scrollX + innerWidth) - 312));
     left = Math.max(scrollX + 8, left);
     popEl.style.left = left + "px";
@@ -167,7 +176,7 @@
   function openThread(id) {
     closePop();
     openId = id;
-    var t = threadById(id); if (!t) return;
+    var t = threadById(id); if (!t || t.deleted) { openId = null; return; }
     popEl = document.createElement("div");
     popEl.className = "fb-pop fb-ui";
     popEl.addEventListener("click", function (e) { e.stopPropagation(); });
@@ -178,9 +187,9 @@
     var ta = popEl.querySelector("textarea"); if (ta) ta.focus();
 
     function draw() {
-      var idx = state.threads.indexOf(t) + 1;
+      var idx = visible().indexOf(t) + 1;
       var isNew = t.comments.length === 0;
-      var html = '<div class="hd"><span>Comment #' + idx + (t.resolved ? " · resolved" : "") + '</span><button class="x" data-x>&times;</button></div>';
+      var html = '<div class="hd"><span>Comment #' + (idx || "?") + (t.resolved ? " · resolved" : "") + '</span><button class="x" data-x>&times;</button></div>';
       if (!isNew) {
         html += '<div class="body">';
         t.comments.forEach(function (c) {
@@ -215,8 +224,7 @@
       if (res) res.onclick = function () { t.resolved = !t.resolved; save(); draw(); renderPins(); };
       popEl.querySelector("[data-del]").onclick = function () {
         if (t.comments.length && !confirm("Delete this comment thread?")) return;
-        state.threads = state.threads.filter(function (x) { return x.id !== t.id; });
-        save(); closePop();
+        t.deleted = true; save(); closePop(); drawPanel();
       };
     }
   }
@@ -272,13 +280,15 @@
     if (open) drawPanel();
   }
   function drawPanel() {
+    if (!panel) return;
     var list = panel.querySelector(".fb-list");
-    if (!state.threads.length) {
+    var vis = visible();
+    if (!vis.length) {
       list.innerHTML = '<div class="fb-empty">No comments yet.<br>Click <b>Comment</b>, then click anywhere on the page to leave one.</div>';
       return;
     }
     list.innerHTML = "";
-    state.threads.forEach(function (t, i) {
+    vis.forEach(function (t, i) {
       var last = t.comments[t.comments.length - 1];
       var first = t.comments[0];
       var item = document.createElement("div");
@@ -296,7 +306,56 @@
     });
   }
 
-  /* ---------- share / import / export ---------- */
+  /* ---------- remote (shared) storage ---------- */
+  function apiUrl(base) { return base + "?page=" + encodeURIComponent(location.pathname); }
+  function detectBase() {
+    var cands = ["/api/comments", "/api/comments/"];
+    return (function next(i) {
+      if (i >= cands.length) return Promise.resolve(null);
+      return fetch(apiUrl(cands[i]), { cache: "no-store" }).then(function (r) {
+        if (!r.ok) return next(i + 1);
+        return r.json().then(function (j) {
+          if (j && typeof j.configured !== "undefined") { API = cands[i]; return j; }
+          return next(i + 1);
+        }).catch(function () { return next(i + 1); });
+      }).catch(function () { return next(i + 1); });
+    })(0);
+  }
+  function apiGet() {
+    if (!API) return Promise.resolve(null);
+    return fetch(apiUrl(API), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }
+  function apiPush() {
+    if (!API) return;
+    pushing = true;
+    fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page: location.pathname, threads: state.threads }) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { pushing = false; if (d && d.configured && d.threads) { state.threads = d.threads; saveLocal(); renderAll(true); } })
+      .catch(function () { pushing = false; });
+  }
+  function pushSoon() { if (!remoteOn) return; clearTimeout(pushT); pushT = setTimeout(apiPush, 450); }
+  function poll() { if (!remoteOn || pushing) return; apiGet().then(function (d) { if (d && d.configured && d.threads) { state.threads = d.threads; saveLocal(); renderAll(true); } }); }
+  function setStatus(on) {
+    remoteOn = on;
+    if (statusDot) {
+      statusDot.style.background = on ? "#38d39f" : "#7a7580";
+      statusDot.title = on ? "Shared — everyone sees these comments" : "Local only — comments stay in this browser";
+    }
+  }
+  function grabInputs() { if (!popEl) return null; var ta = popEl.querySelector("[data-text]"), nm = popEl.querySelector("[data-name]"); return { text: ta ? ta.value : "", name: nm ? nm.value : "" }; }
+  function putInputs(v) { if (!v || !popEl) return; var ta = popEl.querySelector("[data-text]"), nm = popEl.querySelector("[data-name]"); if (ta && v.text) ta.value = v.text; if (nm && v.name) nm.value = v.name; }
+  function renderAll(soft) {
+    renderPins();
+    if (panel && panel.classList.contains("open")) drawPanel();
+    if (popEl && openId) {
+      var t = threadById(openId);
+      if (!t || t.deleted) { closePop(); return; }
+      var active = document.activeElement && popEl.contains(document.activeElement);
+      if (!(soft && active)) { var vals = grabInputs(); openThread(openId); putInputs(vals); }
+    }
+  }
+
+  /* ---------- share / import / export (offline + fallback) ---------- */
   function encode(obj) { return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }
   function decode(str) { return JSON.parse(decodeURIComponent(escape(atob(str)))); }
   function mergeThreads(incoming) {
@@ -308,12 +367,13 @@
       var seen = {}; mine.comments.forEach(function (c) { seen[c.id] = 1; });
       (it.comments || []).forEach(function (c) { if (!seen[c.id]) { mine.comments.push(c); added++; } });
       mine.comments.sort(function (a, b) { return a.ts - b.ts; });
-      if (it.resolved) mine.resolved = it.resolved;
+      if (typeof it.resolved !== "undefined") mine.resolved = it.resolved;
+      if (it.deleted) mine.deleted = true;
     });
     return added;
   }
   function shareLink() {
-    if (!state.threads.length) { toast("No comments to share yet"); return; }
+    if (!visible().length) { toast("No comments to share yet"); return; }
     var url = location.origin + location.pathname + "#fb=" + encode({ threads: state.threads });
     var done = function () { toast("Share link copied. Send it back to keep the thread going."); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt("Copy this link:", url); });
@@ -341,7 +401,7 @@
     try {
       var data = decode(m[1]);
       var n = mergeThreads(data.threads || []);
-      save();
+      saveLocal();
       history.replaceState(null, "", location.pathname + location.search);
       if (n) setTimeout(function () { toast(n + " shared comment" + (n === 1 ? "" : "s") + " loaded"); }, 400);
     } catch (e) {}
@@ -350,16 +410,18 @@
   /* ---------- bar ---------- */
   function updateCount() {
     var c = document.querySelector(".fb-count");
-    if (c) { var open = state.threads.filter(function (t) { return !t.resolved; }).length; c.textContent = open; c.style.display = state.threads.length ? "flex" : "none"; }
+    if (c) { var vis = visible(); var open = vis.filter(function (t) { return !t.resolved; }).length; c.textContent = open; c.style.display = vis.length ? "flex" : "none"; }
   }
   function buildBar() {
     var bar = document.createElement("div"); bar.className = "fb-bar fb-ui";
     bar.innerHTML =
+      '<span class="fb-dot" data-dot title="Local only"></span>' +
       '<button class="fb-primary" data-comment>💬 <span>Comment</span></button>' +
       '<button class="fb-count" data-list style="display:none"></button>' +
       '<span class="sep"></span>' +
       '<button data-menu title="Share &amp; export">Share ▾</button>';
     document.body.appendChild(bar);
+    statusDot = bar.querySelector("[data-dot]");
     barBtn = bar.querySelector("[data-comment]");
     barBtn.onclick = function () { setMode(!mode); };
     bar.querySelector("[data-list]").onclick = function () { togglePanel(); };
@@ -386,9 +448,10 @@
     }, 0);
   }
   function clearAll() {
-    if (!state.threads.length) { toast("Nothing to clear"); return; }
-    if (!confirm("Delete all " + state.threads.length + " comment threads on this page? This cannot be undone.")) return;
-    state.threads = []; save(); closePop(); renderPins(); drawPanel(); toast("Cleared");
+    var vis = visible();
+    if (!vis.length) { toast("Nothing to clear"); return; }
+    if (!confirm("Delete all " + vis.length + " comment threads on this page? This cannot be undone.")) return;
+    vis.forEach(function (t) { t.deleted = true; }); save(); closePop(); renderPins(); drawPanel(); toast("Cleared");
   }
 
   function buildPanel() {
@@ -409,9 +472,20 @@
     drawPanel();
     addEventListener("resize", reposition);
     addEventListener("keydown", function (e) { if (e.key === "Escape") { if (mode) setMode(false); else if (openId) closePop(); } });
-    // reflow after fonts/images settle
     setTimeout(reposition, 600); setTimeout(reposition, 1600);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(reposition);
+
+    // remote bootstrap: adopt shared store if one is connected
+    detectBase().then(function (d) {
+      if (d && d.configured) {
+        setStatus(true);
+        if (state.threads.length) apiPush();               // merge local up, adopt merged result
+        else if (d.threads) { state.threads = d.threads; saveLocal(); renderAll(true); }
+        setInterval(poll, 12000);
+      } else {
+        setStatus(false);
+      }
+    });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
