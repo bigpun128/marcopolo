@@ -91,3 +91,29 @@ h1{font-family:var(--slab);font-weight:400;font-size:clamp(30px,5vw,50px);line-h
 footer{background:var(--ink);color:var(--paper);padding:38px 0}
 .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:var(--mono);font-size:12px;color:rgba(253,243,223,.7)}
 .foot-in a{color:var(--mustard);text-decoration:none}
+
+/* ---- standalone registration form ---- */
+.reg-wrap{max-width:620px;margin:0 auto}
+.perks{list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;margin:20px 0 26px;justify-content:center}
+.perks li{font-weight:700;font-size:14px;display:flex;gap:7px;align-items:center}
+.reg-form{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:30px 28px;box-shadow:8px 8px 0 var(--ink)}
+.reg-form .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:16px}.field.full{grid-column:1/-1}
+label{display:block;font-weight:800;font-size:13px;margin-bottom:6px}
+label .req{color:var(--tomato)}
+input,select{width:100%;font-family:var(--disp);font-weight:600;font-size:15px;padding:13px 14px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:none;box-shadow:4px 4px 0 var(--mustard)}
+input.err,select.err{border-color:var(--tomato);box-shadow:4px 4px 0 rgba(232,68,44,.4)}
+.err-msg{color:var(--tomato-dk);font-family:var(--mono);font-size:12px;margin-top:5px;display:none}
+.err-msg.show{display:block}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:4px 0 18px;font-weight:600;font-size:13.5px;color:var(--muted);line-height:1.5}
+.chk input{width:auto;margin-top:3px}
+.reg-form button.btn{width:100%;text-align:center;cursor:pointer;font-size:17px}
+.form-foot{font-family:var(--mono);font-size:12px;color:#8a7a6c;text-align:center;margin-top:14px}
+.success{display:none;text-align:center;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:38px 28px;box-shadow:8px 8px 0 var(--ink)}
+.success.show{display:block}
+.success .chk-big{width:74px;height:74px;border-radius:50%;background:var(--leaf);border:3px solid var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;box-shadow:4px 4px 0 var(--ink)}
+.success h2{font-family:var(--slab);font-weight:400;font-size:26px;color:var(--tomato)}
+.success p{color:var(--muted);margin-top:10px;max-width:40ch;margin-inline:auto}
+.success .code{display:inline-block;margin-top:16px;font-family:var(--mono);background:var(--mustard);border:2.5px solid var(--ink);border-radius:100px;padding:9px 18px;font-weight:500;letter-spacing:.1em}
+@media(max-width:560px){.reg-form .frow{grid-template-columns:1fr}}

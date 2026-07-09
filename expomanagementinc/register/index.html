@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register free · Fort Myers Home &amp; Garden Show</title>
+<meta name="description" content="Register free for the 30th Annual Fort Myers Home & Garden Show, Jan 3–4, 2026 at the Caloosa Sound Convention Center. Skip the line and grab a free tote.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<link href="../exhibitors/style.css" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Fort Myers Home & Garden Show","startDate":"2026-01-03","endDate":"2026-01-04","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"Place","name":"Caloosa Sound Convention Center","address":"1375 Monroe St, Fort Myers, FL 33901"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"organizer":{"@type":"Organization","name":"Expo Management Inc."}}</script>
+</head>
+<body>
+<div class="arch">Architecture demo · standalone <b>registration page</b> you can link to · front-end form, wire to your endpoint before launch</div>
+<nav><div class="nav-in">
+  <a href="../template-2-retrofair/" class="brand">FT. MYERS HOME &amp; GARDEN</a>
+  <div class="nav-links">
+    <a href="../template-2-retrofair/">Show home</a>
+    <a href="../exhibitors/">Exhibitors</a>
+  </div>
+</div></nav>
+
+<div class="wrap"><div class="reg-wrap">
+  <div class="page-head" style="text-align:center">
+    <h1>Register free</h1>
+    <p class="lead" style="margin-inline:auto">Reserve your free weekend pass to the 30th Annual Fort Myers Home &amp; Garden Show. Jan 3–4, 2026 · Caloosa Sound Convention Center.</p>
+    <ul class="perks">
+      <li>🎟️ Free admission</li>
+      <li>🏡 Free tote at the door</li>
+      <li>⚡ Skip the line</li>
+    </ul>
+  </div>
+
+  <form class="reg-form" id="regForm" novalidate>
+    <div class="frow">
+      <div class="field"><label>First name <span class="req">*</span></label><input type="text" name="first" autocomplete="given-name"><div class="err-msg">Enter your first name.</div></div>
+      <div class="field"><label>Last name <span class="req">*</span></label><input type="text" name="last" autocomplete="family-name"><div class="err-msg">Enter your last name.</div></div>
+    </div>
+    <div class="field full"><label>Email <span class="req">*</span></label><input type="email" name="email" autocomplete="email" placeholder="you@example.com"><div class="err-msg">Enter a valid email address.</div></div>
+    <div class="frow">
+      <div class="field"><label>Zip code <span class="req">*</span></label><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code"><div class="err-msg">Enter your zip code.</div></div>
+      <div class="field"><label>Guests joining you</label>
+        <select name="guests"><option value="0">Just me</option><option value="1">+1 guest</option><option value="2">+2 guests</option><option value="3">+3 or more</option></select>
+      </div>
+    </div>
+    <div class="field full"><label>Which day will you visit?</label>
+      <select name="day"><option value="both">Both days</option><option value="sat">Saturday, Jan 3</option><option value="sun">Sunday, Jan 4</option><option value="unsure">Not sure yet</option></select>
+    </div>
+    <div class="field full"><label>Most interested in</label>
+      <select name="interest"><option value="">Choose one (optional)</option><option>Landscaping &amp; outdoor living</option><option>Kitchen &amp; bath remodeling</option><option>Interior design &amp; décor</option><option>Home improvement &amp; repairs</option><option>Just browsing for ideas</option></select>
+    </div>
+    <label class="chk"><input type="checkbox" name="updates" checked> Email me show updates and the exhibitor list. No spam.</label>
+    <button type="submit" class="btn">Register free →</button>
+    <p class="form-foot">Free event · No payment required · Presented by Expo Management Inc.</p>
+  </form>
+
+  <div class="success" id="regSuccess">
+    <div class="chk-big">✓</div>
+    <h2>You're registered.</h2>
+    <p>Check your inbox for your ticket and event details. Show it at the Monroe St. entrance to grab your free tote.</p>
+    <span class="code" id="confCode">FMHG-2026-••••</span>
+  </div>
+</div></div>
+
+<footer><div class="wrap foot-in">
+  <span>© 2026 Expo Management Inc. · Fort Myers Home &amp; Garden Show</span>
+  <span><a href="../template-2-retrofair/">Show home</a> · <a href="../exhibitors/">Exhibitors</a></span>
+</div></footer>
+
+<script>
+  const form=document.getElementById('regForm');
+  const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function setErr(input,on){input.classList.toggle('err',on);const m=input.parentElement.querySelector('.err-msg');if(m)m.classList.toggle('show',on)}
+  form.addEventListener('submit',e=>{
+    e.preventDefault();let ok=true;
+    const first=form.first,last=form.last,email=form.email,zip=form.zip;
+    [first,last,zip].forEach(f=>{const bad=!f.value.trim();setErr(f,bad);if(bad)ok=false});
+    const badEmail=!emailRe.test(email.value.trim());setErr(email,badEmail);if(badEmail)ok=false;
+    if(!ok){form.querySelector('.err').focus();return}
+    // front-end demo — wire this to your form endpoint / email platform
+    const code='FMHG-2026-'+Math.random().toString(36).slice(2,6).toUpperCase();
+    document.getElementById('confCode').textContent=code;
+    form.style.display='none';
+    const s=document.getElementById('regSuccess');s.classList.add('show');
+    s.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  ['first','last','email','zip'].forEach(n=>form[n].addEventListener('input',()=>setErr(form[n],false)));
+</script>
+</body>
+</html>
