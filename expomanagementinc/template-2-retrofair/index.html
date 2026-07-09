@@ -262,6 +262,15 @@
     .btn:hover{box-shadow:5px 5px 0 var(--ink)}
     .marq-track{font-size:17px}
   }
+
+  .vend-cats{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:1000px){.vend-cats{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.vend-cats{grid-template-columns:1fr}}
+  .cat-more{margin-top:30px;text-align:center}
+  .cat-more .cat-lbl{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky-dk);display:block;margin-bottom:14px}
+  .cat-more .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:760px;margin:0 auto}
+  .cat-more .chips span{font-family:var(--disp);font-weight:700;font-size:14px;color:var(--ink);background:var(--paper);border:2.5px solid var(--ink);border-radius:100px;padding:8px 15px;box-shadow:3px 3px 0 var(--ink)}
+  @media(max-width:600px){.brand{font-size:16px}.cat-more .chips span{font-size:13px;padding:7px 13px}}
 </style>
 </head>
 <body>
@@ -269,13 +278,12 @@
 <div class="bunting" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
 <nav><div class="nav-in">
-  <a href="#top" class="brand">HOMEGROWN · FT. MYERS</a>
+  <a href="#top" class="brand">FT. MYERS HOME &amp; GARDEN</a>
   <div class="nav-links">
     <a href="#event">The Show</a>
     <a href="#getting">Getting There</a>
-    <a href="#vendors">Vendors</a>
-    <a href="#venue">Map</a>
-    <a href="#register" class="nav-cta">Get FREE tickets →</a>
+    <a href="#vendors">Exhibitors</a>
+    <a href="#register" class="nav-cta">Register free →</a>
   </div>
 </div></nav>
 
@@ -284,10 +292,10 @@
   <div class="wrap"><div class="hero-in">
     <span class="ribbon reveal">★ 30th Annual · Jan 3–4, 2026 ★</span>
     <h1 class="reveal">FORT MYERS<br><span class="yellow">HOME &amp; GARDEN</span><br>SHOW</h1>
-    <div class="sub reveal">Two big days. 175+ experts. Live demos. And it's totally FREE.</div>
+    <div class="sub reveal">Two days. 175+ home and garden experts. Free admission.</div>
     <div class="hero-ctas reveal">
-      <a href="#register" class="btn btn-primary">Grab free tickets →</a>
-      <a href="#venue" class="btn btn-paper">See the fairgrounds</a>
+      <a href="#register" class="btn btn-primary">Register free →</a>
+      <a href="#vendors" class="btn btn-paper">See exhibitors</a>
     </div>
     <div class="stubs reveal">
       <div class="stub" style="--r:-3deg"><b>JAN 3–4</b><span>Sat &amp; Sun</span></div>
@@ -299,8 +307,8 @@
 </header>
 
 <div class="marq"><div class="marq-track">
-  <span>FREE ADMISSION</span><span>LIVE DEMOS</span><span>175+ EXPERTS</span><span>FOOD TRUCKS</span><span>KIDS' ZONE</span><span>FREE TOTE BAG</span>
-  <span>FREE ADMISSION</span><span>LIVE DEMOS</span><span>175+ EXPERTS</span><span>FOOD TRUCKS</span><span>KIDS' ZONE</span><span>FREE TOTE BAG</span>
+  <span>FREE ADMISSION</span><span>175+ EXHIBITORS</span><span>KITCHEN &amp; BATH</span><span>OUTDOOR LIVING</span><span>HOME IMPROVEMENT</span><span>FREE TOTE</span>
+  <span>FREE ADMISSION</span><span>175+ EXHIBITORS</span><span>KITCHEN &amp; BATH</span><span>OUTDOOR LIVING</span><span>HOME IMPROVEMENT</span><span>FREE TOTE</span>
 </div></div>
 
 <section class="about" id="event"><div class="wrap">
@@ -311,19 +319,19 @@
   <div class="stat-row">
     <div class="stat reveal"><b>30th</b><span>Annual show</span></div>
     <div class="stat reveal"><b>175+</b><span>Local experts</span></div>
-    <div class="stat reveal"><b>2 Days</b><span>Of demos &amp; fun</span></div>
+    <div class="stat reveal"><b>2 Days</b><span>Sat &amp; Sun</span></div>
     <div class="stat reveal"><b>$0</b><span>Always free</span></div>
   </div>
 </div></section>
 
 <section class="details"><div class="wrap">
   <div class="sec-head reveal">
-    <h2 class="big">Here's the <span style="color:var(--mustard)">scoop.</span></h2>
+    <h2 class="big">The <span style="color:var(--mustard)">details.</span></h2>
   </div>
   <div class="details-grid">
     <div class="dcard reveal" style="--r:-1.5deg"><div class="ic">📅</div><h3>When</h3><p><b>Sat, Jan 3</b> &amp; <b>Sun, Jan 4, 2026</b>. 10am to 5pm. One ticket, whole weekend.</p></div>
     <div class="dcard reveal" style="--r:1.5deg"><div class="ic">📍</div><h3>Where</h3><p><b>Caloosa Sound Convention Center</b>, 1375 Monroe St, Fort Myers. Downtown River District.</p></div>
-    <div class="dcard reveal" style="--r:-1deg"><div class="ic">🎟️</div><h3>How much</h3><p><b>Free. Zip. Nada.</b> Register online, skip the line, grab a free tote at the door.</p></div>
+    <div class="dcard reveal" style="--r:-1deg"><div class="ic">🎟️</div><h3>How much</h3><p><b>Free for everyone.</b> Register online, skip the line, and grab a free tote at the door.</p></div>
   </div>
 </div></section>
 
@@ -334,10 +342,10 @@
   <div class="get-grid">
     <div class="get-photo reveal"><span class="pin">📍 DOWNTOWN RIVER DISTRICT</span><img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?q=80&w=1000&auto=format&fit=crop" alt="Downtown street with palm trees"></div>
     <div class="reveal">
-      <p style="font-family:var(--disp);font-weight:600;font-size:18px;color:#4a3a2c;max-width:46ch;margin-bottom:6px">The Convention Center sits right on the Caloosahatchee riverfront downtown. Here's how to roll in:</p>
+      <p style="font-family:var(--disp);font-weight:600;font-size:18px;color:#4a3a2c;max-width:46ch;margin-bottom:6px">The Convention Center sits on the Caloosahatchee riverfront downtown. The easiest ways in:</p>
       <ul class="park-list">
         <li><span class="n">1</span><div><b>Luminary Hotel Garage</b><span>Covered and closest. Right next door.</span></div></li>
-        <li><span class="n">2</span><div><b>City of Palms Garage</b><span>Across the street, tons of spaces.</span></div></li>
+        <li><span class="n">2</span><div><b>City of Palms Garage</b><span>Across the street, plenty of spaces.</span></div></li>
         <li><span class="n">3</span><div><b>Metered street parking</b><span>All around the River District.</span></div></li>
         <li><span class="n">4</span><div><b>Uber &amp; Lyft</b><span>Drop-off at the Monroe St. doors.</span></div></li>
       </ul>
@@ -347,100 +355,27 @@
 
 <section class="vendors" id="vendors"><div class="wrap">
   <div class="sec-head reveal">
-    <h2 class="big">175+ experts, <span class="hl">every kind</span> of project.</h2>
+    <h2 class="big">175+ exhibitors, <span class="hl">by category.</span></h2>
+    <p class="sub">Browse who you'll meet. The full exhibitor list posts closer to the show.</p>
   </div>
+  <!-- NOTE: replace Unsplash placeholders with real Expo Management photography before launch -->
   <div class="vend-cats">
-    <div class="vc reveal"><div class="vc-img"><span class="tag">40+ booths</span><img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=800&auto=format&fit=crop" alt="Landscaped garden"></div><div class="vc-body"><h3>Landscaping &amp; Outdoor</h3><p>Hardscapes, water features, native plants &amp; lawn care.</p></div></div>
-    <div class="vc reveal"><div class="vc-img"><span class="tag">35+ booths</span><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" alt="Modern kitchen"></div><div class="vc-body"><h3>Kitchen &amp; Bath</h3><p>Remodels, cabinetry, countertops &amp; fixtures.</p></div></div>
-    <div class="vc reveal"><div class="vc-img"><span class="tag">30+ booths</span><img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=800&auto=format&fit=crop" alt="Cozy interior"></div><div class="vc-body"><h3>Interior Design &amp; Décor</h3><p>Furniture, window treatments &amp; styling.</p></div></div>
-    <div class="vc reveal"><div class="vc-img"><span class="tag">25+ booths</span><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop" alt="Home improvement"></div><div class="vc-body"><h3>Home Improvement</h3><p>Roofing, windows, flooring, solar &amp; smart home.</p></div></div>
-    <div class="vc reveal"><div class="vc-img"><span class="tag">Live daily</span><img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=800&auto=format&fit=crop" alt="Gardening demo"></div><div class="vc-body"><h3>Live Demos &amp; Stage</h3><p>Planting, DIY &amp; expert Q&amp;A all day long.</p></div></div>
-    <div class="vc reveal"><div class="vc-img"><span class="tag">For the kids</span><img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?q=80&w=800&auto=format&fit=crop" alt="Kids planting"></div><div class="vc-body"><h3>Kids' Grow Zone</h3><p>Hands-on planting &amp; family fun.</p></div></div>
+    <div class="vc reveal"><div class="vc-img"><span class="tag">40+ exhibitors</span><img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?q=80&w=800&auto=format&fit=crop" alt="Outdoor living and landscaping"></div><div class="vc-body"><h3>Landscaping &amp; Outdoor</h3><p>Patios, pavers, native plants &amp; lawn care.</p></div></div>
+    <div class="vc reveal"><div class="vc-img"><span class="tag">35+ exhibitors</span><img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop" alt="Kitchen remodel"></div><div class="vc-body"><h3>Kitchen &amp; Bath</h3><p>Remodels, cabinetry, countertops &amp; fixtures.</p></div></div>
+    <div class="vc reveal"><div class="vc-img"><span class="tag">30+ exhibitors</span><img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=800&auto=format&fit=crop" alt="Interior décor"></div><div class="vc-body"><h3>Interior Design &amp; Décor</h3><p>Furniture, window treatments &amp; styling.</p></div></div>
+    <div class="vc reveal"><div class="vc-img"><span class="tag">25+ exhibitors</span><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800&auto=format&fit=crop" alt="Home improvement"></div><div class="vc-body"><h3>Home Improvement</h3><p>Roofing, windows, flooring &amp; solar.</p></div></div>
   </div>
-</div></section>
-
-<section class="venue" id="venue"><div class="wrap">
-  <div class="sec-head reveal">
-    <h2 class="big">Explore the <span style="color:var(--mustard)">fairgrounds.</span></h2>
-    <p class="sub">Tap any area to see what's inside.</p>
-  </div>
-  <div class="map-wrap reveal">
-    <div class="map-stage">
-      <svg class="floormap" viewBox="0 0 640 460" role="img" aria-label="Interactive venue floor plan">
-        <rect x="0" y="0" width="640" height="460" rx="14" fill="#fbe9c6"></rect>
-        <g class="zone" data-zone="entrance" tabindex="0">
-          <rect class="zbg" x="240" y="410" width="160" height="40" rx="8" fill="#e8442c" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="320" y="431" text-anchor="middle" fill="#fdf3df">MAIN ENTRANCE</text>
-          <text class="zsub" x="320" y="443" text-anchor="middle" fill="#fdf3dfcc">Tickets &amp; free tote pickup</text>
-        </g>
-        <g class="zone" data-zone="hallA" tabindex="0">
-          <rect class="zbg" x="30" y="30" width="270" height="150" rx="10" fill="#3aa6c9" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="165" y="100" text-anchor="middle" fill="#fdf3df">VENDOR HALL A</text>
-          <text class="zsub" x="165" y="116" text-anchor="middle" fill="#fdf3dfcc">Kitchen, Bath &amp; Interiors</text>
-        </g>
-        <g class="zone" data-zone="hallB" tabindex="0">
-          <rect class="zbg" x="340" y="30" width="270" height="150" rx="10" fill="#3aa6c9" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="475" y="100" text-anchor="middle" fill="#fdf3df">VENDOR HALL B</text>
-          <text class="zsub" x="475" y="116" text-anchor="middle" fill="#fdf3dfcc">Improvement &amp; Outdoor</text>
-        </g>
-        <g class="zone" data-zone="stage" tabindex="0">
-          <rect class="zbg" x="30" y="210" width="200" height="120" rx="10" fill="#5a9e4b" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="130" y="266" text-anchor="middle" fill="#fdf3df">GARDEN STAGE</text>
-          <text class="zsub" x="130" y="282" text-anchor="middle" fill="#fdf3dfcc">Live demos &amp; talks</text>
-        </g>
-        <g class="zone" data-zone="food" tabindex="0">
-          <rect class="zbg" x="410" y="210" width="200" height="120" rx="10" fill="#f4b73f" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="510" y="266" text-anchor="middle">FOOD COURT</text>
-          <text class="zsub" x="510" y="282" text-anchor="middle">Trucks &amp; café</text>
-        </g>
-        <g class="zone" data-zone="kids" tabindex="0">
-          <rect class="zbg" x="255" y="210" width="130" height="120" rx="10" fill="#4a2942" stroke="#2a1c12" stroke-width="3"></rect>
-          <text class="zlabel" x="320" y="262" text-anchor="middle" fill="#fdf3df">KIDS' GROW</text>
-          <text class="zsub" x="320" y="278" text-anchor="middle" fill="#fdf3dfcc">ZONE</text>
-        </g>
-        <g class="zone" data-zone="info" tabindex="0">
-          <circle class="zbg" cx="320" cy="360" r="26" fill="#e8442c" stroke="#2a1c12" stroke-width="3"></circle>
-          <text class="zlabel" x="320" y="365" text-anchor="middle" fill="#fdf3df">INFO</text>
-        </g>
-      </svg>
-    </div>
-    <aside class="map-info">
-      <span class="mi-tag" id="mi-tag">Tap an area</span>
-      <h3 id="mi-title">Welcome to the map!</h3>
-      <p id="mi-desc">Give any zone a tap to see what's inside and where to find it. It's all on one easy level.</p>
-      <div class="mi-meta" id="mi-meta">
-        <div><span class="dot"></span> One level, fully accessible</div>
-        <div><span class="dot"></span> Free tote &amp; program at the door</div>
-      </div>
-      <p class="map-hint">💡 Start at the Garden Stage for demo times.</p>
-    </aside>
-  </div>
-</div></section>
-
-<section class="food"><div class="wrap">
-  <div class="food-grid">
-    <div class="food-photos reveal">
-      <div class="fp"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=600&auto=format&fit=crop" alt="Fresh food"></div>
-      <div class="fp"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=600&auto=format&fit=crop" alt="Café tables"></div>
-      <div class="fp"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=600&auto=format&fit=crop" alt="Plated meal"></div>
-      <div class="fp"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600&auto=format&fit=crop" alt="Treats"></div>
-    </div>
-    <div class="reveal">
-      <h2 class="big">Hungry? <span class="hl">Dig in.</span></h2>
-      <p style="font-family:var(--disp);font-weight:600;font-size:18px;color:#4a3a2c;margin-top:18px;max-width:44ch">Make a day of it. The on-site Food Court keeps the family fueled.</p>
-      <ul>
-        <li><span class="ck">✓</span> Local food trucks &amp; favorites</li>
-        <li><span class="ck">✓</span> Café with coffee &amp; cold drinks</li>
-        <li><span class="ck">✓</span> Veggie &amp; kid-friendly options</li>
-        <li><span class="ck">✓</span> Riverfront seating</li>
-      </ul>
+  <div class="cat-more reveal">
+    <span class="cat-lbl">Also on the floor</span>
+    <div class="chips">
+      <span>Windows &amp; Impact Doors</span><span>Roofing</span><span>Flooring &amp; Tile</span><span>Pools &amp; Spas</span><span>Sunrooms &amp; Lanais</span><span>Solar &amp; Smart Home</span><span>Water Treatment</span><span>Financing &amp; Services</span>
     </div>
   </div>
 </div></section>
 
 <section class="tote"><div class="wrap"><div class="tote-in">
   <div class="reveal">
-    <h2>Register &amp; grab a FREE tote.</h2>
+    <h2>Register and grab a free tote.</h2>
     <p>Register online and grab our canvas tote at the door, built to haul home your samples and finds. While supplies last.</p>
     <a href="#register" class="btn btn-mustard" style="margin-top:26px">Claim mine →</a>
   </div>
@@ -451,42 +386,42 @@
 
 <section class="register" id="register"><div class="wrap"><div class="reg-grid">
   <div class="reg-copy reveal">
-    <h2>Grab your FREE tickets.</h2>
-    <p class="lede">Reserve your free pass, skip the line, get the demo schedule. Takes a minute.</p>
+    <h2>Register free.</h2>
+    <p class="lede">Reserve your free pass and skip the line. We'll email your ticket and event details. Takes a minute.</p>
     <ul class="reg-perks">
       <li><span class="ic">🎟️</span> Free weekend admission for you + a guest</li>
       <li><span class="ic">🏡</span> Free canvas tote at the door</li>
-      <li><span class="ic">📅</span> First dibs on the demo schedule</li>
+      <li><span class="ic">📅</span> Early access to the exhibitor list</li>
       <li><span class="ic">⚡</span> Skip the line: just show your phone</li>
     </ul>
   </div>
   <div class="reveal">
     <form id="regForm" novalidate>
       <div class="form-row">
-        <div class="field"><label>First name <span class="req">*</span></label><input type="text" name="first" autocomplete="given-name"><div class="err-msg">Pop your first name in here.</div></div>
-        <div class="field"><label>Last name <span class="req">*</span></label><input type="text" name="last" autocomplete="family-name"><div class="err-msg">And your last name too.</div></div>
+        <div class="field"><label>First name <span class="req">*</span></label><input type="text" name="first" autocomplete="given-name"><div class="err-msg">Enter your first name.</div></div>
+        <div class="field"><label>Last name <span class="req">*</span></label><input type="text" name="last" autocomplete="family-name"><div class="err-msg">Enter your last name.</div></div>
       </div>
-      <div class="field full"><label>Email <span class="req">*</span></label><input type="email" name="email" autocomplete="email" placeholder="you@example.com"><div class="err-msg">We need a valid email for your ticket.</div></div>
+      <div class="field full"><label>Email <span class="req">*</span></label><input type="email" name="email" autocomplete="email" placeholder="you@example.com"><div class="err-msg">Enter a valid email address.</div></div>
       <div class="form-row">
-        <div class="field"><label>Zip code <span class="req">*</span></label><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code"><div class="err-msg">Zip code, please.</div></div>
+        <div class="field"><label>Zip code <span class="req">*</span></label><input type="text" name="zip" inputmode="numeric" autocomplete="postal-code"><div class="err-msg">Enter your zip code.</div></div>
         <div class="field"><label>Guests joining you</label>
           <select name="guests"><option value="0">Just me</option><option value="1">+1 guest</option><option value="2">+2 guests</option><option value="3">+3 or more</option></select>
         </div>
       </div>
       <div class="field full"><label>Which day?</label>
-        <select name="day"><option value="both">Both days!</option><option value="sat">Saturday, Jan 3</option><option value="sun">Sunday, Jan 4</option><option value="unsure">Not sure yet</option></select>
+        <select name="day"><option value="both">Both days</option><option value="sat">Saturday, Jan 3</option><option value="sun">Sunday, Jan 4</option><option value="unsure">Not sure yet</option></select>
       </div>
-      <div class="field full"><label>What are you most excited for?</label>
-        <select name="interest"><option value="">Pick one (optional)</option><option>Landscaping &amp; outdoor living</option><option>Kitchen &amp; bath remodeling</option><option>Interior design &amp; décor</option><option>Home improvement &amp; repairs</option><option>Just here for the ideas</option></select>
+      <div class="field full"><label>Most interested in</label>
+        <select name="interest"><option value="">Pick one (optional)</option><option>Landscaping &amp; outdoor living</option><option>Kitchen &amp; bath remodeling</option><option>Interior design &amp; décor</option><option>Home improvement &amp; repairs</option><option>Just browsing for ideas</option></select>
       </div>
-      <label class="chk"><input type="checkbox" name="updates" checked> Yes, send me the demo schedule &amp; show news. No spam, promise.</label>
-      <button type="submit" class="btn btn-primary">Get my free tickets →</button>
+      <label class="chk"><input type="checkbox" name="updates" checked> Email me show updates and the exhibitor list. No spam.</label>
+      <button type="submit" class="btn btn-primary">Register free →</button>
       <p class="form-foot">Free event · No payment · Presented by Expo Management Inc.</p>
     </form>
     <div class="form-success" id="regSuccess">
       <div class="big-check">✓</div>
-      <h3>You're in! 🎉</h3>
-      <p>Check your inbox for your tickets and the demo schedule. Show it at the Monroe St. doors to grab your free tote!</p>
+      <h3>You're registered.</h3>
+      <p>Check your inbox for your ticket and event details. Show it at the Monroe St. entrance to grab your free tote.</p>
       <span class="code" id="confCode">FMHG-2026-••••</span>
     </div>
   </div>
@@ -495,11 +430,11 @@
 <footer><div class="wrap">
   <div class="foot-top">
     <div>
-      <div class="brand">HOMEGROWN · FT. MYERS</div>
+      <div class="brand">FT. MYERS HOME &amp; GARDEN</div>
       <p style="font-family:var(--disp);font-weight:600;font-size:14px;color:rgba(253,243,223,.7);margin-top:12px;max-width:34ch">The 30th Annual Fort Myers Home &amp; Garden Show. Presented by Expo Management Inc.</p>
     </div>
     <div class="foot-cols">
-      <div><h4>The Show</h4><a href="#event">About</a><a href="#getting">Getting there</a><a href="#venue">Map</a><a href="#register">Tickets</a></div>
+      <div><h4>The Show</h4><a href="#event">About</a><a href="#getting">Getting there</a><a href="#vendors">Exhibitors</a><a href="#register">Register</a></div>
       <div><h4>Visit</h4><p>Caloosa Sound<br>Convention Center</p><p>1375 Monroe St<br>Fort Myers, FL 33901</p></div>
       <div><h4>Contact</h4><a href="mailto:info@expomanagementinc.com">info@expomanagementinc.com</a><a href="#register">Exhibitor info</a></div>
     </div>
@@ -513,26 +448,6 @@
 <script>
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%3*0.08)+'s';io.observe(el)});
-
-  const zoneData={
-    entrance:{tag:'Arrival',title:'Main Entrance',desc:'Enter from Monroe Street. Registered guests scan their phone to skip the line and grab their free tote and program.',meta:['Tickets & will-call','Free tote pickup','Program & map']},
-    hallA:{tag:'Exhibits',title:'Vendor Hall A',desc:'The design half, with kitchen & bath remodelers, cabinetry, countertops, flooring, and interior décor pros.',meta:['Kitchen & Bath','Interior Design & Décor','~65 exhibitors']},
-    hallB:{tag:'Exhibits',title:'Vendor Hall B',desc:'The improvement & outdoor half, with roofing, windows, solar, smart home, landscaping, and outdoor living.',meta:['Home Improvement','Landscaping & Outdoor','~65 exhibitors']},
-    stage:{tag:'Programming',title:'Garden Stage',desc:'Live demos and expert talks all day, from planting workshops to DIY tips and Q&A. Grab a seat!',meta:['Live demos hourly','Expert Q&A','Seating available']},
-    food:{tag:'Refuel',title:'Food Court',desc:'Local food trucks and a café with coffee, pastries, and cold drinks. Riverfront seating to rest between booths.',meta:['Food trucks & café','Veggie & kid options','Riverfront seating']},
-    kids:{tag:'Family',title:"Kids' Grow Zone",desc:'Hands-on planting where little ones dig in and take home a starter pot. Free and supervised.',meta:['Hands-on planting','Take-home pot','All ages']},
-    info:{tag:'Help',title:'Info Booth',desc:'Looking for a specific exhibitor or the demo schedule? Our team can point you anywhere.',meta:['Directions & lost + found','Exhibitor lookup','Demo schedule']}
-  };
-  const zones=document.querySelectorAll('.zone');
-  const miTag=document.getElementById('mi-tag'),miTitle=document.getElementById('mi-title'),miDesc=document.getElementById('mi-desc'),miMeta=document.getElementById('mi-meta');
-  function selectZone(z){const d=zoneData[z];if(!d)return;
-    zones.forEach(g=>g.classList.toggle('active',g.dataset.zone===z));
-    miTag.textContent=d.tag;miTitle.textContent=d.title;miDesc.textContent=d.desc;
-    miMeta.innerHTML=d.meta.map(m=>`<div><span class="dot"></span> ${m}</div>`).join('');}
-  zones.forEach(g=>{
-    g.addEventListener('click',()=>selectZone(g.dataset.zone));
-    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectZone(g.dataset.zone)}});
-  });
 
   const form=document.getElementById('regForm');
   const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;

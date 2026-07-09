@@ -168,24 +168,6 @@ function checkList(t, items){
   });
   return row(t,'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+inner+'</table>','20px 32px 0');
 }
-function mapGrid(t){
-  const cell=function(bg,fg,label,sub,cs){
-    return '<td '+(cs?'colspan="'+cs+'" ':'')+'style="background:'+bg+';border-radius:10px;padding:16px 10px;text-align:center">'+
-      '<div style="font-family:'+t.head+';font-weight:'+(t.key==='retrofair'?'400':'600')+';font-size:13px;color:'+fg+';line-height:1.1">'+label+'</div>'+
-      (sub?'<div style="font-family:'+t.body+';font-size:11px;color:'+fg+';opacity:.75;margin-top:3px">'+sub+'</div>':'')+'</td>';
-  };
-  const gap='<td width="8" style="font-size:0">&nbsp;</td>';
-  const grid='<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:'+t.factBg+';border:1px solid '+t.cardBorder+';border-radius:14px"><tr><td style="padding:16px">'+
-    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">'+
-      '<tr>'+cell(t.soft,t.ink,'Vendor Hall A','Kitchen, Bath &amp; Interiors')+gap+cell(t.soft,t.ink,'Vendor Hall B','Improvement &amp; Outdoor')+'</tr>'+
-      '<tr><td colspan="3" style="height:8px;font-size:0">&nbsp;</td></tr>'+
-      '<tr>'+cell(t.brandBar,'#fbf8f1','Garden Stage','Live demos')+gap+cell(t.accent2,t.ink,'Food Court','Trucks &amp; café')+'</tr>'+
-      '<tr><td colspan="3" style="height:8px;font-size:0">&nbsp;</td></tr>'+
-      '<tr>'+cell(t.accent,'#fff','Main Entrance · Registration &amp; free tote pickup','',3)+'</tr>'+
-    '</table>'+
-    '</td></tr></table>';
-  return row(t, grid, '20px 32px 0');
-}
 function divider(t){ return '<tr><td style="padding:26px 32px 0"><div style="height:1px;background:'+t.divider+'"></div></td></tr>'; }
 function footer(t){
   return '<tr><td style="padding:30px 32px 36px">'+
@@ -221,8 +203,8 @@ const VENDORS=[
   {name:'Kitchen &amp; Bath',count:'35+ booths',note:'Remodels, cabinetry, countertops and fixtures.'},
   {name:'Interior Design &amp; Décor',count:'30+ booths',note:'Furniture, window treatments and styling ideas.'},
   {name:'Home Improvement',count:'25+ booths',note:'Roofing, windows, flooring, solar and smart home.'},
-  {name:'Live Demos &amp; Garden Stage',count:'All day',note:'Planting workshops, DIY tips and expert Q&amp;A.'},
-  {name:"Kids' Grow Zone",count:'Family',note:'Hands-on planting and a take-home starter pot.'}
+  {name:'Windows, Doors &amp; Impact',count:'Storm-ready',note:'Impact windows, doors and hurricane protection.'},
+  {name:'Pools, Spas &amp; Sunrooms',count:'Outdoor',note:'Pools, spas, lanais and sunroom builders.'}
 ];
 
 const FLOWS=[
@@ -240,7 +222,7 @@ const FLOWS=[
     build:t=>h1(t,'Plan your visit.')+
       p(t,'With more than 175 exhibitors, a little planning goes a long way. Here\'s how the floor breaks down so you can head straight for what you need.')+
       vendorList(t,VENDORS)+
-      p(t,'A good move: start at the Garden Stage for the day\'s demo schedule, then work the halls.',{muted:true})+
+      p(t,'A good move: check the exhibitor list ahead of time and map out the booths worth your visit.',{muted:true})+
       button(t,'See the full exhibitor list')
    },
    {n:'Email 3 · project inspiration', subject:'5 winter projects SW Florida homeowners love right now', preview:'January is prime time for these. Find the right pro at the show.',
@@ -254,7 +236,7 @@ const FLOWS=[
       ])+
       button(t,'Browse exhibitors by project')
    },
-   {n:'Email 4 · day before the show', subject:'See you this weekend! Parking, map & what to know', preview:'Doors open at 10am. Here\'s everything for a smooth visit.',
+   {n:'Email 4 · day before the show', subject:'See you this weekend: parking and what to know', preview:'Doors open at 10am. Here\'s everything for a smooth visit.',
     build:t=>h1(t,'See you this weekend.')+
       p(t,'The show is almost here. Here\'s your game plan so you can walk right in and make the most of it.')+
       factsBox(t,FACTS.slice(0,3))+
@@ -265,8 +247,6 @@ const FLOWS=[
         {name:'Metered street parking',note:'Throughout the downtown River District for shorter visits.'},
         {name:'Rideshare drop-off',note:'Uber and Lyft drop right at the Monroe St. entrance.'}
       ])+
-      p(t,'<b>The floor at a glance</b>',{})+
-      mapGrid(t)+
       p(t,'What to bring: this email for your free tote, comfortable shoes, and your project questions.',{muted:true})+
       button(t,'View event details')
    }
@@ -289,19 +269,18 @@ const FLOWS=[
         {b:'Free admission',t:'for you and a guest, both days.'},
         {b:'A free canvas tote',t:'waiting at the door, while supplies last.'},
         {b:'Skip the line',t:'just show your phone at the entrance.'},
-        {b:'The demo schedule',t:'sent to you before the show.'}
+        {b:'The exhibitor list',t:'sent to you before the show.'}
       ])+
       button(t,'Register free in one minute')+
       p(t,'Already registered? You\'re all set, ignore this one and we\'ll see you there.',{muted:true,small:true})
    },
-   {n:'Email 3 · last week', subject:'Last call + what\'s new for our 30th year', preview:'Bigger floor, new Garden Stage, more food. Register before you go.',
+   {n:'Email 3 · last week', subject:'Last call + what\'s new for our 30th year', preview:'A bigger floor and more exhibitors than ever. Register before you go.',
     build:t=>h1(t,'Last week to register.')+
       p(t,'This is our 30th year, and it\'s the biggest show yet. A few things that are new since the last time you came:')+
       checkList(t,[
         {b:'A bigger show floor',t:'with 175+ exhibitors across two full halls.'},
-        {b:'A new Garden Stage',t:'with hourly live demos and expert Q&amp;A.'},
-        {b:'An expanded Food Court',t:'with rotating local food trucks and a café.'},
-        {b:'A new Kids\' Grow Zone',t:'so the whole family has something to do.'},
+        {b:'More categories than ever',t:'from impact windows and roofing to pools, sunrooms and smart home.'},
+        {b:'Free parking nearby',t:'at the Luminary and City of Palms garages.'},
         {b:'A free tote for every registrant',t:'new this year, only if you sign up online.'}
       ])+
       button(t,'Register free before the show')
