@@ -144,9 +144,34 @@ h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(
 @media(max-width:919px){
   .col-left,.col-right{display:contents}
 }
+
+/* CIRCLE10 promo banner */
+:root{--red:#d92121;--banner-h:44px}
+.promo{position:fixed;top:0;left:0;right:0;z-index:120;background:var(--red);color:#fff;text-align:center;
+  padding:11px 16px;font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.35;
+  box-shadow:0 2px 14px rgba(217,33,33,.32)}
+.promo b{font-weight:800}
+.promo .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:9px;
+  vertical-align:middle;animation:promoPulse 1s ease-in-out infinite}
+@keyframes promoPulse{50%{opacity:.25}}
+.promo .clock{font-family:var(--mono);font-weight:700;background:rgba(0,0,0,.24);padding:3px 10px;
+  border-radius:100px;margin-left:4px;display:inline-block;min-width:56px;font-variant-numeric:tabular-nums}
+.promo.expired{background:var(--ink);box-shadow:none}
+.promo.expired .dot{animation:none;background:rgba(255,255,255,.45)}
+/* make room for the fixed banner */
+.progress{top:var(--banner-h)}
+.top-nav{top:calc(var(--banner-h) + 14px)}
+.wrap{padding-top:calc(88px + var(--banner-h))}
+/* discount rows */
+.order-row .r.discount{color:var(--red)}
+.order-total .was{font-size:20px;font-weight:400;color:var(--muted);text-decoration:line-through;margin-right:9px}
 </style>
 </head>
 <body>
+
+<div class="promo" id="promo" role="status" aria-live="polite">
+  <span class="promo-in"><span class="dot"></span><b>CIRCLE10</b> applied · <b>$10 off</b> your circle · expires in <span class="clock" id="clock">3:00</span></span>
+</div>
 
 <div class="progress"><div class="progress-bar"></div></div>
 <div class="top-nav">
@@ -172,9 +197,13 @@ h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(
         <div class="l">Your Circle<small>Hand-matched with 5–8 women · 4 weeks</small></div>
         <div class="r">$75.00</div>
       </div>
+      <div class="order-row" id="discountRow">
+        <div class="l">Discount<small>CIRCLE10 · limited time</small></div>
+        <div class="r discount">−$10.00</div>
+      </div>
       <div class="order-total">
         <div class="l">Total today</div>
-        <div class="r">$75<small>USD</small></div>
+        <div class="r"><s class="was" id="totalWas">$75</s><span id="totalNow">$65</span><small>USD</small></div>
       </div>
     </div>
 
@@ -212,7 +241,7 @@ h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(
           <label for="cardZip">Zip / postal code</label>
           <input type="text" id="cardZip" placeholder="94103" autocomplete="postal-code" maxlength="10" required>
         </div>
-        <button class="pay-btn" id="payBtn" type="submit" disabled>Match me · $75</button>
+        <button class="pay-btn" id="payBtn" type="submit" disabled>Match me · $65</button>
         <p class="secure">🔒 Secure checkout · Payment is <b>only charged</b> when we confirm your match</p>
       </form>
     </div>
@@ -351,6 +380,47 @@ function showSuccess(){
   document.getElementById('success').classList.add('active');
   window.scrollTo(0,0);
 }
+</script>
+
+<script>
+/* CIRCLE10 — $10 off, applied on page open, expires after 3:00 */
+(function(){
+  const PRICE=75, DISCOUNT=10, CODE='CIRCLE10', MINUTES=3;
+  const promo=document.getElementById('promo'), clock=document.getElementById('clock');
+  const discountRow=document.getElementById('discountRow');
+  const totalWas=document.getElementById('totalWas'), totalNow=document.getElementById('totalNow');
+  const payBtn=document.getElementById('payBtn'), applePay=document.getElementById('applePay');
+
+  // keep the fixed banner from covering the nav, even if the text wraps
+  function setBannerH(){document.documentElement.style.setProperty('--banner-h',promo.offsetHeight+'px')}
+  setBannerH(); addEventListener('resize',setBannerH);
+
+  const deadline=Date.now()+MINUTES*60*1000;
+
+  function expire(){
+    clearInterval(iv);
+    promo.classList.add('expired');
+    promo.querySelector('.promo-in').innerHTML='<span class="dot"></span>Your <b>'+CODE+'</b> discount has expired · total is back to <b>$'+PRICE+'</b>';
+    discountRow.style.display='none';
+    totalWas.style.display='none';
+    totalNow.textContent='$'+PRICE;
+    payBtn.textContent='Match me · $'+PRICE;
+    setBannerH();
+  }
+  function tick(){
+    const left=deadline-Date.now();
+    if(left<=0){ expire(); return; }
+    const m=Math.floor(left/60000), sec=Math.floor(left%60000/1000);
+    clock.textContent=m+':'+String(sec).padStart(2,'0');
+  }
+  const iv=setInterval(tick,250); tick();
+
+  // once payment starts, drop the banner
+  [payBtn,applePay].forEach(b=>b&&b.addEventListener('click',()=>{
+    clearInterval(iv); promo.style.display='none';
+    document.documentElement.style.setProperty('--banner-h','0px');
+  }));
+})();
 </script>
 </body>
 </html>
