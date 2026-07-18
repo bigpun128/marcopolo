@@ -96,6 +96,14 @@
   .brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .brief dd{font-size:16px;font-weight:600;margin-top:4px}
 
+  .callout{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:22px;font-size:16px;line-height:1.5}
+  .callout b{color:var(--magenta)}
+  .stats{display:flex;gap:9px;margin:20px 0 0}
+  .stats .s{flex:1;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center}
+  .stats .s b{display:block;font-size:21px;font-weight:800;color:var(--magenta);letter-spacing:-.02em;line-height:1}
+  .stats .s span{font-size:11px;color:var(--muted);line-height:1.3;display:block;margin-top:6px}
+  .award{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px}
+
   /* reveal */
   .lauren{display:flex;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:18px}
   .avatar{flex:0 0 76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--peach),var(--magenta));
@@ -240,7 +248,7 @@ const SCREENS = [
       {v:'evenings',t:'Evenings'},{v:'weekends',t:'Weekends'},{v:'whenever',t:'Honestly, whenever'}
     ]},
 
-  { id:'reflect', type:'info', cta:'How it works →' },
+  { id:'reflect', type:'info', cta:'Why it works →' },
   { id:'getting', type:'info', cta:'Almost there →' },
   { id:'brief',   type:'brief', cta:'See who builds it →' },
   { id:'matcher', type:'reveal', cta:'What happens next →' },
@@ -339,22 +347,19 @@ function reflectHTML(){
   const S=season();
   return `<div class="kicker">${S.label}</div>
     <h1>${S.reflect}</h1><p class="sub">${S.reflectBody}</p>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><div><b>You tell us about you</b><span>The part you just did.</span></div></div>
-      <div class="step"><span class="n">2</span><div><b>A real person builds your circle</b><span>Not an algorithm. Someone reads your answers and picks your group of 5–8.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>You connect on your time</b><span>Video, voice or text on Marco Polo. Reply when you can.</span></div></div>
-    </div>`;
+    <div class="callout">This isn't an algorithm spitting out names. <b>A real person reads what you wrote and builds your group by hand.</b></div>`;
 }
 function gettingHTML(){
   const S=season();
-  return `<div class="kicker">what you get</div>
-    <h1>A small group, <u>built for you.</u></h1>
-    <div class="gets">
-      <div class="get"><i>✓</i><div><b>5–8 women</b> in your season, hand-picked by a real person</div></div>
-      <div class="get"><i>✓</i><div>A <b>custom questionnaire</b> after you join, so your group is right</div></div>
-      <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group actually clicks</div></div>
-      <div class="get"><i>✓</i><div>A <b>private circle</b> on Marco Polo, at your own pace</div></div>
+  return `<div class="kicker">why it works</div>
+    <h1>Built on something <u>women already trust.</u></h1>
+    <p class="sub">Your circle runs on Marco Polo, the video-message app millions of women already use every day.</p>
+    <div class="stats">
+      <div class="s"><b>2.3M</b><span>App Store reviews</span></div>
+      <div class="s"><b>4B+</b><span>messages sent</span></div>
+      <div class="s"><b>90%</b><span>feel closer than over text</span></div>
     </div>
+    <p class="award">★ Former iOS App of the Day</p>
     <div class="quote"><p>“${S.quote}”</p><span>${S.who}</span></div>`;
 }
 function nextHTML(){
