@@ -351,7 +351,7 @@ function gettingHTML(){
     <h1>A small group, <u>built for you.</u></h1>
     <div class="gets">
       <div class="get"><i>✓</i><div><b>5–8 women</b> in your season, hand-picked by a real person</div></div>
-      <div class="get"><i>✓</i><div>A <b>deeper questionnaire</b> after you join, so your group is right</div></div>
+      <div class="get"><i>✓</i><div>A <b>custom questionnaire</b> after you join, so your group is right</div></div>
       <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group actually clicks</div></div>
       <div class="get"><i>✓</i><div>A <b>private circle</b> on Marco Polo, at your own pace</div></div>
     </div>
@@ -362,8 +362,8 @@ function nextHTML(){
     <h1>Here's the plan.</h1>
     <div class="steps">
       <div class="step"><span class="n">1</span><div><b>You join today</b><span>One-time, and you're in the next round of matching.</span></div></div>
-      <div class="step"><span class="n">2</span><div><b>We send your matching questionnaire</b><span>Deeper questions so your circle is genuinely yours.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>Lauren builds your circle</b><span>By hand, from your answers.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>You get a custom questionnaire</b><span>Built from your brief, so it goes deeper on what matters to you instead of repeating what you just told us.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Lauren builds your circle</b><span>By hand, from your brief and your answers.</span></div></div>
       <div class="step"><span class="n">4</span><div><b>Your circle starts</b><span>With prompts to get the first conversation going.</span></div></div>
     </div>`;
 }
@@ -452,11 +452,11 @@ function contactHTML(){
   const hi = A.first? `, ${A.first}` : '';
   return `<div class="kicker">last step</div>
     <h1>Where should we send it${hi}?</h1>
-    <p class="sub">Your matching questionnaire is the deeper set of questions Lauren builds your circle from.</p>
+    <p class="sub">Your custom questionnaire is built from the brief you just made — it's what Lauren uses to build your circle.</p>
     <div class="fld"><label for="email">Email address</label>
       <input type="email" id="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off"
         spellcheck="false" placeholder="you@example.com" value="${A.email||''}">
-      <p class="fieldnote">Your matching questionnaire goes here.</p></div>
+      <p class="fieldnote">Your custom questionnaire goes here.</p></div>
     <div class="fld"><label for="phone">Mobile number</label>
       <input type="tel" id="phone" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567" value="${A.phone||''}">
       <p class="fieldnote">This is how Lauren adds you to your circle in Marco Polo.</p></div>
@@ -494,7 +494,7 @@ function priceHTML(){
     </div>
     <div class="incl"><div class="gets">
       <div class="get"><i>✓</i><div><b>Lauren hand-builds your circle</b> from your brief</div></div>
-      <div class="get"><i>✓</i><div>A <b>deeper questionnaire</b> so she gets it right</div></div>
+      <div class="get"><i>✓</i><div>A <b>custom questionnaire</b> built from your brief</div></div>
       <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group connects</div></div>
       <div class="get"><i>✓</i><div>Your <b>private circle</b> of 5–8 on Marco Polo</div></div>
     </div></div>
