@@ -105,10 +105,17 @@
 
   /* contact */
   label{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
-  input[type=email]{width:100%;min-height:56px;padding:16px 18px;border:2px solid var(--line);border-radius:16px;
-    font-family:inherit;font-size:17px;background:#fff;color:var(--ink)}
-  input[type=email]:focus{outline:none;border-color:var(--magenta)}
+  input[type=email],input[type=text],input[type=tel]{width:100%;min-height:56px;padding:16px 18px;border:2px solid var(--line);
+    border-radius:16px;font-family:inherit;font-size:17px;background:#fff;color:var(--ink)}
+  input[type=email]:focus,input[type=text]:focus,input[type=tel]:focus{outline:none;border-color:var(--magenta)}
   input.err{border-color:#d92121}
+  .fld{margin-bottom:16px}
+  .fieldnote{font-size:13px;color:var(--muted);margin-top:7px}
+  .consent{display:flex;gap:11px;align-items:flex-start;background:#fff;border:2px solid var(--line);border-radius:16px;
+    padding:15px;margin-top:4px;font-weight:400}
+  .consent input{flex:0 0 22px;width:22px;height:22px;margin-top:1px;accent-color:var(--magenta)}
+  .consent span{font-size:13.5px;line-height:1.5;color:var(--ink)}
+  .consent small{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.55}
   .errmsg{color:#d92121;font-family:var(--mono);font-size:12.5px;margin-top:8px;display:none}
   .errmsg.on{display:block}
   .privacy{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6}
@@ -238,6 +245,7 @@ const SCREENS = [
   { id:'brief',   type:'brief', cta:'See who builds it →' },
   { id:'matcher', type:'reveal', cta:'What happens next →' },
   { id:'next',    type:'info',  cta:'Get my circle →' },
+  { id:'name',    type:'name',    cta:'Continue →' },
   { id:'contact', type:'contact', cta:'Continue →' },
   { id:'price',   type:'price', cta:'Join my circle →' }
 ];
@@ -269,6 +277,7 @@ function render(){
   else if(s.type==='brief')  el.innerHTML = briefHTML();
   else if(s.type==='reveal') el.innerHTML = revealHTML();
   else if(s.id==='next')     el.innerHTML = nextHTML();
+  else if(s.type==='name')   el.innerHTML = nameHTML();
   else if(s.type==='contact')el.innerHTML = contactHTML();
   else if(s.type==='price')  el.innerHTML = priceHTML();
   main.appendChild(el);
@@ -277,6 +286,7 @@ function render(){
   if(s.type==='single')      wireSingle(s);
   else if(s.type==='multi')  wireMulti(s);
   else if(s.type==='brief')  runBrief(s);
+  else if(s.type==='name')   wireName(s);
   else if(s.type==='contact')wireContact(s);
   else if(s.type==='price')  wirePrice();
   else ctaBtn(s.cta, go);
@@ -407,27 +417,71 @@ function revealHTML(){
     <p class="sub" style="margin-bottom:0">Lauren reads every brief herself and hand-picks your group of 5–8. She doesn't stop there — she sends the prompts and gentle nudges that turn a group of strangers into people who actually talk.</p>`;
 }
 
+/* --- name --- */
+function nameHTML(){
+  return `<div class="kicker">almost there</div>
+    <h1>What should we call you?</h1>
+    <p class="sub">Lauren uses your name when she introduces you to your circle.</p>
+    <div class="fld"><label for="fn">First name</label>
+      <input type="text" id="fn" autocomplete="given-name" autocapitalize="words" placeholder="Sarah" value="${A.first||''}"></div>
+    <div class="fld"><label for="ln">Last name</label>
+      <input type="text" id="ln" autocomplete="family-name" autocapitalize="words" placeholder="Miller" value="${A.last||''}"></div>
+    <p class="errmsg" id="err">Please enter your first and last name.</p>`;
+}
+function wireName(s){
+  const fn=main.querySelector('#fn'), ln=main.querySelector('#ln'), err=main.querySelector('#err');
+  const btn=ctaBtn(s.cta,()=>{
+    const a=fn.value.trim(), b=ln.value.trim();
+    if(!a||!b){ (a?ln:fn).classList.add('err'); err.classList.add('on'); (a?ln:fn).focus(); return; }
+    A.first=a; A.last=b; persist(); go();
+  });
+  [fn,ln].forEach(i=>{
+    i.addEventListener('input',()=>{ i.classList.remove('err'); err.classList.remove('on'); });
+    i.addEventListener('keydown',e=>{ if(e.key==='Enter') btn.click(); });
+  });
+}
+
 /* --- contact --- */
+function fmtPhone(v){
+  const d=v.replace(/\D/g,'').slice(0,10);
+  if(d.length<4) return d;
+  if(d.length<7) return '('+d.slice(0,3)+') '+d.slice(3);
+  return '('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6);
+}
 function contactHTML(){
+  const hi = A.first? `, ${A.first}` : '';
   return `<div class="kicker">last step</div>
-    <h1>Where should we send your <u>matching questionnaire?</u></h1>
-    <p class="sub">That's the deeper set of questions Lauren uses to build your circle.</p>
-    <label for="email">Email address</label>
-    <input type="email" id="email" name="email" inputmode="email" autocomplete="email"
-      autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="you@example.com" value="${A.email||''}">
-    <p class="errmsg" id="err">Enter a valid email address.</p>
+    <h1>Where should we send it${hi}?</h1>
+    <p class="sub">Your matching questionnaire is the deeper set of questions Lauren builds your circle from.</p>
+    <div class="fld"><label for="email">Email address</label>
+      <input type="email" id="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off"
+        spellcheck="false" placeholder="you@example.com" value="${A.email||''}">
+      <p class="fieldnote">Your matching questionnaire goes here.</p></div>
+    <div class="fld"><label for="phone">Mobile number</label>
+      <input type="tel" id="phone" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567" value="${A.phone||''}">
+      <p class="fieldnote">This is how Lauren adds you to your circle in Marco Polo.</p></div>
+    <p class="errmsg" id="err">Please check the highlighted field.</p>
+    <label class="consent"><input type="checkbox" id="sms" ${A.sms?'checked':''}>
+      <span>Text me updates about my circle.
+      <small>By checking this box you agree to receive recurring automated marketing texts from Marco Polo Circles at the number provided. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help.</small></span></label>
     <p class="privacy">We'll only use this for your circle. No spam, and you can leave any time.</p>`;
 }
 function wireContact(s){
-  const input=main.querySelector('#email'), err=main.querySelector('#err');
+  const email=main.querySelector('#email'), phone=main.querySelector('#phone'),
+        sms=main.querySelector('#sms'), err=main.querySelector('#err');
   const re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  phone.addEventListener('input',()=>{ phone.value=fmtPhone(phone.value); phone.classList.remove('err'); err.classList.remove('on'); });
   const btn=ctaBtn(s.cta,()=>{
-    const v=input.value.trim();
-    if(!re.test(v)){ input.classList.add('err'); err.classList.add('on'); input.focus(); return; }
-    A.email=v; persist(); go();
+    const e=email.value.trim(), d=phone.value.replace(/\D/g,'');
+    let bad=null;
+    if(!re.test(e)){ email.classList.add('err'); bad=email; }
+    if(d.length!==10){ phone.classList.add('err'); bad=bad||phone; }
+    if(bad){ err.textContent = bad===email ? 'Enter a valid email address.' : 'Enter a 10-digit mobile number.';
+             err.classList.add('on'); bad.focus(); return; }
+    A.email=e; A.phone=phone.value; A.sms=sms.checked; persist(); go();
   });
-  input.addEventListener('input',()=>{ input.classList.remove('err'); err.classList.remove('on'); });
-  input.addEventListener('keydown',e=>{ if(e.key==='Enter') btn.click(); });
+  email.addEventListener('input',()=>{ email.classList.remove('err'); err.classList.remove('on'); });
+  [email,phone].forEach(i=>i.addEventListener('keydown',e=>{ if(e.key==='Enter') btn.click(); }));
 }
 
 /* --- price --- */
