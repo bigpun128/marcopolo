@@ -96,7 +96,6 @@
   .brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .brief dd{font-size:16px;font-weight:600;margin-top:4px}
 
-  .award{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px}
 
   /* reveal */
   .lauren{display:flex;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:18px}
@@ -236,11 +235,6 @@ const SCREENS = [
   { id:'interests', type:'multi', grid:true, q:"What are you into?", sub:"Shared ground makes the first week easier.",
     opts:['Fitness','Cooking','Books','Travel','Parenting','Career','Faith','Creative projects','Outdoors','Wellness','Music','Home projects'].map(t=>({v:t,t}))},
 
-  { id:'free', type:'multi', q:"When are you usually free?", sub:"Marco Polo is async, so this is about rhythm, not scheduling.",
-    opts:[
-      {v:'mornings',t:'Mornings'},{v:'midday',t:'Naps & midday'},
-      {v:'evenings',t:'Evenings'},{v:'weekends',t:'Weekends'},{v:'whenever',t:'Honestly, whenever'}
-    ]},
 
   { id:'reflect', type:'info', cta:'Build my brief →' },
   { id:'brief',   type:'brief', cta:'See who builds it →' },
@@ -351,7 +345,7 @@ function briefHTML(){
     <div class="load">
       <div data-i="0"><i>✓</i>Reading your answers</div>
       <div data-i="1"><i>✓</i>Mapping your season</div>
-      <div data-i="2"><i>✓</i>Noting when you're free</div>
+      <div data-i="2"><i>✓</i>Noting what matters to you</div>
       <div data-i="3"><i>✓</i>Preparing it for your matcher</div>
     </div></div>
    <div id="briefWrap" style="display:none"><div class="kicker">ready</div>
@@ -367,9 +361,9 @@ function briefCard(){
   return `<div class="brief"><div class="bh">Matching brief</div><dl>
     <div><dt>Season</dt><dd>${S.label}</dd></div>
     <div><dt>Age</dt><dd>${(SCREENS[1].opts.find(o=>o.v===A.age)||{}).t||'—'}</dd></div>
+    <div><dt>What you're navigating</dt><dd>${L('hardest','—')}</dd></div>
     <div><dt>Looking for</dt><dd>${L('want','—')}</dd></div>
     <div><dt>Shared ground</dt><dd>${L('interests','—')}</dd></div>
-    <div><dt>Rhythm</dt><dd>${L('free','—')}</dd></div>
   </dl></div>`;
 }
 function runBrief(s){
@@ -395,8 +389,7 @@ function revealHTML(){
       <div class="step"><span class="n">1</span><div><b>Sends your custom questionnaire</b><span>Built from the brief you just made, to go deeper.</span></div></div>
       <div class="step"><span class="n">2</span><div><b>Hand-picks your circle</b><span>5–8 women in your season, chosen one by one.</span></div></div>
       <div class="step"><span class="n">3</span><div><b>Gets you talking</b><span>Opening prompts so the first week isn't awkward.</span></div></div>
-    </div>
-    <p class="award">Circles form once a month.</p>`;
+    </div>`;
 }
 
 /* --- name --- */
