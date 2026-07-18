@@ -243,17 +243,67 @@ const SCREENS = [
   { id:'price',   type:'price', cta:'Proceed to checkout →' }
 ];
 
+/* --- integration config ---------------------------------------------- *
+ * PROTOTYPE=true logs the payload instead of POSTing. Set false in prod.
+ * See HANDOFF.md for the full contract.
+ * --------------------------------------------------------------------- */
+const PROTOTYPE = true;
+const LEAD_ENDPOINT = '/api/lead';
+const SURVEY_VERSION = 'v2';
+const SMS_DISCLOSURE = "By checking this box you agree to receive recurring automated marketing texts from Marco Polo Circles at the number provided. Consent is not a condition of purchase. Msg & data rates may apply. Reply STOP to opt out, HELP for help.";
+
 /* --- state --- */
 let idx = 0;
 const A = {}; // answers
 try{ const s=sessionStorage.getItem('circles-v2'); if(s){ const p=JSON.parse(s); Object.assign(A,p.A||{}); idx=p.idx||0; } }catch(e){}
 function persist(){ try{ sessionStorage.setItem('circles-v2',JSON.stringify({A,idx})); }catch(e){} }
+function uuid(){ try{ return crypto.randomUUID(); }catch(e){ return 'lead_'+Date.now().toString(36)+Math.random().toString(36).slice(2,10); } }
+function captureAttribution(){
+  if(!A.leadId) A.leadId = uuid();
+  if(A.attribution) return;                       // first touch wins
+  const p = new URLSearchParams(location.search);
+  A.attribution = {
+    utm_source:p.get('utm_source')||null, utm_medium:p.get('utm_medium')||null,
+    utm_campaign:p.get('utm_campaign')||null, utm_content:p.get('utm_content')||null,
+    utm_term:p.get('utm_term')||null,
+    referrer:document.referrer||null, landing_path:location.pathname+location.search
+  };
+  persist();
+}
+
+/* --- lead submission: fires ONCE, after name + email + phone are valid --- */
+function buildLeadPayload(){
+  const lbl=(id,v)=>{ const sc=SCREENS.find(x=>x.id===id); if(!sc) return v;
+                      const o=sc.opts.find(o=>o.v===v); return o?o.t:v; };
+  const multi=id=>(A[id]||[]).map(v=>lbl(id,v));
+  const now=new Date().toISOString();
+  return {
+    leadId:A.leadId, surveyVersion:SURVEY_VERSION, submittedAt:now,
+    contact:{ firstName:A.first, lastName:A.last, email:A.email,
+              phone:A.phone, phoneE164:'+1'+String(A.phone||'').replace(/\D/g,'') },
+    consent:{ sms:!!A.sms, disclosureShown:SMS_DISCLOSURE, capturedAt:now },
+    brief:{ season:A.season, seasonLabel:(SEASONS[A.season]||{}).label,
+            age:lbl('age',A.age), hardest:multi('hardest'),
+            lookingFor:multi('want'), interests:multi('interests') },
+    attribution:A.attribution||{}
+  };
+}
+function submitLead(){
+  if(A.leadSent) return Promise.resolve();          // idempotent
+  const payload=buildLeadPayload();
+  if(window.dataLayer) window.dataLayer.push({event:'complete_registration', leadId:A.leadId});
+  if(PROTOTYPE){ console.log('[lead] would POST '+LEAD_ENDPOINT, payload); A.leadSent=true; persist(); return Promise.resolve(); }
+  return fetch(LEAD_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(r=>{ if(!r.ok) throw new Error('lead '+r.status); A.leadSent=true; persist(); })
+    .catch(e=>{ console.warn('[lead] failed, will retry at checkout', e); });  // never block the user
+}
 const season = ()=> SEASONS[A.season] || SEASONS['deeper'];
 
 const main=document.getElementById('main'), foot=document.getElementById('foot'),
       bar=document.getElementById('bar'), back=document.getElementById('back');
 
-back.addEventListener('click',()=>{ if(idx>0){ idx--; persist(); render(); } });
+back.addEventListener('click',()=>{ if(idx>0){ idx--; persist(); captureAttribution();
+render(); } });
 
 function go(){ idx++; persist(); render(); }
 
@@ -433,7 +483,7 @@ function contactHTML(){
     <p class="errmsg" id="err">Please check the highlighted field.</p>
     <label class="consent"><input type="checkbox" id="sms" ${A.sms?'checked':''}>
       <span>Text me updates about my circle.
-      <small>By checking this box you agree to receive recurring automated marketing texts from Marco Polo Circles at the number provided. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help.</small></span></label>
+      <small>${SMS_DISCLOSURE.replace('&','&amp;')}</small></span></label>
     <p class="privacy">Only used for your circle. No spam, leave any time.</p>`;
 }
 function wireContact(s){
@@ -448,7 +498,9 @@ function wireContact(s){
     if(d.length!==10){ phone.classList.add('err'); bad=bad||phone; }
     if(bad){ err.textContent = bad===email ? 'Enter a valid email address.' : 'Enter a 10-digit mobile number.';
              err.classList.add('on'); bad.focus(); return; }
-    A.email=e; A.phone=phone.value; A.sms=sms.checked; persist(); go();
+    A.email=e; A.phone=phone.value; A.sms=sms.checked; persist();
+    submitLead();                                   // lead is complete here
+    go();
   });
   email.addEventListener('input',()=>{ email.classList.remove('err'); err.classList.remove('on'); });
   [email,phone].forEach(i=>i.addEventListener('keydown',e=>{ if(e.key==='Enter') btn.click(); }));
@@ -471,7 +523,9 @@ function priceHTML(){
     <div class="quote"><p>“${season().quote}”</p><span>${season().who}</span></div>`;
 }
 function wirePrice(){
+  if(!A.leadSent) submitLead();                     // retry a failed write
   ctaBtn('Proceed to checkout →', ()=>{
+    if(!A.leadSent) submitLead();
     persist();
     window.location.href='../circles-checkout/';
   }, {pink:true, hint:'Secure checkout · takes about a minute'});
