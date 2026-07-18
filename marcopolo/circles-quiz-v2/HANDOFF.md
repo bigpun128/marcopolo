@@ -1,13 +1,21 @@
 # Circles Survey v2 — Engineering Handoff
 
-**What this is:** a working prototype of the redesigned Circles onboarding survey
-(`index.html` in this folder) and the spec for wiring it to Airtable.
+**What this is:** working prototypes of the redesigned Circles onboarding survey and
+checkout, plus the spec for wiring them to Airtable and Stripe.
+
+| Piece | Prototype | Live preview |
+|---|---|---|
+| Survey (12 screens) | `marcopolo/circles-quiz-v2/index.html` | `/marcopolo/circles-quiz-v2/` |
+| Checkout | `marcopolo/circles-checkout-v2/index.html` | `/marcopolo/circles-checkout-v2/` |
+
+Base URL for previews: `https://marcopolo-ten.vercel.app`
 
 **Why it changed:** the live survey is 6 screens and converts ~0.5–3.5% at checkout
 against a 10–18% benchmark. v2 is 12 screens designed to build intent before the
 ask, and to capture the lead at a point where it's actually complete.
 
-Open `index.html` on a phone to click through it. Nothing is wired; it logs.
+Open them on a phone and click through. Nothing is wired; the survey logs its
+payload to the console and the checkout simulates a charge.
 
 ---
 
@@ -42,7 +50,7 @@ record is unusable and pollutes the base.
 11 contact         email + phone + SMS consent
    ─────────────────────────────────────  ★ FIRE LEAD HERE
 12 price           value checklist
-   → /checkout
+   → checkout  (circles-checkout-v2)
 ```
 
 In the prototype this is `submitLead()`, called from `wireContact()` after
@@ -195,7 +203,43 @@ in the build.
 
 ---
 
-## 8. Prototype → production
+## 8. Checkout
+
+`marcopolo/circles-checkout-v2/index.html`. Deliberately shares the survey's shell,
+palette and type so survey → checkout reads as one flow rather than a handoff to a
+different product.
+
+**Contents:** compact order summary (5 to 8 women, hand-matched · 4 weeks guided ·
+$75), express-pay button, card fields with live formatting, the one-free-rematch
+guarantee directly above the pay button, and a success state that greets the user by
+name and lists what happens next.
+
+**To wire it up**
+
+1. Replace the fake card inputs with **Stripe Elements** (or Payment Element). The
+   current fields are presentational only and must not be used to touch real card data.
+2. On payment success, `PATCH` the lead by `leadId` (from `sessionStorage.circles-v2`)
+   → `Status = purchased`, `Purchased At = now`. See §5.
+3. Fire the purchase event to Meta both client-side and via Conversions API, using
+   `leadId` as `event_id` so they deduplicate.
+4. If payment fails, keep the user on the page with an inline error. The lead is
+   already saved, so a failed charge must never lose the record.
+
+**⚠️ Test in the Meta in-app browser, not Chrome.**
+
+Roughly all paid traffic arrives inside the Instagram/Facebook webview, not Safari or
+Chrome. Prior funnel data showed payment-specific events (`PURCHASE PAYMENT INFO ADD`,
+`EXPRESS CHECKOUT CLICK`) firing at **zero** across hundreds of sessions while generic
+click events fired normally, and the broader site converting at 10.4% on iPhone. That
+pattern is consistent with Stripe Elements failing to initialise in the webview, and it
+will not reproduce if you test by opening the checkout URL in a desktop browser.
+
+Before signing off: tap a real ad on a real phone, complete the flow inside the
+in-app browser, and confirm Apple/Google Pay availability and card entry both behave.
+
+---
+
+## 9. Prototype → production
 
 The prototype is one static HTML file. Porting to the Next.js app:
 
@@ -217,7 +261,7 @@ The prototype is one static HTML file. Porting to the Next.js app:
 
 ---
 
-## 9. Acceptance criteria
+## 10. Acceptance criteria
 
 - [ ] Completing screens 1–10 creates **no** Airtable record
 - [ ] Completing Contact creates **exactly one** record with all fields populated
@@ -232,10 +276,14 @@ The prototype is one static HTML file. Porting to the Next.js app:
 - [ ] UTMs captured on landing survive to the record (test with
       `?utm_campaign=ej_learning_campaign`)
 - [ ] Full run on a real phone in the **Instagram in-app browser**, not just Chrome
+- [ ] Card entry and express pay both work inside the in-app browser
+- [ ] Successful payment patches the lead to `purchased`
+- [ ] Failed payment keeps the user on the page and does not lose the lead
+- [ ] Success screen shows the user's first name from the survey
 
 ---
 
-## 10. Open items
+## 11. Open items
 
 | Item | Owner | Notes |
 |---|---|---|
