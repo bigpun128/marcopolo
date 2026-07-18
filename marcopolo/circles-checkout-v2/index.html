@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circles · checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2a0e3a; --magenta:#ff2e8b; --peach:#ffb38a; --cream:#fcf3ec;
+    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.6);
+    --display:'Bricolage Grotesque',sans-serif; --mono:'DM Mono',monospace; --pad:22px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{background:var(--cream);color:var(--ink);font-family:var(--display);line-height:1.5;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+  .app{max-width:460px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+  header{position:sticky;top:0;z-index:20;background:var(--cream);padding:10px var(--pad) 8px}
+  .bar{height:4px;background:rgba(29,10,38,.09);border-radius:100px;overflow:hidden}
+  .bar i{display:block;height:100%;width:100%;background:var(--magenta);border-radius:100px}
+  .hrow{display:flex;align-items:center;justify-content:space-between;margin-top:10px;min-height:24px}
+  .back{font-family:var(--mono);font-size:13px;color:var(--muted);padding:4px 8px;margin-left:-8px;border-radius:100px;text-decoration:none}
+  .back:hover{color:var(--ink);background:rgba(29,10,38,.05)}
+  .logo{font-weight:800;font-size:17px;letter-spacing:-.03em}
+  .logo b{color:var(--magenta)}
+
+  main{flex:1;padding:12px var(--pad) 118px}
+  h1{font-weight:800;font-size:clamp(25px,6.6vw,31px);line-height:1.1;letter-spacing:-.03em;margin-bottom:8px}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:9px}
+  .sub{font-size:15.5px;color:var(--muted);margin-bottom:18px}
+
+  /* order summary */
+  .order{background:var(--plum);color:var(--cream);border-radius:18px;padding:18px;margin-bottom:14px}
+  .order .row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+  .order .row b{font-size:16px;font-weight:700;display:block}
+  .order .row span{font-size:13.5px;color:rgba(252,243,236,.7);display:block;margin-top:3px}
+  .order .amt{font-weight:800;font-size:26px;letter-spacing:-.03em;white-space:nowrap}
+  .order .tot{display:flex;justify-content:space-between;align-items:baseline;
+    border-top:1px solid rgba(252,243,236,.22);margin-top:14px;padding-top:12px;font-weight:800}
+  .order .tot .l{font-size:15px}
+  .order .tot .r{font-size:20px}
+  .order .tot .r small{font-family:var(--mono);font-size:11px;font-weight:400;color:rgba(252,243,236,.6);margin-left:5px}
+
+  /* payment card */
+  .card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
+  .card h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:500}
+  .express{width:100%;min-height:52px;background:var(--ink);color:#fff;border-radius:14px;font-size:16px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}
+  .or{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:14px}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+  input{width:100%;min-height:50px;padding:13px 15px;border:2px solid var(--line);border-radius:13px;
+    font-family:inherit;font-size:16px;background:#fff;color:var(--ink)}
+  input:focus{outline:none;border-color:var(--magenta)}
+  input.err{border-color:#d92121}
+  .fld{margin-bottom:12px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .errmsg{color:#d92121;font-family:var(--mono);font-size:12px;margin-top:8px;display:none}
+  .errmsg.on{display:block}
+
+  /* guarantee */
+  .guar{display:flex;gap:10px;align-items:flex-start;background:var(--gold);border-radius:14px;padding:13px 15px;font-size:14.5px;font-weight:600}
+  .guar i{font-style:normal;font-size:16px}
+
+  /* footer */
+  .foot{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px var(--pad) calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(252,243,236,0),var(--cream) 26%);max-width:460px;margin:0 auto}
+  .pay{width:100%;min-height:56px;background:var(--magenta);color:#fff;border-radius:100px;font-size:17px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s,transform .1s}
+  .pay:active{transform:scale(.99)}
+  .pay[disabled]{opacity:.35}
+  .secure{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:9px}
+
+  /* success */
+  .done{text-align:center;padding:8vh 0}
+  .done .tick{width:78px;height:78px;border-radius:50%;background:var(--magenta);color:#fff;font-size:38px;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+  .done p{font-size:16px;color:var(--muted);margin-top:12px}
+  .done .next{background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px;margin-top:22px;text-align:left}
+  .done .next b{display:block;font-size:15px;margin-bottom:8px}
+  .done .next div{display:flex;gap:10px;font-size:14.5px;color:var(--muted);padding:6px 0}
+  .done .next i{font-style:normal;color:var(--magenta);font-weight:800}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar"><i></i></div>
+    <div class="hrow">
+      <a class="back" href="../circles-quiz-v2/">← back</a>
+      <div class="logo">Circles<b>.</b></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="kicker">last step</div>
+    <h1>Complete your circle.</h1>
+    <p class="sub">One payment. Lauren starts building your circle today.</p>
+
+    <div class="order">
+      <div class="row">
+        <div><b>Your Circle</b><span>5 to 8 women, hand-matched · 4 weeks guided</span></div>
+        <div class="amt">$75</div>
+      </div>
+      <div class="tot"><span class="l">Total today</span><span class="r">$75<small>USD</small></span></div>
+    </div>
+
+    <div class="card">
+      <h2>Payment</h2>
+      <button class="express" id="express"> Pay</button>
+      <div class="or">or pay with card</div>
+
+      <div class="fld"><label for="num">Card number</label>
+        <input id="num" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" maxlength="19"></div>
+      <div class="frow">
+        <div class="fld"><label for="exp">Expiry</label>
+          <input id="exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" maxlength="7"></div>
+        <div class="fld"><label for="cvc">CVC</label>
+          <input id="cvc" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4"></div>
+      </div>
+      <div class="fld" style="margin-bottom:0"><label for="zip">Zip code</label>
+        <input id="zip" inputmode="numeric" autocomplete="postal-code" placeholder="94103" maxlength="10"></div>
+      <p class="errmsg" id="err">Check your card details.</p>
+    </div>
+
+    <div class="guar"><i>🔄</i><div>Don't love your circle? <b>One free rematch.</b></div></div>
+  </main>
+
+  <div class="foot" id="foot">
+    <button class="pay" id="pay" disabled>Pay $75</button>
+    <p class="secure">🔒 Secure checkout · powered by Marco Polo</p>
+  </div>
+</div>
+
+<script>
+/* Simple Circles checkout. Front-end only — wire to Stripe + /api/lead PATCH.
+   See ../circles-quiz-v2/HANDOFF.md */
+const num=document.getElementById('num'), exp=document.getElementById('exp'),
+      cvc=document.getElementById('cvc'), zip=document.getElementById('zip'),
+      pay=document.getElementById('pay'), err=document.getElementById('err'),
+      main=document.getElementById('main'), foot=document.getElementById('foot');
+
+const digits=v=>v.replace(/\D/g,'');
+num.addEventListener('input',()=>{
+  num.value=digits(num.value).slice(0,16).replace(/(.{4})/g,'$1 ').trim(); check();
+});
+exp.addEventListener('input',()=>{
+  const d=digits(exp.value).slice(0,4);
+  exp.value = d.length<3 ? d : d.slice(0,2)+' / '+d.slice(2); check();
+});
+[cvc,zip].forEach(i=>i.addEventListener('input',()=>{ i.value=digits(i.value); check(); }));
+
+function valid(){
+  return digits(num.value).length>=15 && digits(exp.value).length===4
+      && digits(cvc.value).length>=3 && digits(zip.value).length>=5;
+}
+function check(){ [num,exp,cvc,zip].forEach(i=>i.classList.remove('err')); err.classList.remove('on'); pay.disabled=!valid(); }
+
+pay.addEventListener('click',()=>{
+  if(!valid()){ err.classList.add('on'); return; }
+  pay.disabled=true; pay.textContent='Processing…';
+  setTimeout(success,1100);
+});
+document.getElementById('express').addEventListener('click',()=>{
+  const b=document.getElementById('express'); b.textContent='Processing…';
+  setTimeout(success,900);
+});
+
+function success(){
+  // production: PATCH the lead to Status=purchased using leadId from sessionStorage
+  let name='';
+  try{ name=(JSON.parse(sessionStorage.getItem('circles-v2')||'{}').A||{}).first||''; }catch(e){}
+  foot.classList.add('hidden');
+  main.innerHTML = `<div class="done">
+    <div class="tick">✓</div>
+    <h1>You're in${name?', '+name:''}.</h1>
+    <p>Lauren is building your circle.</p>
+    <div class="next"><b>What happens next</b>
+      <div><i>1</i><span>Check your email for your custom questionnaire.</span></div>
+      <div><i>2</i><span>Lauren hand-picks your 5 to 8 women.</span></div>
+      <div><i>3</i><span>Your circle opens on Marco Polo with prompts to start.</span></div>
+    </div></div>`;
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
