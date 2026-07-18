@@ -330,12 +330,7 @@ function wireMulti(s){
 function reflectHTML(){
   const S=season();
   return `<div class="kicker">${S.label}</div>
-    <h1>${S.reflect}</h1><p class="sub">${S.reflectBody}</p>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><div><b>You tell us about you</b><span>The part you just did.</span></div></div>
-      <div class="step"><span class="n">2</span><div><b>A real person builds your circle</b><span>Not an algorithm. Someone reads your answers and picks your group of 5–8.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>You connect on your time</b><span>Video, voice or text on Marco Polo. Reply when you can.</span></div></div>
-    </div>`;
+    <h1>${S.reflect}</h1><p class="sub" style="margin-bottom:0">${S.reflectBody}</p>`;
 }
 
 /* --- brief (loading resolves into the artifact they earned) --- */
@@ -388,7 +383,7 @@ function revealHTML(){
     <div class="steps">
       <div class="step"><span class="n">1</span><div><b>Sends your custom questionnaire</b><span>Built from the brief you just made, to go deeper.</span></div></div>
       <div class="step"><span class="n">2</span><div><b>Hand-picks your circle</b><span>5–8 women in your season, chosen one by one.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>Gets you talking</b><span>Opening prompts so the first week isn't awkward.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Gets you talking</b><span>Opening prompts in your private Marco Polo circle, so the first week isn't awkward. Video, voice or text — reply when you can.</span></div></div>
     </div>`;
 }
 
