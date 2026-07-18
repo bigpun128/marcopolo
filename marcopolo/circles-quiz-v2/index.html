@@ -251,8 +251,7 @@ const SCREENS = [
   { id:'reflect', type:'info', cta:'Why it works →' },
   { id:'getting', type:'info', cta:'Almost there →' },
   { id:'brief',   type:'brief', cta:'See who builds it →' },
-  { id:'matcher', type:'reveal', cta:'What happens next →' },
-  { id:'next',    type:'info',  cta:'Get my circle →' },
+  { id:'matcher', type:'reveal', cta:'Get my circle →' },
   { id:'name',    type:'name',    cta:'Continue →' },
   { id:'contact', type:'contact', cta:'Continue →' },
   { id:'price',   type:'price', cta:'Proceed to checkout →' }
@@ -284,7 +283,6 @@ function render(){
   else if(s.id==='getting')  el.innerHTML = gettingHTML();
   else if(s.type==='brief')  el.innerHTML = briefHTML();
   else if(s.type==='reveal') el.innerHTML = revealHTML();
-  else if(s.id==='next')     el.innerHTML = nextHTML();
   else if(s.type==='name')   el.innerHTML = nameHTML();
   else if(s.type==='contact')el.innerHTML = contactHTML();
   else if(s.type==='price')  el.innerHTML = priceHTML();
@@ -347,7 +345,11 @@ function reflectHTML(){
   const S=season();
   return `<div class="kicker">${S.label}</div>
     <h1>${S.reflect}</h1><p class="sub">${S.reflectBody}</p>
-    <div class="callout">This isn't an algorithm spitting out names. <b>A real person reads what you wrote and builds your group by hand.</b></div>`;
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><b>You tell us about you</b><span>The part you just did.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>A real person builds your circle</b><span>Not an algorithm. Someone reads your answers and picks your group of 5–8.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>You connect on your time</b><span>Video, voice or text on Marco Polo. Reply when you can.</span></div></div>
+    </div>`;
 }
 function gettingHTML(){
   const S=season();
@@ -361,16 +363,6 @@ function gettingHTML(){
     </div>
     <p class="award">★ Former iOS App of the Day</p>
     <div class="quote"><p>“${S.quote}”</p><span>${S.who}</span></div>`;
-}
-function nextHTML(){
-  return `<div class="kicker">what happens next</div>
-    <h1>Here's the plan.</h1>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><div><b>You join today</b><span>One-time, and you're in the next round of matching.</span></div></div>
-      <div class="step"><span class="n">2</span><div><b>You get a custom questionnaire</b><span>Built from your brief, so it goes deeper on what matters to you instead of repeating what you just told us.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>Lauren builds your circle</b><span>By hand, from your brief and your answers.</span></div></div>
-      <div class="step"><span class="n">4</span><div><b>Your circle starts</b><span>With prompts to get the first conversation going.</span></div></div>
-    </div>`;
 }
 
 /* --- brief (loading resolves into the artifact they earned) --- */
@@ -492,16 +484,16 @@ function wireContact(s){
 /* --- price --- */
 function priceHTML(){
   return `<div class="kicker">your circle</div>
-    <h1>One time. Then you're in.</h1>
+    <h1>One time. Then you <u>have your people.</u></h1>
     <div class="price" style="margin-top:18px">
       <div class="amt"><sup>$</sup>75</div>
       <div class="note">one-time · for your matched circle</div>
     </div>
     <div class="incl"><div class="gets">
-      <div class="get"><i>✓</i><div><b>Lauren hand-builds your circle</b> from your brief</div></div>
-      <div class="get"><i>✓</i><div>A <b>custom questionnaire</b> built from your brief</div></div>
-      <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group connects</div></div>
-      <div class="get"><i>✓</i><div>Your <b>private circle</b> of 5–8 on Marco Polo</div></div>
+      <div class="get"><i>✓</i><div><b>5–8 women who get exactly where you are</b> — not acquaintances, not another group chat</div></div>
+      <div class="get"><i>✓</i><div><b>Somewhere to be honest</b> without explaining the whole backstory first</div></div>
+      <div class="get"><i>✓</i><div><b>Friendship that fits your life</b> — reply at 6am or between naps, nothing to schedule</div></div>
+      <div class="get"><i>✓</i><div><b>A group that keeps talking</b> — Lauren's prompts make sure it doesn't fizzle</div></div>
     </div></div>
     <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>`;
 }
