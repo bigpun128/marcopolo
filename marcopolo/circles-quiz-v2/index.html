@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Circles — find your circle</title>
+<title>Circles · find your circle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
     -webkit-font-smoothing:antialiased;overflow-x:hidden}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
-  /* shell: fixed header, scrollable body, fixed footer — thumb-friendly */
+  /* shell: fixed header, scrollable body, fixed footer. thumb-friendly */
   .app{max-width:460px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative}
   header{position:sticky;top:0;z-index:20;background:var(--cream);padding:10px var(--pad) 8px}
   .bar{height:4px;background:rgba(29,10,38,.09);border-radius:100px;overflow:hidden}
@@ -150,7 +150,7 @@
 
 <script>
 /* ------------------------------------------------------------------ *
- * Circles survey v2 — 15 screens, mobile-first, tap-only until contact.
+ * Circles survey v2. Mobile-first, tap-only until contact.
  * Generic funnel; audience is self-selected at screen 1 and themes copy.
  * ------------------------------------------------------------------ */
 
@@ -237,7 +237,7 @@ const SCREENS = [
 
 
   { id:'reflect', type:'info', cta:'Build my brief →' },
-  { id:'brief',   type:'brief', cta:'See who builds it →' },
+  { id:'brief',   type:'brief', cta:'How it works →' },
   { id:'matcher', type:'reveal', cta:'Get my circle →' },
   { id:'name',    type:'name',    cta:'Continue →' },
   { id:'contact', type:'contact', cta:'Continue →' },
@@ -355,10 +355,10 @@ function briefCard(){
   };
   return `<div class="brief"><div class="bh">Matching brief</div><dl>
     <div><dt>Season</dt><dd>${S.label}</dd></div>
-    <div><dt>Age</dt><dd>${(SCREENS[1].opts.find(o=>o.v===A.age)||{}).t||'—'}</dd></div>
-    <div><dt>What you're navigating</dt><dd>${L('hardest','—')}</dd></div>
-    <div><dt>Looking for</dt><dd>${L('want','—')}</dd></div>
-    <div><dt>Shared ground</dt><dd>${L('interests','—')}</dd></div>
+    <div><dt>Age</dt><dd>${(SCREENS[1].opts.find(o=>o.v===A.age)||{}).t||'–'}</dd></div>
+    <div><dt>What you're navigating</dt><dd>${L('hardest','–')}</dd></div>
+    <div><dt>Looking for</dt><dd>${L('want','–')}</dd></div>
+    <div><dt>Shared ground</dt><dd>${L('interests','–')}</dd></div>
   </dl></div>`;
 }
 function runBrief(s){
@@ -383,7 +383,8 @@ function revealHTML(){
     <div class="steps">
       <div class="step"><span class="n">1</span><div><b>Sends your custom questionnaire</b><span>Built from the brief you just made, to go deeper.</span></div></div>
       <div class="step"><span class="n">2</span><div><b>Hand-picks your circle</b><span>5–8 women in your season, chosen one by one.</span></div></div>
-      <div class="step"><span class="n">3</span><div><b>Gets you talking</b><span>Opening prompts in your private Marco Polo circle, so the first week isn't awkward. Video, voice or text — reply when you can.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Sets up your private circle</b><span>It runs on Marco Polo, so you can talk live or reply whenever it suits you.</span></div></div>
+      <div class="step"><span class="n">4</span><div><b>Gets you talking</b><span>Opening prompts so the first week isn't awkward.</span></div></div>
     </div>`;
 }
 
@@ -422,7 +423,7 @@ function contactHTML(){
   const hi = A.first? `, ${A.first}` : '';
   return `<div class="kicker">last step</div>
     <h1>Where should we send it${hi}?</h1>
-    <p class="sub">Your custom questionnaire is built from the brief you just made — it's what Lauren uses to build your circle.</p>
+    <p class="sub">Your custom questionnaire is built from the brief you just made. It's what Lauren uses to build your circle.</p>
     <div class="fld"><label for="email">Email address</label>
       <input type="email" id="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off"
         spellcheck="false" placeholder="you@example.com" value="${A.email||''}">
@@ -463,10 +464,10 @@ function priceHTML(){
       <div class="note">one-time · for your matched circle</div>
     </div>
     <div class="incl"><div class="gets">
-      <div class="get"><i>✓</i><div><b>5–8 women who get exactly where you are</b> — not acquaintances, not another group chat</div></div>
-      <div class="get"><i>✓</i><div><b>Somewhere to be honest</b> without explaining the whole backstory first</div></div>
-      <div class="get"><i>✓</i><div><b>Friendship that fits your life</b> — reply at 6am or between naps, nothing to schedule</div></div>
-      <div class="get"><i>✓</i><div><b>A group that keeps talking</b> — Lauren's prompts make sure it doesn't fizzle</div></div>
+      <div class="get"><i>✓</i><div><b>5–8 women who get exactly where you are.</b> Not acquaintances, not another group chat.</div></div>
+      <div class="get"><i>✓</i><div><b>Somewhere to be honest</b> without explaining the whole backstory first.</div></div>
+      <div class="get"><i>✓</i><div><b>Friendship that fits your life.</b> Reply at 6am or between naps, nothing to schedule.</div></div>
+      <div class="get"><i>✓</i><div><b>A group that keeps talking.</b> Lauren's prompts make sure it doesn't fizzle.</div></div>
     </div></div>
     <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>
     <div class="quote"><p>“${season().quote}”</p><span>${season().who}</span></div>`;
