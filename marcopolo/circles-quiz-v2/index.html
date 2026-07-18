@@ -96,12 +96,6 @@
   .brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .brief dd{font-size:16px;font-weight:600;margin-top:4px}
 
-  .callout{background:#fff;border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:22px;font-size:16px;line-height:1.5}
-  .callout b{color:var(--magenta)}
-  .stats{display:flex;gap:9px;margin:20px 0 0}
-  .stats .s{flex:1;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center}
-  .stats .s b{display:block;font-size:21px;font-weight:800;color:var(--magenta);letter-spacing:-.02em;line-height:1}
-  .stats .s span{font-size:11px;color:var(--muted);line-height:1.3;display:block;margin-top:6px}
   .award{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px}
 
   /* reveal */
@@ -248,8 +242,7 @@ const SCREENS = [
       {v:'evenings',t:'Evenings'},{v:'weekends',t:'Weekends'},{v:'whenever',t:'Honestly, whenever'}
     ]},
 
-  { id:'reflect', type:'info', cta:'Why it works →' },
-  { id:'getting', type:'info', cta:'Almost there →' },
+  { id:'reflect', type:'info', cta:'Build my brief →' },
   { id:'brief',   type:'brief', cta:'See who builds it →' },
   { id:'matcher', type:'reveal', cta:'Get my circle →' },
   { id:'name',    type:'name',    cta:'Continue →' },
@@ -280,7 +273,6 @@ function render(){
 
   if(s.type==='single'||s.type==='multi') el.innerHTML = qHTML(s);
   else if(s.id==='reflect')  el.innerHTML = reflectHTML();
-  else if(s.id==='getting')  el.innerHTML = gettingHTML();
   else if(s.type==='brief')  el.innerHTML = briefHTML();
   else if(s.type==='reveal') el.innerHTML = revealHTML();
   else if(s.type==='name')   el.innerHTML = nameHTML();
@@ -351,19 +343,6 @@ function reflectHTML(){
       <div class="step"><span class="n">3</span><div><b>You connect on your time</b><span>Video, voice or text on Marco Polo. Reply when you can.</span></div></div>
     </div>`;
 }
-function gettingHTML(){
-  const S=season();
-  return `<div class="kicker">why it works</div>
-    <h1>Built on something <u>women already trust.</u></h1>
-    <p class="sub">Your circle runs on Marco Polo, the video-message app millions of women already use every day.</p>
-    <div class="stats">
-      <div class="s"><b>2.3M</b><span>App Store reviews</span></div>
-      <div class="s"><b>4B+</b><span>messages sent</span></div>
-      <div class="s"><b>90%</b><span>feel closer than over text</span></div>
-    </div>
-    <p class="award">★ Former iOS App of the Day</p>
-    <div class="quote"><p>“${S.quote}”</p><span>${S.who}</span></div>`;
-}
 
 /* --- brief (loading resolves into the artifact they earned) --- */
 function briefHTML(){
@@ -411,7 +390,13 @@ function revealHTML(){
       <div class="avatar">L</div>
       <div><b>Lauren</b><span>Circles matcher</span></div>
     </div>
-    <p class="sub" style="margin-bottom:0">Lauren reads every brief herself and hand-picks your group of 5–8. She doesn't stop there — she sends the prompts and gentle nudges that turn a group of strangers into people who actually talk.</p>`;
+    <p class="sub">Lauren reads every brief herself. Here's what she does once you're in:</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><b>Sends your custom questionnaire</b><span>Built from the brief you just made, to go deeper.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>Hand-picks your circle</b><span>5–8 women in your season, chosen one by one.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Gets you talking</b><span>Opening prompts so the first week isn't awkward.</span></div></div>
+    </div>
+    <p class="award">Circles form once a month.</p>`;
 }
 
 /* --- name --- */
@@ -495,7 +480,8 @@ function priceHTML(){
       <div class="get"><i>✓</i><div><b>Friendship that fits your life</b> — reply at 6am or between naps, nothing to schedule</div></div>
       <div class="get"><i>✓</i><div><b>A group that keeps talking</b> — Lauren's prompts make sure it doesn't fizzle</div></div>
     </div></div>
-    <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>`;
+    <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>
+    <div class="quote"><p>“${season().quote}”</p><span>${season().who}</span></div>`;
 }
 function wirePrice(){
   ctaBtn('Proceed to checkout →', ()=>{
