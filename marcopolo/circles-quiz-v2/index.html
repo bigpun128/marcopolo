@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circles — find your circle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2a0e3a; --magenta:#ff2e8b; --peach:#ffb38a; --cream:#fcf3ec;
+    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.6);
+    --display:'Bricolage Grotesque',sans-serif; --mono:'DM Mono',monospace;
+    --pad:22px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{background:var(--cream);color:var(--ink);font-family:var(--display);line-height:1.5;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+  /* shell: fixed header, scrollable body, fixed footer — thumb-friendly */
+  .app{max-width:460px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative}
+  header{position:sticky;top:0;z-index:20;background:var(--cream);padding:10px var(--pad) 8px}
+  .bar{height:4px;background:rgba(29,10,38,.09);border-radius:100px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--magenta);border-radius:100px;transition:width .35s cubic-bezier(.2,.7,.2,1)}
+  .hrow{display:flex;align-items:center;justify-content:space-between;margin-top:10px;min-height:24px}
+  .back{font-family:var(--mono);font-size:13px;color:var(--muted);padding:4px 8px;margin-left:-8px;border-radius:100px}
+  .back:hover{color:var(--ink);background:rgba(29,10,38,.05)}
+  .back[hidden]{visibility:hidden;display:block}
+  .logo{font-weight:800;font-size:17px;letter-spacing:-.03em}
+  .logo b{color:var(--magenta)}
+
+  main{flex:1;padding:14px var(--pad) 130px;display:flex;flex-direction:column;justify-content:center}
+  .screen{animation:in .32s cubic-bezier(.2,.7,.2,1)}
+  @keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:12px}
+  h1{font-weight:800;font-size:clamp(26px,7.2vw,34px);line-height:1.08;letter-spacing:-.03em;margin-bottom:10px}
+  h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%);padding:0 .06em}
+  .sub{font-size:16px;color:var(--muted);margin-bottom:22px}
+
+  /* options */
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{width:100%;text-align:left;min-height:56px;padding:16px 18px;background:#fff;border:2px solid var(--line);
+    border-radius:16px;font-size:16.5px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    transition:border-color .15s,background .15s,transform .1s}
+  .opt:active{transform:scale(.985)}
+  .opt.on{border-color:var(--magenta);background:#fff5fa}
+  .opt .tick{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:0 0 22px;display:flex;
+    align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .opt.on .tick{background:var(--magenta);border-color:var(--magenta)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid .opt{min-height:52px;padding:14px;font-size:15px;justify-content:center;text-align:center}
+  .grid .opt .tick{display:none}
+
+  /* footer CTA */
+  .foot{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px var(--pad) calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(252,243,236,0),var(--cream) 26%);max-width:460px;margin:0 auto}
+  .cta{width:100%;min-height:56px;background:var(--ink);color:var(--cream);border-radius:100px;font-size:17px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s,transform .1s}
+  .cta:active{transform:scale(.99)}
+  .cta[disabled]{opacity:.32}
+  .cta.pink{background:var(--magenta);color:#fff}
+  .hint{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;margin-top:9px}
+
+  /* info blocks */
+  .steps{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+  .step{display:flex;gap:13px;align-items:flex-start}
+  .step .n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--plum);color:var(--gold);font-weight:800;font-size:14px;
+    display:flex;align-items:center;justify-content:center}
+  .step b{display:block;font-size:16px}
+  .step span{font-size:14.5px;color:var(--muted)}
+  .gets{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+  .get{display:flex;gap:11px;align-items:flex-start;font-size:16px}
+  .get i{flex:0 0 24px;height:24px;border-radius:50%;background:var(--magenta);color:#fff;font-style:normal;font-size:13px;
+    display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .quote{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-top:20px}
+  .quote p{font-size:16px;line-height:1.45}
+  .quote span{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:block;margin-top:10px}
+
+  /* loading + brief */
+  .load{display:flex;flex-direction:column;gap:13px;margin-top:20px}
+  .load div{display:flex;gap:11px;align-items:center;font-size:16px;color:var(--muted);opacity:.35;transition:opacity .3s,color .3s}
+  .load div.on{opacity:1;color:var(--ink)}
+  .load i{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line);font-style:normal;font-size:12px;
+    display:flex;align-items:center;justify-content:center}
+  .load div.on i{background:var(--magenta);border-color:var(--magenta);color:#fff}
+  .brief{background:#fff;border:2px solid var(--ink);border-radius:20px;overflow:hidden;margin-top:4px}
+  .brief .bh{background:var(--plum);color:var(--cream);padding:14px 18px;font-family:var(--mono);font-size:12px;
+    letter-spacing:.14em;text-transform:uppercase}
+  .brief dl{padding:6px 18px 16px}
+  .brief div{padding:13px 0;border-bottom:1px solid var(--line)}
+  .brief div:last-child{border-bottom:0}
+  .brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .brief dd{font-size:16px;font-weight:600;margin-top:4px}
+
+  /* reveal */
+  .lauren{display:flex;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:18px}
+  .avatar{flex:0 0 76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--peach),var(--magenta));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:28px;border:3px solid var(--gold)}
+  .lauren b{font-size:19px;display:block}
+  .lauren span{font-size:14px;color:var(--muted)}
+
+  /* contact */
+  label{display:block;font-weight:700;font-size:14px;margin-bottom:8px}
+  input[type=email]{width:100%;min-height:56px;padding:16px 18px;border:2px solid var(--line);border-radius:16px;
+    font-family:inherit;font-size:17px;background:#fff;color:var(--ink)}
+  input[type=email]:focus{outline:none;border-color:var(--magenta)}
+  input.err{border-color:#d92121}
+  .errmsg{color:#d92121;font-family:var(--mono);font-size:12.5px;margin-top:8px;display:none}
+  .errmsg.on{display:block}
+  .privacy{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+
+  /* price */
+  .price{background:var(--plum);color:var(--cream);border-radius:22px;padding:24px;text-align:center;margin-bottom:16px}
+  .price .amt{font-weight:800;font-size:52px;letter-spacing:-.04em;line-height:1}
+  .price .amt sup{font-size:22px;vertical-align:super}
+  .price .note{font-size:14px;color:rgba(252,243,236,.72);margin-top:4px}
+  .incl{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+  .incl .get i{background:var(--plum);color:var(--gold)}
+  .guar{background:var(--gold);border-radius:16px;padding:15px 17px;font-size:15px;font-weight:600;display:flex;gap:11px;align-items:flex-start}
+  .guar i{font-style:normal;font-size:18px}
+
+  .soft{text-align:center}
+  .soft .big{font-size:40px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="hrow">
+      <button class="back" id="back" hidden>← back</button>
+      <div class="logo">Circles<b>.</b></div>
+    </div>
+  </header>
+  <main id="main"></main>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+/* ------------------------------------------------------------------ *
+ * Circles survey v2 — 15 screens, mobile-first, tap-only until contact.
+ * Generic funnel; audience is self-selected at screen 1 and themes copy.
+ * ------------------------------------------------------------------ */
+
+/* --- audience themes (one survey, N felt experiences) --- */
+const SEASONS = {
+  'new-mom': {
+    label:'A new mom',
+    reflect:"You're in the season people talk about least honestly.",
+    reflectBody:"Everyone asks about the baby. Almost no one asks about you. Circles is built for exactly this stretch.",
+    quote:"It's more intimate than a text but less formal than a call. I can show up at 6am with no makeup on and it's fine.",
+    who:"Bethany · matched in her first year"
+  },
+  'new-city': {
+    label:'New to my city',
+    reflect:"Starting over somewhere new is harder than anyone admits.",
+    reflectBody:"You can be surrounded by people and still have no one to call. Circles gives you a small group from day one.",
+    quote:"I moved for work and knew nobody. Six months in, these are the women I actually text first.",
+    who:"Laurie · matched after relocating"
+  },
+  'new-chapter': {
+    label:'Starting a new chapter',
+    reflect:"Making real friends after 35 is a different game.",
+    reflectBody:"The people around you are deep in their own lives. Circles puts you with women in the same shift.",
+    quote:"I didn't want small talk. I wanted people who get where I am right now. That's what this gave me.",
+    who:"Lisa · matched at 41"
+  },
+  'empty-nest': {
+    label:'An empty nester',
+    reflect:"The house got quiet faster than you expected.",
+    reflectBody:"This is a beginning, not just an ending. Circles matches you with women stepping into the same one.",
+    quote:"After my youngest left I realized my whole social life had been theirs. This gave me my own again.",
+    who:"Bethany · matched after her last left home"
+  },
+  'deeper': {
+    label:'Looking for deeper friendships',
+    reflect:"You have people. You want people who really know you.",
+    reflectBody:"Acquaintances are easy. Depth takes intention. Circles is built to skip past the surface.",
+    quote:"I had plenty of acquaintances. What I was missing was somewhere to be honest.",
+    who:"Laurie · matched last spring"
+  }
+};
+
+/* --- screens --- */
+const SCREENS = [
+  { id:'season', type:'single', kicker:'first things first',
+    q:"What season are you in?", sub:"This shapes who we put you with.",
+    opts:[
+      {v:'new-mom',   t:"I'm a new mom"},
+      {v:'new-city',  t:"I'm new to my city"},
+      {v:'new-chapter',t:"I'm starting a new chapter"},
+      {v:'empty-nest',t:"I'm an empty nester"},
+      {v:'deeper',    t:"I just want deeper friendships"}
+    ]},
+
+  { id:'age', type:'single', q:"What's your age?", sub:"We match by season of life, so this matters.",
+    opts:[{v:'u25',t:'Under 25'},{v:'25-34',t:'25–34'},{v:'35-44',t:'35–44'},{v:'45-54',t:'45–54'},{v:'55+',t:'55+'}]},
+
+  { id:'woman', type:'single', q:"Do you identify as a woman?",
+    sub:"Circles is currently hand-matched for women. We're working to open more circles soon.",
+    opts:[{v:'yes',t:'Yes'},{v:'no',t:'No'},{v:'na',t:'Prefer not to say'}]},
+
+  { id:'hardest', type:'multi', q:"What's been hardest lately?", sub:"Pick as many as fit. No wrong answers.",
+    opts:[
+      {v:'no-one',t:"I don't have anyone to call"},
+      {v:'moved',t:"My friends have moved away"},
+      {v:'no-time',t:"There's no time to make new ones"},
+      {v:'lost-self',t:"I've lost touch with myself"},
+      {v:'starting-over',t:"I'm starting over"},
+      {v:'busy',t:"Everyone's busy with their own lives"}
+    ]},
+
+  { id:'want', type:'multi', q:"What do you want from your circle?", sub:"This goes straight to your matcher.",
+    opts:[
+      {v:'gets-it',t:"Someone who just gets it"},
+      {v:'checkins',t:"Regular check-ins"},
+      {v:'ahead',t:"Advice from women a step ahead"},
+      {v:'laughs',t:"Laughs and lightness"},
+      {v:'honest',t:"Somewhere to be honest"},
+      {v:'not-alone',t:"To not feel alone in this"}
+    ]},
+
+  { id:'interests', type:'multi', grid:true, q:"What are you into?", sub:"Shared ground makes the first week easier.",
+    opts:['Fitness','Cooking','Books','Travel','Parenting','Career','Faith','Creative projects','Outdoors','Wellness','Music','Home projects'].map(t=>({v:t,t}))},
+
+  { id:'free', type:'multi', q:"When are you usually free?", sub:"Marco Polo is async, so this is about rhythm, not scheduling.",
+    opts:[
+      {v:'mornings',t:'Mornings'},{v:'midday',t:'Naps & midday'},
+      {v:'evenings',t:'Evenings'},{v:'weekends',t:'Weekends'},{v:'whenever',t:'Honestly, whenever'}
+    ]},
+
+  { id:'reflect', type:'info', cta:'How it works →' },
+  { id:'getting', type:'info', cta:'Almost there →' },
+  { id:'brief',   type:'brief', cta:'See who builds it →' },
+  { id:'matcher', type:'reveal', cta:'What happens next →' },
+  { id:'next',    type:'info',  cta:'Get my circle →' },
+  { id:'contact', type:'contact', cta:'Continue →' },
+  { id:'price',   type:'price', cta:'Join my circle →' }
+];
+
+/* --- state --- */
+let idx = 0;
+const A = {}; // answers
+try{ const s=sessionStorage.getItem('circles-v2'); if(s){ const p=JSON.parse(s); Object.assign(A,p.A||{}); idx=p.idx||0; } }catch(e){}
+function persist(){ try{ sessionStorage.setItem('circles-v2',JSON.stringify({A,idx})); }catch(e){} }
+const season = ()=> SEASONS[A.season] || SEASONS['deeper'];
+
+const main=document.getElementById('main'), foot=document.getElementById('foot'),
+      bar=document.getElementById('bar'), back=document.getElementById('back');
+
+back.addEventListener('click',()=>{ if(idx>0){ idx--; persist(); render(); } });
+
+function go(){ idx++; persist(); render(); }
+
+function render(){
+  const s = SCREENS[idx];
+  bar.style.width = ((idx)/(SCREENS.length-1)*100)+'%';
+  back.hidden = idx===0;
+  main.innerHTML=''; foot.innerHTML='';
+  const el=document.createElement('div'); el.className='screen';
+
+  if(s.type==='single'||s.type==='multi') el.innerHTML = qHTML(s);
+  else if(s.id==='reflect')  el.innerHTML = reflectHTML();
+  else if(s.id==='getting')  el.innerHTML = gettingHTML();
+  else if(s.type==='brief')  el.innerHTML = briefHTML();
+  else if(s.type==='reveal') el.innerHTML = revealHTML();
+  else if(s.id==='next')     el.innerHTML = nextHTML();
+  else if(s.type==='contact')el.innerHTML = contactHTML();
+  else if(s.type==='price')  el.innerHTML = priceHTML();
+  main.appendChild(el);
+  window.scrollTo(0,0);
+
+  if(s.type==='single')      wireSingle(s);
+  else if(s.type==='multi')  wireMulti(s);
+  else if(s.type==='brief')  runBrief(s);
+  else if(s.type==='contact')wireContact(s);
+  else if(s.type==='price')  wirePrice();
+  else ctaBtn(s.cta, go);
+}
+
+/* --- footer button --- */
+function ctaBtn(label, fn, opts={}){
+  foot.innerHTML = `<button class="cta ${opts.pink?'pink':''}" ${opts.disabled?'disabled':''}>${label}</button>`
+    + (opts.hint?`<p class="hint">${opts.hint}</p>`:'');
+  const b=foot.querySelector('.cta');
+  b.addEventListener('click',()=>{ if(!b.disabled) fn(); });
+  return b;
+}
+
+/* --- question screens --- */
+function qHTML(s){
+  const cls = s.grid?'grid':'opts';
+  const sel = A[s.id];
+  const on = v => s.type==='multi' ? (Array.isArray(sel)&&sel.includes(v)) : sel===v;
+  return `${s.kicker?`<div class="kicker">${s.kicker}</div>`:''}
+    <h1>${s.q}</h1>${s.sub?`<p class="sub">${s.sub}</p>`:''}
+    <div class="${cls}">${s.opts.map(o=>
+      `<button class="opt ${on(o.v)?'on':''}" data-v="${o.v}">${o.t}
+        ${s.grid?'':`<span class="tick">✓</span>`}</button>`).join('')}</div>`;
+}
+function wireSingle(s){
+  main.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    A[s.id]=b.dataset.v;
+    main.querySelectorAll('.opt').forEach(x=>x.classList.toggle('on',x===b));
+    persist();
+    // graceful exit for non-women
+    if(s.id==='woman' && b.dataset.v!=='yes'){ setTimeout(softExit,220); return; }
+    setTimeout(go,200); // auto-advance: half the taps
+  }));
+}
+function wireMulti(s){
+  if(!Array.isArray(A[s.id])) A[s.id]=[];
+  const btn = ctaBtn(SCREENS[idx].cta||'Continue →', go, {disabled:A[s.id].length===0});
+  main.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.dataset.v, i=A[s.id].indexOf(v);
+    if(i>-1) A[s.id].splice(i,1); else A[s.id].push(v);
+    b.classList.toggle('on', i===-1);
+    btn.disabled = A[s.id].length===0;
+    persist();
+  }));
+}
+
+/* --- info screens --- */
+function reflectHTML(){
+  const S=season();
+  return `<div class="kicker">${S.label}</div>
+    <h1>${S.reflect}</h1><p class="sub">${S.reflectBody}</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><b>You tell us about you</b><span>The part you just did.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>A real person builds your circle</b><span>Not an algorithm. Someone reads your answers and picks your group of 5–8.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>You connect on your time</b><span>Video, voice or text on Marco Polo. Reply when you can.</span></div></div>
+    </div>`;
+}
+function gettingHTML(){
+  const S=season();
+  return `<div class="kicker">what you get</div>
+    <h1>A small group, <u>built for you.</u></h1>
+    <div class="gets">
+      <div class="get"><i>✓</i><div><b>5–8 women</b> in your season, hand-picked by a real person</div></div>
+      <div class="get"><i>✓</i><div>A <b>deeper questionnaire</b> after you join, so your group is right</div></div>
+      <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group actually clicks</div></div>
+      <div class="get"><i>✓</i><div>A <b>private circle</b> on Marco Polo, at your own pace</div></div>
+    </div>
+    <div class="quote"><p>“${S.quote}”</p><span>${S.who}</span></div>`;
+}
+function nextHTML(){
+  return `<div class="kicker">what happens next</div>
+    <h1>Here's the plan.</h1>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><b>You join today</b><span>One-time, and you're in the next round of matching.</span></div></div>
+      <div class="step"><span class="n">2</span><div><b>We send your matching questionnaire</b><span>Deeper questions so your circle is genuinely yours.</span></div></div>
+      <div class="step"><span class="n">3</span><div><b>Lauren builds your circle</b><span>By hand, from your answers.</span></div></div>
+      <div class="step"><span class="n">4</span><div><b>Your circle starts</b><span>With prompts to get the first conversation going.</span></div></div>
+    </div>`;
+}
+
+/* --- brief (loading resolves into the artifact they earned) --- */
+function briefHTML(){
+  return `<div id="loadWrap"><div class="kicker">one moment</div>
+    <h1>Building your matching profile…</h1>
+    <div class="load">
+      <div data-i="0"><i>✓</i>Reading your answers</div>
+      <div data-i="1"><i>✓</i>Mapping your season</div>
+      <div data-i="2"><i>✓</i>Noting when you're free</div>
+      <div data-i="3"><i>✓</i>Preparing it for your matcher</div>
+    </div></div>
+   <div id="briefWrap" style="display:none"><div class="kicker">ready</div>
+    <h1>Your matching brief.</h1><p class="sub">This is what your matcher will build your circle from.</p>
+    ${briefCard()}</div>`;
+}
+function briefCard(){
+  const S=season(), L=(id,fb)=>{
+    const v=A[id]; if(!Array.isArray(v)||!v.length) return fb;
+    const sc=SCREENS.find(x=>x.id===id);
+    return v.map(x=>{const o=sc.opts.find(o=>o.v===x);return o?o.t:x;}).join(' · ');
+  };
+  return `<div class="brief"><div class="bh">Matching brief</div><dl>
+    <div><dt>Season</dt><dd>${S.label}</dd></div>
+    <div><dt>Age</dt><dd>${(SCREENS[1].opts.find(o=>o.v===A.age)||{}).t||'—'}</dd></div>
+    <div><dt>Looking for</dt><dd>${L('want','—')}</dd></div>
+    <div><dt>Shared ground</dt><dd>${L('interests','—')}</dd></div>
+    <div><dt>Rhythm</dt><dd>${L('free','—')}</dd></div>
+  </dl></div>`;
+}
+function runBrief(s){
+  const rows=main.querySelectorAll('.load div');
+  rows.forEach((r,i)=>setTimeout(()=>r.classList.add('on'), 380*(i+1)));
+  setTimeout(()=>{
+    main.querySelector('#loadWrap').style.display='none';
+    const b=main.querySelector('#briefWrap'); b.style.display='block'; b.classList.add('screen');
+    ctaBtn(s.cta, go);
+  }, 380*rows.length+520);
+}
+
+/* --- matcher reveal (identity lands here, not earlier) --- */
+function revealHTML(){
+  return `<div class="kicker">meet your matcher</div>
+    <h1>Lauren builds your circle.</h1>
+    <div class="lauren" style="margin-top:18px">
+      <div class="avatar">L</div>
+      <div><b>Lauren</b><span>Circles matcher</span></div>
+    </div>
+    <p class="sub" style="margin-bottom:0">Lauren reads every brief herself and hand-picks your group of 5–8. She doesn't stop there — she sends the prompts and gentle nudges that turn a group of strangers into people who actually talk.</p>`;
+}
+
+/* --- contact --- */
+function contactHTML(){
+  return `<div class="kicker">last step</div>
+    <h1>Where should we send your <u>matching questionnaire?</u></h1>
+    <p class="sub">That's the deeper set of questions Lauren uses to build your circle.</p>
+    <label for="email">Email address</label>
+    <input type="email" id="email" name="email" inputmode="email" autocomplete="email"
+      autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="you@example.com" value="${A.email||''}">
+    <p class="errmsg" id="err">Enter a valid email address.</p>
+    <p class="privacy">We'll only use this for your circle. No spam, and you can leave any time.</p>`;
+}
+function wireContact(s){
+  const input=main.querySelector('#email'), err=main.querySelector('#err');
+  const re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const btn=ctaBtn(s.cta,()=>{
+    const v=input.value.trim();
+    if(!re.test(v)){ input.classList.add('err'); err.classList.add('on'); input.focus(); return; }
+    A.email=v; persist(); go();
+  });
+  input.addEventListener('input',()=>{ input.classList.remove('err'); err.classList.remove('on'); });
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter') btn.click(); });
+}
+
+/* --- price --- */
+function priceHTML(){
+  return `<div class="kicker">your circle</div>
+    <h1>One time. Then you're in.</h1>
+    <div class="price" style="margin-top:18px">
+      <div class="amt"><sup>$</sup>75</div>
+      <div class="note">one-time · for your matched circle</div>
+    </div>
+    <div class="incl"><div class="gets">
+      <div class="get"><i>✓</i><div><b>Lauren hand-builds your circle</b> from your brief</div></div>
+      <div class="get"><i>✓</i><div>A <b>deeper questionnaire</b> so she gets it right</div></div>
+      <div class="get"><i>✓</i><div><b>Prompts and guidance</b> so the group connects</div></div>
+      <div class="get"><i>✓</i><div>Your <b>private circle</b> of 5–8 on Marco Polo</div></div>
+    </div></div>
+    <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>`;
+}
+function wirePrice(){
+  ctaBtn('Join my circle →', ()=>{
+    persist();
+    window.location.href='../circles-checkout/';
+  }, {pink:true, hint:'Secure checkout · takes about a minute'});
+}
+
+/* --- soft exit for non-women --- */
+function softExit(){
+  bar.style.width='100%'; back.hidden=false;
+  main.innerHTML=`<div class="screen soft"><div class="big">💌</div>
+    <h1>We're not quite ready for you yet.</h1>
+    <p class="sub">Circles is currently hand-matched for women only. Leave your email and we'll reach out the moment we open more circles.</p>
+    <input type="email" id="email" inputmode="email" autocomplete="email" autocapitalize="off" placeholder="you@example.com">
+    <p class="errmsg" id="err">Enter a valid email address.</p></div>`;
+  const input=main.querySelector('#email'), err=main.querySelector('#err');
+  const re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  ctaBtn('Keep me posted →',()=>{
+    const v=input.value.trim();
+    if(!re.test(v)){ input.classList.add('err'); err.classList.add('on'); return; }
+    main.innerHTML=`<div class="screen soft"><div class="big">✓</div><h1>You're on the list.</h1>
+      <p class="sub">We'll be in touch as soon as there's a circle for you.</p></div>`;
+    foot.innerHTML='';
+  });
+  input.addEventListener('input',()=>{ input.classList.remove('err'); err.classList.remove('on'); });
+}
+
+render();
+</script>
+</body>
+</html>
