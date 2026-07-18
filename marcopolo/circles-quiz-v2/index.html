@@ -247,7 +247,7 @@ const SCREENS = [
   { id:'next',    type:'info',  cta:'Get my circle →' },
   { id:'name',    type:'name',    cta:'Continue →' },
   { id:'contact', type:'contact', cta:'Continue →' },
-  { id:'price',   type:'price', cta:'Join my circle →' }
+  { id:'price',   type:'price', cta:'Proceed to checkout →' }
 ];
 
 /* --- state --- */
@@ -501,7 +501,7 @@ function priceHTML(){
     <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>`;
 }
 function wirePrice(){
-  ctaBtn('Join my circle →', ()=>{
+  ctaBtn('Proceed to checkout →', ()=>{
     persist();
     window.location.href='../circles-checkout/';
   }, {pink:true, hint:'Secure checkout · takes about a minute'});
