@@ -32,27 +32,27 @@
   .logo{font-weight:800;font-size:17px;letter-spacing:-.03em}
   .logo b{color:var(--magenta)}
 
-  main{flex:1;padding:14px var(--pad) 130px;display:flex;flex-direction:column;justify-content:center}
-  .screen{animation:in .32s cubic-bezier(.2,.7,.2,1)}
+  main{flex:1;padding:12px var(--pad) 108px;display:flex;flex-direction:column}
+  .screen{animation:in .32s cubic-bezier(.2,.7,.2,1);margin-block:auto}
   @keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:12px}
-  h1{font-weight:800;font-size:clamp(26px,7.2vw,34px);line-height:1.08;letter-spacing:-.03em;margin-bottom:10px}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:9px}
+  h1{font-weight:800;font-size:clamp(25px,6.6vw,31px);line-height:1.1;letter-spacing:-.03em;margin-bottom:8px}
   h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%);padding:0 .06em}
-  .sub{font-size:16px;color:var(--muted);margin-bottom:22px}
+  .sub{font-size:15.5px;color:var(--muted);margin-bottom:16px}
 
   /* options */
-  .opts{display:flex;flex-direction:column;gap:10px}
-  .opt{width:100%;text-align:left;min-height:56px;padding:16px 18px;background:#fff;border:2px solid var(--line);
-    border-radius:16px;font-size:16.5px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{width:100%;text-align:left;min-height:50px;padding:13px 16px;background:#fff;border:2px solid var(--line);
+    border-radius:14px;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;
     transition:border-color .15s,background .15s,transform .1s}
   .opt:active{transform:scale(.985)}
   .opt.on{border-color:var(--magenta);background:#fff5fa}
   .opt .tick{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:0 0 22px;display:flex;
     align-items:center;justify-content:center;font-size:12px;color:#fff}
   .opt.on .tick{background:var(--magenta);border-color:var(--magenta)}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .grid .opt{min-height:52px;padding:14px;font-size:15px;justify-content:center;text-align:center}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .grid .opt{min-height:46px;padding:11px 10px;font-size:14.5px;justify-content:center;text-align:center}
   .grid .opt .tick{display:none}
 
   /* footer CTA */
@@ -66,18 +66,18 @@
   .hint{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:center;margin-top:9px}
 
   /* info blocks */
-  .steps{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+  .steps{display:flex;flex-direction:column;gap:11px;margin-top:4px}
   .step{display:flex;gap:13px;align-items:flex-start}
-  .step .n{flex:0 0 30px;height:30px;border-radius:50%;background:var(--plum);color:var(--gold);font-weight:800;font-size:14px;
+  .step .n{flex:0 0 27px;height:27px;border-radius:50%;background:var(--plum);color:var(--gold);font-weight:800;font-size:13px;
     display:flex;align-items:center;justify-content:center}
   .step b{display:block;font-size:16px}
-  .step span{font-size:14.5px;color:var(--muted)}
-  .gets{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+  .step span{font-size:14px;color:var(--muted);line-height:1.4}
+  .gets{display:flex;flex-direction:column;gap:10px;margin-top:2px}
   .get{display:flex;gap:11px;align-items:flex-start;font-size:16px}
   .get i{flex:0 0 24px;height:24px;border-radius:50%;background:var(--magenta);color:#fff;font-style:normal;font-size:13px;
     display:flex;align-items:center;justify-content:center;margin-top:1px}
-  .quote{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-top:20px}
-  .quote p{font-size:16px;line-height:1.45}
+  .quote{background:#fff;border:2px solid var(--line);border-radius:16px;padding:15px;margin-top:14px}
+  .quote p{font-size:15px;line-height:1.45}
   .quote span{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:block;margin-top:10px}
 
   /* loading + brief */
@@ -91,16 +91,16 @@
   .brief .bh{background:var(--plum);color:var(--cream);padding:14px 18px;font-family:var(--mono);font-size:12px;
     letter-spacing:.14em;text-transform:uppercase}
   .brief dl{padding:6px 18px 16px}
-  .brief div{padding:13px 0;border-bottom:1px solid var(--line)}
+  .brief div{padding:10px 0;border-bottom:1px solid var(--line)}
   .brief div:last-child{border-bottom:0}
   .brief dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .brief dd{font-size:16px;font-weight:600;margin-top:4px}
 
 
   /* reveal */
-  .lauren{display:flex;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:18px}
-  .avatar{flex:0 0 76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--peach),var(--magenta));
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:28px;border:3px solid var(--gold)}
+  .lauren{display:flex;gap:14px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+  .avatar{flex:0 0 62px;height:62px;border-radius:50%;background:linear-gradient(140deg,var(--peach),var(--magenta));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px;border:3px solid var(--gold)}
   .lauren b{font-size:19px;display:block}
   .lauren span{font-size:14px;color:var(--muted)}
 
@@ -110,26 +110,25 @@
     border-radius:16px;font-family:inherit;font-size:17px;background:#fff;color:var(--ink)}
   input[type=email]:focus,input[type=text]:focus,input[type=tel]:focus{outline:none;border-color:var(--magenta)}
   input.err{border-color:#d92121}
-  .fld{margin-bottom:16px}
-  .fieldnote{font-size:13px;color:var(--muted);margin-top:7px}
-  .consent{display:flex;gap:11px;align-items:flex-start;background:#fff;border:2px solid var(--line);border-radius:16px;
-    padding:15px;margin-top:4px;font-weight:400}
+  .fld{margin-bottom:13px}
+  .fieldnote{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .consent{display:flex;gap:10px;align-items:flex-start;background:#fff;border:2px solid var(--line);border-radius:14px;
+    padding:13px;margin-top:2px;font-weight:400}
   .consent input{flex:0 0 22px;width:22px;height:22px;margin-top:1px;accent-color:var(--magenta)}
-  .consent span{font-size:13.5px;line-height:1.5;color:var(--ink)}
-  .consent small{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+  .consent span{font-size:13px;line-height:1.45;color:var(--ink)}
+  .consent small{display:block;font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.4}
   .errmsg{color:#d92121;font-family:var(--mono);font-size:12.5px;margin-top:8px;display:none}
   .errmsg.on{display:block}
-  .privacy{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+  .privacy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:9px;line-height:1.5}
 
   /* price */
-  .price{background:var(--plum);color:var(--cream);border-radius:22px;padding:24px;text-align:center;margin-bottom:16px}
-  .price .amt{font-weight:800;font-size:52px;letter-spacing:-.04em;line-height:1}
+  .price{background:var(--plum);color:var(--cream);border-radius:20px;padding:18px;text-align:center;margin-bottom:12px}
+  .price .amt{font-weight:800;font-size:44px;letter-spacing:-.04em;line-height:1}
   .price .amt sup{font-size:22px;vertical-align:super}
   .price .note{font-size:14px;color:rgba(252,243,236,.72);margin-top:4px}
-  .incl{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+  .incl{background:#fff;border:2px solid var(--line);border-radius:16px;padding:16px;margin-bottom:0}
   .incl .get i{background:var(--plum);color:var(--gold)}
-  .guar{background:var(--gold);border-radius:16px;padding:15px 17px;font-size:15px;font-weight:600;display:flex;gap:11px;align-items:flex-start}
-  .guar i{font-style:normal;font-size:18px}
+  .get.gold i{background:var(--gold);color:var(--ink)}
 
   .soft{text-align:center}
   .soft .big{font-size:40px;margin-bottom:10px}
@@ -160,7 +159,7 @@ const SEASONS = {
     label:'A new mom',
     reflect:"You're in the season people talk about least honestly.",
     reflectBody:"Everyone asks about the baby. Almost no one asks about you. Circles is built for exactly this stretch.",
-    quote:"It's more intimate than a text but less formal than a call. I can show up at 6am with no makeup on and it's fine.",
+    quote:"More intimate than a text, less formal than a call. I can show up at 6am with no makeup on and it's fine.",
     who:"Bethany · matched in her first year"
   },
   'new-city': {
@@ -435,7 +434,7 @@ function contactHTML(){
     <label class="consent"><input type="checkbox" id="sms" ${A.sms?'checked':''}>
       <span>Text me updates about my circle.
       <small>By checking this box you agree to receive recurring automated marketing texts from Marco Polo Circles at the number provided. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help.</small></span></label>
-    <p class="privacy">We'll only use this for your circle. No spam, and you can leave any time.</p>`;
+    <p class="privacy">Only used for your circle. No spam, leave any time.</p>`;
 }
 function wireContact(s){
   const email=main.querySelector('#email'), phone=main.querySelector('#phone'),
@@ -464,12 +463,11 @@ function priceHTML(){
       <div class="note">one-time · for your matched circle</div>
     </div>
     <div class="incl"><div class="gets">
-      <div class="get"><i>✓</i><div><b>5–8 women who get exactly where you are.</b> Not acquaintances, not another group chat.</div></div>
-      <div class="get"><i>✓</i><div><b>Somewhere to be honest</b> without explaining the whole backstory first.</div></div>
-      <div class="get"><i>✓</i><div><b>Friendship that fits your life.</b> Reply at 6am or between naps, nothing to schedule.</div></div>
-      <div class="get"><i>✓</i><div><b>A group that keeps talking.</b> Lauren's prompts make sure it doesn't fizzle.</div></div>
+      <div class="get"><i>✓</i><div><b>5 to 8 women, hand-matched.</b> Chosen one by one by Lauren, not an algorithm.</div></div>
+      <div class="get"><i>✓</i><div><b>4 weeks of guided connection.</b> Prompts and nudges so the group doesn't fizzle.</div></div>
+      <div class="get"><i>✓</i><div><b>Runs on Marco Polo.</b> Talk live or reply when it suits you.</div></div>
+      <div class="get gold"><i>✓</i><div><b>Don't love your circle? One free rematch.</b></div></div>
     </div></div>
-    <div class="guar"><i>🔄</i><div>If your circle isn't right, we'll <b>rematch you once, free.</b></div></div>
     <div class="quote"><p>“${season().quote}”</p><span>${season().who}</span></div>`;
 }
 function wirePrice(){
