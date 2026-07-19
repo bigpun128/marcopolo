@@ -13,7 +13,7 @@
   .tag{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--lime)}
   h1{font-weight:800;font-size:clamp(32px,6vw,58px);letter-spacing:-.03em;line-height:1;margin:12px 0 10px}
   .sub{font-size:16px;color:rgba(246,241,231,.62);max-width:56ch;line-height:1.55;margin-bottom:44px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
   a.card{display:flex;flex-direction:column;border-radius:22px;overflow:hidden;text-decoration:none;color:#fff;border:1px solid var(--line);transition:transform .16s,border-color .16s}
   a.card:hover{transform:translateY(-6px);border-color:rgba(246,241,231,.4)}
   .swatch{height:140px;position:relative;display:flex;align-items:flex-end;padding:16px}
@@ -23,6 +23,9 @@
   .s-mail .env{width:46px;height:58px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;font-size:20px}
   .s-mail .m1{background:var(--tomato);color:#fdf3df}.s-mail .m2{background:var(--mustard);color:#2a1c12;margin-top:16px}.s-mail .m3{background:#fdf3df;color:#e8442c}
   .s-reg{background:linear-gradient(135deg,#e8442c,#c5361f);align-items:center;justify-content:center;font-size:46px}
+  .s-bot{background:linear-gradient(135deg,#173d2e,#1f4f3a)}
+  .s-bot .chips span{background:#d4703a}.s-bot .chips span:nth-child(2){background:#e9b949}.s-bot .chips span:nth-child(3){background:#c7d9c4}
+  .alt{font-family:'DM Mono',monospace;font-size:11px;color:#f4b73f;display:block;margin-bottom:6px;letter-spacing:.1em;text-transform:uppercase}
   .chips{display:flex;gap:8px}
   .chips span{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.6)}
   .body{background:var(--panel);padding:24px 24px 26px;flex:1;display:flex;flex-direction:column}
@@ -65,6 +68,16 @@
           <h2>Registration page</h2>
           <p>A standalone sign-up page to link from ads, emails, and the exhibitor pages. The same form is also embedded on the landing.</p>
           <span class="go">view registration page →</span>
+        </div>
+      </a>
+
+      <a class="card" href="template-1-botanical/">
+        <div class="swatch s-bot"><div class="chips"><span></span><span></span><span></span></div></div>
+        <div class="body">
+          <span class="alt">Alternate direction</span>
+          <h2>Botanical (green)</h2>
+          <p>The earlier design direction: forest green and terracotta with elegant serif headlines. Kept for comparison against the chosen retro-fair look.</p>
+          <span class="go">view green version →</span>
         </div>
       </a>
     </div>
