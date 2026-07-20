@@ -35,16 +35,38 @@ CTA → footer. A sticky bottom CTA appears once the hero button scrolls out of 
 ## 2. Structure & assets
 
 Single self-contained HTML file, no build step, no framework. Inline `<style>`, one
-small vanilla `<script>` for the sticky-CTA IntersectionObserver.
+small vanilla `<script>` (sticky-CTA IntersectionObserver + reduced-motion video pause).
+Head includes OpenGraph/Twitter cards, `theme-color`, and `<link rel="prefetch">` of
+the survey (next hop). **Note:** the `og:image` URL is hardcoded to the `marcopolo-ten`
+preview domain — update it to the production domain at launch.
 
 **Assets**
 - `assets/women-group.jpg` — hero photo, **served locally** (optimized 13.7MB → 185KB,
   1500×626). Not an external dependency.
 - Marco Polo demo video referenced from `../v3a/assets/marco-polo-why.mp4` (3.3MB,
-  autoplay/muted/loop/playsinline, `preload="metadata"`).
+  autoplay/muted/loop/playsinline, `preload="metadata"`, `aria-hidden`).
 
 **Fonts:** Bricolage Grotesque + DM Mono (Google Fonts). Same tokens as the survey and
 checkout so the funnel reads as one product.
+
+**Responsive:** mobile-first single column; an `@media (min-width:860px)` breakpoint
+reflows to desktop — two-column hero (copy + photo), two-column "Why Marco Polo"
+(copy + video) and pricing (intro + card), 2-up "what's included", 3-up testimonials.
+The hero, Why-Marco-Polo and pricing markup are grouped into paired columns so the
+grid has something to place — preserve that grouping when porting.
+
+**Section rhythm:** backgrounds alternate for separation — cream ↔ blush (`--blush`)
+across the light sections, with two dark plum bands (What's included, closing) and the
+dark trust bar/footer. Keep the alternation when adding/removing sections.
+
+**Accessibility (already implemented — keep it on the Next.js port):**
+- `<main>` landmark + skip-to-content link; `<nav aria-label="Primary">`.
+- `:focus-visible` outlines on links, buttons, FAQ summaries.
+- Decorative icons and the silent demo video are `aria-hidden`; video is `tabindex=-1`.
+- `prefers-reduced-motion`: transitions/animations/smooth-scroll disabled and the
+  video does not autoplay (JS checks the media query).
+- Single `<h1>`; sequential `<h2>`; FAQ uses native `<details>/<summary>`.
+- Body-copy contrast meets AA.
 
 ---
 
@@ -90,9 +112,10 @@ screen — firing it on the landing would collapse Meta's optimisation signal.
 
 ---
 
-## 5. Mobile requirements (99% of traffic)
+## 5. Mobile-first, but responsive (99% of traffic is mobile)
 
-- Single column, max-width 520px, big (≥56px) tap targets.
+- Mobile: single column, max-width 520px, big (≥56px) tap targets. Desktop breakpoint
+  at 860px (see §2). Sticky bottom CTA is mobile-only; hidden ≥600px.
 - **Test inside the Instagram/Facebook in-app browser**, not desktop Chrome. This is
   where all paid traffic lands and where earlier funnel issues hid.
 - The hero video autoplays: keep `muted playsinline preload="metadata"`. Consider a
