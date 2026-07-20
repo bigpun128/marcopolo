@@ -5,17 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Circles · real friendship, hand-matched</title>
 <meta name="description" content="Get matched with a small group of women in the same season of life. A real person builds your circle by hand. $75 one-time, one free rematch.">
+<meta name="theme-color" content="#fcf3ec">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Circles — real friendship, hand-matched">
+<meta property="og:description" content="A small group of women friends, matched to you. A real person builds your circle by hand. $75 one-time, one free rematch.">
+<meta property="og:image" content="https://marcopolo-ten.vercel.app/marcopolo/circles-home/assets/women-group.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="prefetch" href="../circles-quiz-v2/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --plum:#2a0e3a; --magenta:#ff2e8b; --peach:#ffb38a; --cream:#fcf3ec;
-    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.6);
+    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.66);
     --display:'Bricolage Grotesque',sans-serif; --mono:'DM Mono',monospace; --pad:22px;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
   body{background:var(--cream);color:var(--ink);font-family:var(--display);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{display:block;max-width:100%}
   a{color:inherit;text-decoration:none}
@@ -69,12 +76,6 @@
   .trust .big b{color:var(--gold)}
   .trust .seen{font-family:var(--mono);font-size:11px;color:rgba(252,243,236,.55);margin-top:8px;line-height:1.6}
 
-  /* steps */
-  .steps{display:flex;flex-direction:column;gap:16px;margin-top:22px}
-  .step{display:flex;gap:15px;align-items:flex-start}
-  .step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--magenta);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
-  .step b{display:block;font-size:17px}
-  .step span{font-size:15px;color:var(--muted)}
 
   /* value list */
   .gets{display:flex;flex-direction:column;gap:13px;margin-top:20px}
@@ -171,16 +172,28 @@
 
     .closing .btn{width:auto;display:inline-flex;padding:0 36px}
   }
+
+  /* accessibility: keyboard focus */
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--magenta);outline-offset:3px;border-radius:8px}
+  .skip{position:absolute;left:8px;top:-60px;z-index:100;background:var(--ink);color:var(--cream);padding:10px 16px;border-radius:10px;font-weight:700;font-size:14px;transition:top .15s}
+  .skip:focus{top:8px}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .sticky{transition:none}
+  }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<nav><div class="nav-in">
-  <span class="logo">Circles<b>.</b></span>
+<nav aria-label="Primary"><div class="nav-in">
+  <a href="#top" class="logo">Circles<b>.</b></a>
   <a href="../circles-quiz-v2/" class="nav-cta">Find your circle</a>
 </div></nav>
 
-<header class="hero"><div class="wrap hero-grid">
+<main id="main">
+<header class="hero" id="top"><div class="wrap hero-grid">
   <div class="hero-copy">
     <div class="kicker">Circles by Marco Polo</div>
     <h1>A small group of women friends, <u>matched to you.</u></h1>
@@ -188,7 +201,7 @@
     <div class="proof"><b>1,000+ women matched</b></div>
     <div class="hero-cta"><a href="../circles-quiz-v2/" class="btn">Find your circle →</a></div>
   </div>
-  <div class="hero-photo"><img src="assets/women-group.jpg" width="1500" height="626" alt="A group of women smiling together"></div>
+  <div class="hero-photo"><img src="assets/women-group.jpg" width="1500" height="626" fetchpriority="high" decoding="async" alt="A diverse group of six women smiling with their arms around each other"></div>
 </div></header>
 
 <div class="trust">
@@ -200,10 +213,10 @@
   <div class="eyebrow">What's included</div>
   <h2>A small group, built for you.</h2>
   <div class="gets">
-    <div class="get"><i>✓</i><div><b>5 to 8 women, hand-matched.</b> Chosen one by one, in your season of life.</div></div>
-    <div class="get"><i>✓</i><div><b>4 weeks of guided connection.</b> Prompts and nudges so the group doesn't fizzle.</div></div>
-    <div class="get"><i>✓</i><div><b>Runs on Marco Polo.</b> Talk live or reply whenever it suits you.</div></div>
-    <div class="get"><i>✓</i><div><b>One free rematch.</b> If your circle isn't right, we'll rebuild it.</div></div>
+    <div class="get"><i aria-hidden="true">✓</i><div><b>5 to 8 women, hand-matched.</b> Chosen one by one, in your season of life.</div></div>
+    <div class="get"><i aria-hidden="true">✓</i><div><b>4 weeks of guided connection.</b> Prompts and nudges so the group doesn't fizzle.</div></div>
+    <div class="get"><i aria-hidden="true">✓</i><div><b>Runs on Marco Polo.</b> Talk live or reply whenever it suits you.</div></div>
+    <div class="get"><i aria-hidden="true">✓</i><div><b>One free rematch.</b> If your circle isn't right, we'll rebuild it.</div></div>
   </div>
 </div></section>
 
@@ -213,12 +226,12 @@
     <h2>The closest thing to being in person.</h2>
     <p class="lede">Your circle runs on Marco Polo, the video-message app. Send a video, voice note or text when you have a minute. No scheduling, no pressure to reply right away.</p>
     <div class="gets">
-      <div class="get"><i>✓</i><div>See the real person, not just words on a screen</div></div>
-      <div class="get"><i>✓</i><div>No pressure to respond instantly</div></div>
-      <div class="get"><i>✓</i><div>Build real connection before you ever meet</div></div>
+      <div class="get"><i aria-hidden="true">✓</i><div>See the real person, not just words on a screen</div></div>
+      <div class="get"><i aria-hidden="true">✓</i><div>No pressure to respond instantly</div></div>
+      <div class="get"><i aria-hidden="true">✓</i><div>Build real connection before you ever meet</div></div>
     </div>
   </div>
-  <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+  <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video></div>
 </div></section>
 
 <section id="price"><div class="wrap price-grid">
@@ -235,11 +248,11 @@
     </div>
     <div class="price-body">
       <div class="gets">
-        <div class="get"><i>✓</i><div>5 to 8 women, hand-matched</div></div>
-        <div class="get"><i>✓</i><div>4 weeks of guided connection</div></div>
-        <div class="get"><i>✓</i><div>Your private circle on Marco Polo</div></div>
+        <div class="get"><i aria-hidden="true">✓</i><div>5 to 8 women, hand-matched</div></div>
+        <div class="get"><i aria-hidden="true">✓</i><div>4 weeks of guided connection</div></div>
+        <div class="get"><i aria-hidden="true">✓</i><div>Your private circle on Marco Polo</div></div>
       </div>
-      <div class="guar"><i>🔄</i><div>Don't love your circle? <b>One free rematch.</b></div></div>
+      <div class="guar"><i aria-hidden="true">🔄</i><div>Don't love your circle? <b>One free rematch.</b></div></div>
       <a href="../circles-quiz-v2/" class="btn ink">Get started</a>
       <div class="nofee">No subscription · No hidden fees · Cancel anytime before matching</div>
     </div>
@@ -251,7 +264,7 @@
   <h2>Matched by a person, not an algorithm.</h2>
   <p class="lede">A real matchmaker reads your answers and builds your group by hand, then sends the prompts that turn a group of strangers into people who actually talk.</p>
   <div class="human">
-    <div class="av">♥</div>
+    <div class="av" aria-hidden="true">♥</div>
     <div><b>A human builds every circle</b><span>Hand-matched, then guided for your first four weeks.</span></div>
   </div>
 </div></section>
@@ -260,9 +273,9 @@
   <div class="eyebrow">Real stories</div>
   <h2>Women who found their people.</h2>
   <div class="quotes">
-    <div class="quote"><p>“It's more intimate than a text but less formal than a call. I can show up at 6am with no makeup on and it's fine.”</p><div class="who"><i>B</i>Bethany</div></div>
-    <div class="quote"><p>“Such a useful way to share the little things that would go unmentioned over text. I feel genuinely closer to these women.”</p><div class="who"><i>L</i>Laurie</div></div>
-    <div class="quote"><p>“Circles let me deepen my friendships in a way that feels effortless and real. I love Polo-ing on my morning walks.”</p><div class="who"><i>L</i>Lisa</div></div>
+    <div class="quote"><p>“It's more intimate than a text but less formal than a call. I can show up at 6am with no makeup on and it's fine.”</p><div class="who"><i aria-hidden="true">B</i>Bethany</div></div>
+    <div class="quote"><p>“Such a useful way to share the little things that would go unmentioned over text. I feel genuinely closer to these women.”</p><div class="who"><i aria-hidden="true">L</i>Laurie</div></div>
+    <div class="quote"><p>“Circles let me deepen my friendships in a way that feels effortless and real. I love Polo-ing on my morning walks.”</p><div class="who"><i aria-hidden="true">L</i>Lisa</div></div>
   </div>
 </div></section>
 
@@ -285,6 +298,8 @@
   <div style="margin-top:22px"><a href="../circles-quiz-v2/" class="btn">Find your circle <span class="btn-price">· $75 one-time</span></a></div>
 </div></section>
 
+</main>
+
 <footer>
   <div class="foot-links">
     <a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">California Notice</a><a href="#">Community Guidelines</a>
@@ -304,6 +319,12 @@
       sticky.classList.toggle('show', !es[0].isIntersecting);
     },{threshold:0}).observe(hero);
   } else { sticky.classList.add('show'); }
+
+  // respect reduced-motion: don't autoplay the demo video
+  var vid = document.querySelector('.video video');
+  if (vid && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+    vid.removeAttribute('autoplay'); vid.pause();
+  }
 </script>
 </body>
 </html>
