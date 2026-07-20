@@ -41,11 +41,12 @@
   .proof b{color:var(--ink);font-weight:500}
   .proof .dot{width:4px;height:4px;border-radius:50%;background:var(--magenta)}
 
-  /* photo strip */
-  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:26px}
-  .strip .ph{aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:linear-gradient(140deg,var(--peach),var(--magenta))}
-  .strip .ph:nth-child(2){margin-top:-14px}
-  .strip .ph img{width:100%;height:100%;object-fit:cover}
+  /* hero photo */
+  .hero-photo{margin-top:26px;border-radius:22px;overflow:hidden;aspect-ratio:4/3;border:3px solid var(--ink);box-shadow:0 12px 40px rgba(42,14,58,.14)}
+  .hero-photo img{width:100%;height:100%;object-fit:cover}
+  /* marco polo video */
+  .video{margin:22px auto 0;max-width:260px;border-radius:24px;overflow:hidden;border:3px solid var(--ink);background:#000;box-shadow:0 14px 44px rgba(42,14,58,.2)}
+  .video video{width:100%;display:block}
 
   /* buttons */
   .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;background:var(--magenta);color:#fff;
@@ -148,11 +149,7 @@
   <h1>Real friendship, <u>hand-matched</u> to your life.</h1>
   <p>Get matched with a small group of women in the same season as you. A real person builds your circle by hand.</p>
   <div class="proof"><b>1,000+ women matched</b></div>
-  <div class="strip" aria-hidden="true">
-    <div class="ph"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=500&auto=format&fit=crop" alt=""></div>
-    <div class="ph"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500&auto=format&fit=crop" alt=""></div>
-    <div class="ph"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=500&auto=format&fit=crop" alt=""></div>
-  </div>
+  <div class="hero-photo"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=900&auto=format&fit=crop" alt="A group of women laughing together"></div>
   <div style="margin-top:24px"><a href="../circles-quiz-v2/" class="btn">Find your circle →</a></div>
 </div></header>
 
@@ -160,16 +157,6 @@
   <div class="big">Powered by <b>Marco Polo</b> · 2.3M App Store reviews</div>
   <div class="seen">As seen on The Drew Barrymore Show · Good Hang with Amy Poehler · Dear Chelsea</div>
 </div>
-
-<section><div class="wrap">
-  <div class="eyebrow">How it works</div>
-  <h2>No swiping. No awkward events.</h2>
-  <div class="steps">
-    <div class="step"><span class="n">1</span><div><b>Take the quiz</b><span>A few questions about your season of life and what you're looking for. Under two minutes.</span></div></div>
-    <div class="step"><span class="n">2</span><div><b>A real person matches you</b><span>5 to 8 women, chosen by hand from your answers. Not an algorithm.</span></div></div>
-    <div class="step"><span class="n">3</span><div><b>Connect on Marco Polo</b><span>Video, voice or text. Talk live or reply when it suits you.</span></div></div>
-  </div>
-</div></section>
 
 <section class="band"><div class="wrap">
   <div class="eyebrow">What's included</div>
@@ -179,6 +166,18 @@
     <div class="get"><i>✓</i><div><b>4 weeks of guided connection.</b> Prompts and nudges so the group doesn't fizzle.</div></div>
     <div class="get"><i>✓</i><div><b>Runs on Marco Polo.</b> Talk live or reply whenever it suits you.</div></div>
     <div class="get"><i>✓</i><div><b>One free rematch.</b> If your circle isn't right, we'll rebuild it.</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Why Marco Polo</div>
+  <h2>The closest thing to being in person.</h2>
+  <p class="lede">Your circle runs on Marco Polo, the video-message app. Send a video, voice note or text when you have a minute. No scheduling, no pressure to reply right away.</p>
+  <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+  <div class="gets">
+    <div class="get"><i>✓</i><div>See the real person, not just words on a screen</div></div>
+    <div class="get"><i>✓</i><div>No pressure to respond instantly</div></div>
+    <div class="get"><i>✓</i><div>Build real connection before you ever meet</div></div>
   </div>
 </div></section>
 
