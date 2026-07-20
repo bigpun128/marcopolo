@@ -134,7 +134,43 @@
   .sticky.show{transform:none}
   .sticky .btn{box-shadow:0 8px 30px rgba(255,46,139,.35)}
 
-  @media(min-width:600px){ .sticky{display:none} .hero{padding-top:48px} }
+  @media(min-width:600px){ .sticky{display:none} }
+
+  /* desktop / tablet */
+  @media(min-width:860px){
+    .wrap,.nav-in{max-width:1000px}
+    section{padding:64px 0}
+    footer{padding-bottom:44px}
+
+    .hero{text-align:left;padding:60px 0 28px}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:52px;align-items:center}
+    h1{font-size:52px}
+    .hero p{margin:20px 0 0;max-width:42ch;font-size:19px}
+    .proof{justify-content:flex-start}
+    .hero-cta{margin-top:26px}
+    .hero-cta .btn{width:auto;display:inline-flex;padding:0 32px}
+    .hero-photo{margin-top:0}
+
+    .trust{padding:26px}
+    .trust .big{font-size:17px}
+    .trust .seen{font-size:12px}
+
+    .band .gets{display:grid;grid-template-columns:1fr 1fr;gap:16px 32px}
+
+    .mp-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:50px;align-items:center}
+    .mp .video{margin:0 auto;max-width:300px}
+    .mp-copy .gets{margin-top:18px}
+
+    .price-grid{display:grid;grid-template-columns:1fr 420px;gap:52px;align-items:center}
+    .price-card{margin-top:0}
+
+    .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start;margin-top:26px}
+
+    .human{max-width:600px}
+    .faq{max-width:760px}
+
+    .closing .btn{width:auto;display:inline-flex;padding:0 36px}
+  }
 </style>
 </head>
 <body>
@@ -144,13 +180,15 @@
   <a href="../circles-quiz-v2/" class="nav-cta">Find your circle</a>
 </div></nav>
 
-<header class="hero"><div class="wrap">
-  <div class="kicker">Circles by Marco Polo</div>
-  <h1>A small group of women friends, <u>matched to you.</u></h1>
-  <p>Answer a few questions and a real person hand-picks 5 to 8 women in the same season of life as you.</p>
-  <div class="proof"><b>1,000+ women matched</b></div>
+<header class="hero"><div class="wrap hero-grid">
+  <div class="hero-copy">
+    <div class="kicker">Circles by Marco Polo</div>
+    <h1>A small group of women friends, <u>matched to you.</u></h1>
+    <p>Answer a few questions and a real person hand-picks 5 to 8 women in the same season of life as you.</p>
+    <div class="proof"><b>1,000+ women matched</b></div>
+    <div class="hero-cta"><a href="../circles-quiz-v2/" class="btn">Find your circle →</a></div>
+  </div>
   <div class="hero-photo"><img src="assets/women-group.jpg" width="1500" height="626" alt="A group of women smiling together"></div>
-  <div style="margin-top:24px"><a href="../circles-quiz-v2/" class="btn">Find your circle →</a></div>
 </div></header>
 
 <div class="trust">
@@ -169,23 +207,27 @@
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="eyebrow">Why Marco Polo</div>
-  <h2>The closest thing to being in person.</h2>
-  <p class="lede">Your circle runs on Marco Polo, the video-message app. Send a video, voice note or text when you have a minute. No scheduling, no pressure to reply right away.</p>
-  <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
-  <div class="gets">
-    <div class="get"><i>✓</i><div>See the real person, not just words on a screen</div></div>
-    <div class="get"><i>✓</i><div>No pressure to respond instantly</div></div>
-    <div class="get"><i>✓</i><div>Build real connection before you ever meet</div></div>
+<section class="mp"><div class="wrap mp-grid">
+  <div class="mp-copy">
+    <div class="eyebrow">Why Marco Polo</div>
+    <h2>The closest thing to being in person.</h2>
+    <p class="lede">Your circle runs on Marco Polo, the video-message app. Send a video, voice note or text when you have a minute. No scheduling, no pressure to reply right away.</p>
+    <div class="gets">
+      <div class="get"><i>✓</i><div>See the real person, not just words on a screen</div></div>
+      <div class="get"><i>✓</i><div>No pressure to respond instantly</div></div>
+      <div class="get"><i>✓</i><div>Build real connection before you ever meet</div></div>
+    </div>
   </div>
+  <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
-<section id="price"><div class="wrap">
-  <div class="eyebrow">Simple pricing</div>
-  <h2>One payment. No subscription.</h2>
-  <p class="lede">You know exactly what you're paying before you start.</p>
-  <div class="price-card" style="margin-top:22px">
+<section id="price"><div class="wrap price-grid">
+  <div class="price-intro">
+    <div class="eyebrow">Simple pricing</div>
+    <h2>One payment. No subscription.</h2>
+    <p class="lede">You know exactly what you're paying before you start.</p>
+  </div>
+  <div class="price-card">
     <div class="price-top">
       <div class="tagpill">One-time</div>
       <div class="amt"><sup>$</sup>75</div>
