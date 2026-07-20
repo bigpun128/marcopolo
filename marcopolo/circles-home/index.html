@@ -18,7 +18,7 @@
 <style>
   :root{
     --plum:#2a0e3a; --magenta:#ff2e8b; --peach:#ffb38a; --cream:#fcf3ec;
-    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.66);
+    --ink:#1d0a26; --gold:#ffc94d; --blush:#f7e8e1; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.66);
     --display:'Bricolage Grotesque',sans-serif; --mono:'DM Mono',monospace; --pad:22px;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -63,7 +63,8 @@
   .btn-price{font-family:var(--mono);font-weight:400;font-size:13px;opacity:.85;margin-left:2px}
 
   section{padding:40px 0}
-  .band{background:var(--plum);color:var(--cream)}
+  .band{background:var(--plum);color:var(--cream);border-top:1px solid rgba(255,201,77,.22)}
+  .tint{background:var(--blush)}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:10px}
   .band .eyebrow{color:var(--gold)}
   h2{font-weight:800;font-size:clamp(26px,7vw,32px);line-height:1.06;letter-spacing:-.03em}
@@ -234,7 +235,7 @@
   <div class="video"><video src="../v3a/assets/marco-polo-why.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video></div>
 </div></section>
 
-<section id="price"><div class="wrap price-grid">
+<section id="price" class="tint"><div class="wrap price-grid">
   <div class="price-intro">
     <div class="eyebrow">Simple pricing</div>
     <h2>One payment. No subscription.</h2>
@@ -269,7 +270,7 @@
   </div>
 </div></section>
 
-<section><div class="wrap">
+<section class="tint"><div class="wrap">
   <div class="eyebrow">Real stories</div>
   <h2>Women who found their people.</h2>
   <div class="quotes">
