@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circles · real friendship, hand-matched</title>
+<meta name="description" content="Get matched with a small group of women in the same season of life. A real person builds your circle by hand. $75 one-time, one free rematch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2a0e3a; --magenta:#ff2e8b; --peach:#ffb38a; --cream:#fcf3ec;
+    --ink:#1d0a26; --gold:#ffc94d; --line:rgba(29,10,38,.14); --muted:rgba(29,10,38,.6);
+    --display:'Bricolage Grotesque',sans-serif; --mono:'DM Mono',monospace; --pad:22px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:var(--display);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+  /* single mobile column, centred on larger screens */
+  .wrap{max-width:520px;margin:0 auto;padding:0 var(--pad)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:40;background:rgba(252,243,236,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:520px;margin:0 auto;padding:12px var(--pad);display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:20px;letter-spacing:-.03em}
+  .logo b{color:var(--magenta)}
+  .nav-cta{background:var(--magenta);color:#fff;font-weight:700;font-size:14px;padding:9px 16px;border-radius:100px}
+
+  /* hero */
+  .hero{padding:34px 0 8px;text-align:center}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--magenta);margin-bottom:14px}
+  h1{font-weight:800;font-size:clamp(34px,10vw,46px);line-height:1.02;letter-spacing:-.035em}
+  h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 58%,var(--gold) 58%);padding:0 .05em}
+  .hero p{font-size:17px;color:var(--muted);margin:18px auto 0;max-width:36ch}
+  .proof{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:20px}
+  .proof b{color:var(--ink);font-weight:500}
+  .proof .dot{width:4px;height:4px;border-radius:50%;background:var(--magenta)}
+
+  /* photo strip */
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:26px}
+  .strip .ph{aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:linear-gradient(140deg,var(--peach),var(--magenta))}
+  .strip .ph:nth-child(2){margin-top:-14px}
+  .strip .ph img{width:100%;height:100%;object-fit:cover}
+
+  /* buttons */
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;background:var(--magenta);color:#fff;
+    border-radius:100px;font-size:17px;font-weight:700;transition:transform .1s,opacity .15s}
+  .btn:active{transform:scale(.99)}
+  .btn.ink{background:var(--ink);color:var(--cream)}
+  .btn-price{font-family:var(--mono);font-weight:400;font-size:13px;opacity:.85;margin-left:2px}
+
+  section{padding:40px 0}
+  .band{background:var(--plum);color:var(--cream)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);margin-bottom:10px}
+  .band .eyebrow{color:var(--gold)}
+  h2{font-weight:800;font-size:clamp(26px,7vw,32px);line-height:1.06;letter-spacing:-.03em}
+  .lede{font-size:16px;color:var(--muted);margin-top:12px}
+  .band .lede{color:rgba(252,243,236,.72)}
+
+  /* trust */
+  .trust{background:var(--ink);color:var(--cream);text-align:center;padding:22px var(--pad)}
+  .trust .big{font-weight:800;font-size:15px}
+  .trust .big b{color:var(--gold)}
+  .trust .seen{font-family:var(--mono);font-size:11px;color:rgba(252,243,236,.55);margin-top:8px;line-height:1.6}
+
+  /* steps */
+  .steps{display:flex;flex-direction:column;gap:16px;margin-top:22px}
+  .step{display:flex;gap:15px;align-items:flex-start}
+  .step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--magenta);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center}
+  .step b{display:block;font-size:17px}
+  .step span{font-size:15px;color:var(--muted)}
+
+  /* value list */
+  .gets{display:flex;flex-direction:column;gap:13px;margin-top:20px}
+  .get{display:flex;gap:12px;align-items:flex-start;font-size:16.5px}
+  .get i{flex:0 0 26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);font-style:normal;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .get b{font-weight:700}
+
+  /* pricing */
+  .price-card{background:#fff;border:2px solid var(--ink);border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(42,14,58,.12)}
+  .price-top{background:var(--plum);color:var(--cream);text-align:center;padding:26px 22px 22px}
+  .price-top .amt{font-weight:800;font-size:60px;letter-spacing:-.05em;line-height:1}
+  .price-top .amt sup{font-size:26px;vertical-align:super;margin-right:2px}
+  .price-top .per{font-family:var(--mono);font-size:13px;color:rgba(252,243,236,.7);margin-top:6px}
+  .price-top .tagpill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:5px 12px;border-radius:100px;margin-bottom:14px}
+  .price-body{padding:22px}
+  .price-body .gets{margin-top:0}
+  .price-body .get i{background:var(--magenta);color:#fff}
+  .guar{display:flex;gap:11px;align-items:flex-start;background:var(--gold);border-radius:14px;padding:14px 16px;font-size:15px;font-weight:600;margin:18px 0}
+  .guar i{font-style:normal;font-size:18px}
+  .nofee{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+
+  /* human matching */
+  .human{display:flex;gap:16px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-top:20px}
+  .human .av{flex:0 0 60px;height:60px;border-radius:50%;background:linear-gradient(140deg,var(--peach),var(--magenta));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px;border:3px solid var(--gold)}
+  .human b{display:block;font-size:16px}
+  .human span{font-size:14px;color:var(--muted)}
+
+  /* testimonials */
+  .quotes{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+  .quote{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px}
+  .quote p{font-size:16px;line-height:1.5}
+  .quote .who{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;align-items:center;gap:8px}
+  .quote .who i{width:26px;height:26px;border-radius:50%;background:var(--peach);color:var(--ink);font-style:normal;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+
+  /* faq */
+  .faq{border-top:1px solid var(--line);margin-top:22px}
+  .faq details{border-bottom:1px solid var(--line);padding:16px 0}
+  .faq summary{list-style:none;font-weight:700;font-size:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-family:var(--mono);color:var(--magenta);font-size:20px}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{font-size:15px;color:var(--muted);margin-top:10px}
+
+  /* closing */
+  .closing{text-align:center}
+  .closing h2{color:var(--cream)}
+
+  footer{background:var(--ink);color:rgba(252,243,236,.6);padding:30px var(--pad) 120px}
+  .foot-links{display:flex;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px;justify-content:center}
+  .foot-links a:hover{color:var(--gold)}
+  .copy{font-family:var(--mono);font-size:11px;text-align:center;margin-top:16px;color:rgba(252,243,236,.4)}
+
+  /* sticky mobile CTA */
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:12px var(--pad) calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(252,243,236,0),var(--cream) 24%);max-width:520px;margin:0 auto;
+    transform:translateY(120%);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .sticky.show{transform:none}
+  .sticky .btn{box-shadow:0 8px 30px rgba(255,46,139,.35)}
+
+  @media(min-width:600px){ .sticky{display:none} .hero{padding-top:48px} }
+</style>
+</head>
+<body>
+
+<nav><div class="nav-in">
+  <span class="logo">Circles<b>.</b></span>
+  <a href="../circles-quiz-v2/" class="nav-cta">Find your circle</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">Circles by Marco Polo</div>
+  <h1>Real friendship, <u>hand-matched</u> to your life.</h1>
+  <p>Get matched with a small group of women in the same season as you. A real person builds your circle by hand.</p>
+  <div class="proof"><b>1,000+ women matched</b><span class="dot"></span><b>$75 one-time</b></div>
+  <div class="strip" aria-hidden="true">
+    <div class="ph"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=500&auto=format&fit=crop" alt=""></div>
+    <div class="ph"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500&auto=format&fit=crop" alt=""></div>
+    <div class="ph"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=500&auto=format&fit=crop" alt=""></div>
+  </div>
+  <div style="margin-top:24px"><a href="../circles-quiz-v2/" class="btn">Find your circle <span class="btn-price">· $75 one-time</span></a></div>
+</div></header>
+
+<div class="trust">
+  <div class="big">Powered by <b>Marco Polo</b> · 2.3M App Store reviews</div>
+  <div class="seen">As seen on The Drew Barrymore Show · Good Hang with Amy Poehler · Dear Chelsea</div>
+</div>
+
+<section><div class="wrap">
+  <div class="eyebrow">How it works</div>
+  <h2>No swiping. No awkward events.</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><div><b>Take the quiz</b><span>A few questions about your season of life and what you're looking for. Under two minutes.</span></div></div>
+    <div class="step"><span class="n">2</span><div><b>A real person matches you</b><span>5 to 8 women, chosen by hand from your answers. Not an algorithm.</span></div></div>
+    <div class="step"><span class="n">3</span><div><b>Connect on Marco Polo</b><span>Video, voice or text. Talk live or reply when it suits you.</span></div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="eyebrow">What's included</div>
+  <h2>A small group, built for you.</h2>
+  <div class="gets">
+    <div class="get"><i>✓</i><div><b>5 to 8 women, hand-matched.</b> Chosen one by one, in your season of life.</div></div>
+    <div class="get"><i>✓</i><div><b>4 weeks of guided connection.</b> Prompts and nudges so the group doesn't fizzle.</div></div>
+    <div class="get"><i>✓</i><div><b>Runs on Marco Polo.</b> Talk live or reply whenever it suits you.</div></div>
+    <div class="get"><i>✓</i><div><b>One free rematch.</b> If your circle isn't right, we'll rebuild it.</div></div>
+  </div>
+</div></section>
+
+<section id="price"><div class="wrap">
+  <div class="eyebrow">Simple pricing</div>
+  <h2>One payment. No subscription.</h2>
+  <p class="lede">You know exactly what you're paying before you start.</p>
+  <div class="price-card" style="margin-top:22px">
+    <div class="price-top">
+      <div class="tagpill">One-time</div>
+      <div class="amt"><sup>$</sup>75</div>
+      <div class="per">for your matched circle</div>
+    </div>
+    <div class="price-body">
+      <div class="gets">
+        <div class="get"><i>✓</i><div>5 to 8 women, hand-matched</div></div>
+        <div class="get"><i>✓</i><div>4 weeks of guided connection</div></div>
+        <div class="get"><i>✓</i><div>Your private circle on Marco Polo</div></div>
+      </div>
+      <div class="guar"><i>🔄</i><div>Don't love your circle? <b>One free rematch.</b></div></div>
+      <a href="../circles-quiz-v2/" class="btn ink">Get started</a>
+      <div class="nofee">No subscription · No hidden fees · Cancel anytime before matching</div>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Why it works</div>
+  <h2>Matched by a person, not an algorithm.</h2>
+  <p class="lede">A real matchmaker reads your answers and builds your group by hand, then sends the prompts that turn a group of strangers into people who actually talk.</p>
+  <div class="human">
+    <div class="av">♥</div>
+    <div><b>A human builds every circle</b><span>Hand-matched, then guided for your first four weeks.</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Real stories</div>
+  <h2>Women who found their people.</h2>
+  <div class="quotes">
+    <div class="quote"><p>“It's more intimate than a text but less formal than a call. I can show up at 6am with no makeup on and it's fine.”</p><div class="who"><i>B</i>Bethany</div></div>
+    <div class="quote"><p>“Such a useful way to share the little things that would go unmentioned over text. I feel genuinely closer to these women.”</p><div class="who"><i>L</i>Laurie</div></div>
+    <div class="quote"><p>“Circles let me deepen my friendships in a way that feels effortless and real. I love Polo-ing on my morning walks.”</p><div class="who"><i>L</i>Lisa</div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Good to know</div>
+  <h2>Questions, answered.</h2>
+  <div class="faq">
+    <details><summary>What's the $75 for?</summary><p>A real person hand-builds your circle of 5 to 8 women, sends a custom questionnaire to get it right, and guides your group for its first four weeks. One-time, no subscription.</p></details>
+    <details><summary>How are matches made?</summary><p>You take a short quiz, then a matchmaker reads your answers and picks your group by hand, based on your season of life and what you're looking for.</p></details>
+    <details><summary>What if I don't click with my group?</summary><p>We'll rematch you once, free. Your circle should feel right.</p></details>
+    <details><summary>What's the time commitment?</summary><p>Circles run on Marco Polo, so it's on your schedule. Reply with a quick video or text whenever it suits you, live or async.</p></details>
+    <details><summary>Who is it for?</summary><p>Women in any season, new moms, new to a city, a new chapter, an empty nest, or just wanting deeper friendships. The quiz matches you with women in the same place.</p></details>
+  </div>
+</div></section>
+
+<section class="band closing"><div class="wrap">
+  <div class="eyebrow">Ready?</div>
+  <h2>Find your circle.</h2>
+  <p class="lede">Take the quiz. A real person builds your group. $75 one-time.</p>
+  <div style="margin-top:22px"><a href="../circles-quiz-v2/" class="btn">Find your circle <span class="btn-price">· $75 one-time</span></a></div>
+</div></section>
+
+<footer>
+  <div class="foot-links">
+    <a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">California Notice</a><a href="#">Community Guidelines</a>
+  </div>
+  <div class="copy">© 2026 Joya Communications, Inc · powered by Marco Polo</div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <a href="../circles-quiz-v2/" class="btn">Find your circle <span class="btn-price">· $75 one-time</span></a>
+</div>
+
+<script>
+  // reveal the sticky CTA once the hero button scrolls out of view (mobile)
+  var hero = document.querySelector('.hero .btn'), sticky = document.getElementById('sticky');
+  if('IntersectionObserver' in window && hero){
+    new IntersectionObserver(function(es){
+      sticky.classList.toggle('show', !es[0].isIntersecting);
+    },{threshold:0}).observe(hero);
+  } else { sticky.classList.add('show'); }
+</script>
+</body>
+</html>
